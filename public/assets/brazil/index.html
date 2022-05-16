@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="author" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<title>TOGEL</title>
+
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/animate.css">
+<link rel="stylesheet" href="css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker3.css">
+
+
+<link href="https://fonts.googleapis.com/css?family=Dosis" rel="stylesheet">
+
+<!-- Main css -->
+<link rel="stylesheet" href="css/style.css">
+
+</head>
+<body data-spy="scroll" data-target=".navbar-collapse" data-offset="50">
+
+
+<!-- PRE LOADER -->
+
+<div class="preloader">
+     <div class="sk-spinner sk-spinner-pulse"></div>
+</div>
+
+
+
+<!-- Navigation Section -->
+
+<div class="navbar navbar-default navbar-fixed-top">
+	<div class="container">
+
+		<div class="navbar-header">
+			<button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+				<span class="icon icon-bar"></span>
+				<span class="icon icon-bar"></span>
+				<span class="icon icon-bar"></span>
+			</button>
+			<a href="index.html" class="navbar-brand"><span>TOGEL</span></a>
+		</div>
+
+		<div class="collapse navbar-collapse">
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="#">Home</a></li>
+				<li><a href="#">Result</a></li>
+				<li><a href="#">Buku Mimpi</a></li>
+        <li><a href="#">Contact Us</a></li>
+			</ul>
+		</div>
+
+	</div>
+</div>
+
+<!-- Home Section -->
+
+<section id="home" class="main">
+     <div class="overlay"></div>
+	<div class="container">
+		<div class="row">
+      <div class="col-md-12 col-sm-12">
+          <h3 class='timer' data-minutes-left=1></h3>
+      </div>
+		</div>
+	</div>
+</section>
+
+<section id="result">
+<div class="container">
+   <div class="row">
+   <div class="col-md-12 col-sm-12">
+
+          <div class="section-banner">
+               <img src="http://placehold.it/768x120" class="img-responsive" alt="">
+          </div>
+
+          <!-- Result Date -->
+
+          <div class="wow fadeInUp">
+               <h2>Result Date</h2>
+          </div>
+        
+          <div class="row">
+          <div class="col-md-4 col-sm-4 result-date">
+              <div class="input-group date wow fadeInUp" data-provide="datepicker">
+                  <input type="text" class="form-control">
+                  <div class="input-group-addon">
+                      <i class="fa fa-calendar" aria-hidden="true"></i>
+                  </div>
+              </div>
+          </div>
+          <div class="col-md-8 col-sm-8 result-date">
+              <a href="#" class="wow fadeInUp section-btn btn smoothScroll" data-wow-delay="0.8s">Submit</a>
+          </div>
+
+          </div>
+
+          <!-- Result Table -->
+
+          <div class="wow fadeInUp">
+               <h2>Result</h2>
+          </div>          
+          <div class="gallery-container wow fadeInUp">
+
+            <nav class="filter">
+              <ul>
+                <li class="placeholder"> 
+                  <a data-type="filipina" href="#0">Filipina</a> <!-- selected option on mobile -->
+                </li> 
+
+                <li>
+                  <a class="selected" data-type="filipina" href="#0">Filipina</a>
+                </li>
+
+                <li>
+                  <a data-type="brasil" href="#0">Brasil</a>
+                </li>
+
+                <li>
+                  <a data-type="kamboja" href="#0">Kamboja</a>
+                </li>
+
+                <li>
+                  <a data-type="malaysia" href="#0">Malaysia</a>
+                </li>
+
+                <li>
+                  <a data-type="hongkong" href="#0">Hong Kong</a>
+                </li>
+
+                <li>
+                  <a data-type="thailand" href="#0">Thailand</a>
+                </li>
+                
+              </ul>
+            </nav>
+
+            <ul class="gallery container">
+
+              <li>
+                <ul class="item-wrapper">
+                  <li data-type="filipina" class="is-visible">
+                    Selasa, 11 April 2018 <br><br>
+                    <img src="images/bola/1.png" alt="">
+                    <img src="images/bola/2.png" alt="">
+                    <img src="images/bola/3.png" alt="">
+                    <img src="images/bola/4.png" alt="">
+                    <img src="images/bola/5.png" alt="">
+                    <img src="images/bola/6.png" alt="">
+                    <!-- <div id="result-number">
+                      1234
+                    </div> -->
+                  </li>
+
+                  <li data-type="brasil" class="is-hidden">
+                    Selasa, 18 April 2018
+                    <div id="result-number">
+                      3521
+                    </div>                    
+                  </li>
+
+                  <li data-type="kamboja" class="is-hidden">
+                    Selasa, 18 April 2018
+                    <div id="result-number">
+                      4420
+                    </div>                      
+                  </li>
+
+                  <li data-type="malaysia" class="is-hidden">
+                    Selasa, 18 April 2018
+                    <div id="result-number">
+                      7451
+                    </div>                    
+                  </li>
+
+                  <li data-type="hongkong" class="is-hidden">
+                    Selasa, 18 April 2018
+                    <div id="result-number">
+                      8625
+                    </div>                    
+                  </li>
+
+                  <li data-type="thailand" class="is-hidden">
+                    Selasa, 18 April 2018
+                    <div id="result-number">
+                      8845
+                    </div>                    
+                  </li>
+                </ul>
+              </li>
+
+              <li>
+                <ul class="item-wrapper">
+                  <li data-type="filipina" class="is-visible">
+                    Rabu, 19 Desember 2018
+                    <div id="result-number">
+                      1234
+                    </div>
+                  </li>
+
+                  <li data-type="brasil" class="is-hidden">
+                    Rabu, 19 Desember 2018
+                    <div id="result-number">
+                      3521
+                    </div>                    
+                  </li>
+
+                  <li data-type="kamboja" class="is-hidden">
+                    Rabu, 19 Desember 2018
+                    <div id="result-number">
+                      4420
+                    </div>                      
+                  </li>
+
+                  <li data-type="malaysia" class="is-hidden">
+                    Rabu, 19 Desember 2018
+                    <div id="result-number">
+                      7451
+                    </div>                    
+                  </li>
+
+                  <li data-type="hongkong" class="is-hidden">
+                    Rabu, 19 Desember 2018
+                    <div id="result-number">
+                      8625
+                    </div>                    
+                  </li>
+
+                  <li data-type="thailand" class="is-hidden">
+                    Rabu, 19 Desember 2018
+                    <div id="result-number">
+                      8845
+                    </div>                    
+                  </li>
+                </ul>
+              </li>
+
+              <li>
+                <ul class="item-wrapper">
+                  <li data-type="filipina" class="is-visible">
+                    Selasa, 18 April 2018
+                    <div id="result-number">
+                      1234
+                    </div>
+                  </li>
+
+                  <li data-type="brasil" class="is-hidden">
+                    Selasa, 18 April 2018
+                    <div id="result-number">
+                      3521
+                    </div>                    
+                  </li>
+
+                  <li data-type="kamboja" class="is-hidden">
+                    Selasa, 18 April 2018
+                    <div id="result-number">
+                      4420
+                    </div>                      
+                  </li>
+
+                  <li data-type="malaysia" class="is-hidden">
+                    Selasa, 18 April 2018
+                    <div id="result-number">
+                      7451
+                    </div>                    
+                  </li>
+
+                  <li data-type="hongkong" class="is-hidden">
+                    Selasa, 18 April 2018
+                    <div id="result-number">
+                      8625
+                    </div>                    
+                  </li>
+
+                  <li data-type="thailand" class="is-hidden">
+                    Selasa, 18 April 2018
+                    <div id="result-number">
+                      8845
+                    </div>                    
+                  </li>
+                </ul>
+              </li>
+
+              <li>
+                <ul class="item-wrapper">
+                  <li data-type="filipina" class="is-visible">
+                    Rabu, 19 Desember 2018
+                    <div id="result-number">
+                      1234
+                    </div>
+                  </li>
+
+                  <li data-type="brasil" class="is-hidden">
+                    Rabu, 19 Desember 2018
+                    <div id="result-number">
+                      3521
+                    </div>                    
+                  </li>
+
+                  <li data-type="kamboja" class="is-hidden">
+                    Rabu, 19 Desember 2018
+                    <div id="result-number">
+                      4420
+                    </div>                      
+                  </li>
+
+                  <li data-type="malaysia" class="is-hidden">
+                    Rabu, 19 Desember 2018
+                    <div id="result-number">
+                      7451
+                    </div>                    
+                  </li>
+
+                  <li data-type="hongkong" class="is-hidden">
+                    Rabu, 19 Desember 2018
+                    <div id="result-number">
+                      8625
+                    </div>                    
+                  </li>
+
+                  <li data-type="thailand" class="is-hidden">
+                    Rabu, 19 Desember 2018
+                    <div id="result-number">
+                      8845
+                    </div>                    
+                  </li>
+                </ul>
+              </li>
+
+              <li>
+                <ul class="item-wrapper">
+                  <li data-type="filipina" class="is-visible">
+                    Selasa, 18 April 2018
+                    <div id="result-number">
+                      1234
+                    </div>
+                  </li>
+
+                  <li data-type="brasil" class="is-hidden">
+                    Selasa, 18 April 2018
+                    <div id="result-number">
+                      3521
+                    </div>                    
+                  </li>
+
+                  <li data-type="kamboja" class="is-hidden">
+                    Selasa, 18 April 2018
+                    <div id="result-number">
+                      4420
+                    </div>                      
+                  </li>
+
+                  <li data-type="malaysia" class="is-hidden">
+                    Selasa, 18 April 2018
+                    <div id="result-number">
+                      7451
+                    </div>                    
+                  </li>
+
+                  <li data-type="hongkong" class="is-hidden">
+                    Selasa, 18 April 2018
+                    <div id="result-number">
+                      8625
+                    </div>                    
+                  </li>
+
+                  <li data-type="thailand" class="is-hidden">
+                    Selasa, 18 April 2018
+                    <div id="result-number">
+                      8845
+                    </div>                    
+                  </li>
+                </ul>
+              </li>
+
+              <li>
+                <ul class="item-wrapper">
+                  <li data-type="filipina" class="is-visible">
+                    Rabu, 19 Desember 2018
+                    <div id="result-number">
+                      1234
+                    </div>
+                  </li>
+
+                  <li data-type="brasil" class="is-hidden">
+                    Rabu, 19 Desember 2018
+                    <div id="result-number">
+                      3521
+                    </div>                    
+                  </li>
+
+                  <li data-type="kamboja" class="is-hidden">
+                    Rabu, 19 Desember 2018
+                    <div id="result-number">
+                      4420
+                    </div>                      
+                  </li>
+
+                  <li data-type="malaysia" class="is-hidden">
+                    Rabu, 19 Desember 2018
+                    <div id="result-number">
+                      7451
+                    </div>                    
+                  </li>
+
+                  <li data-type="hongkong" class="is-hidden">
+                    Rabu, 19 Desember 2018
+                    <div id="result-number">
+                      8625
+                    </div>                    
+                  </li>
+
+                  <li data-type="thailand" class="is-hidden">
+                    Rabu, 19 Desember 2018
+                    <div id="result-number">
+                      8845
+                    </div>                    
+                  </li>
+                </ul>
+              </li>
+                                          
+            </ul>
+          </div>
+
+          <p class="wow fadeInUp" data-wow-delay="0.4s">Praesent tempor nec orci eu condimentum. Vestibulum varius lorem sed odio lacinia, ut efficitur tellus convallis. Phasellus convallis est nisi, sit amet accumsan ipsum elementum quis. Mauris ac sem mi.</p>
+
+          <div class="section-banner">
+               <img src="http://placehold.it/768x120" class="img-responsive" alt="">
+          </div>
+     </div>
+     </div>
+   </div>
+</section>
+
+<footer>
+	<div class="container">
+		<div class="row">
+
+    <div class="col-md-8 col-sm-6">
+      <div class="wow fadeInUp footer-copyright" data-wow-delay="0.4s">
+           <p>
+           <a href="#">Rules & Regulations</a>
+           <span>||</span>
+           &copy; 2009 - 2018 Togel.com - All RIghts Reserved 
+           </p>
+      </div>
+    </div>
+
+    <div class="col-md-4 col-sm-6">
+    <ul class="wow fadeInUp social-icon" data-wow-delay="0.8s">
+       <li><a href="#" class="fa fa-facebook"></a></li>
+       <li><a href="#" class="fa fa-twitter"></a></li>
+       <li><a href="#" class="fa fa-google-plus"></a></li>
+       <li><a href="#" class="fa fa-dribbble"></a></li>
+       <li><a href="#" class="fa fa-linkedin"></a></li>
+    </ul>
+    </div>
+			
+		</div>
+	</div>
+</footer>
+
+<!-- Back top -->
+
+<a href="#" class="go-top"><i class="fa fa-angle-up"></i></a>
+
+<!-- SCRIPTS -->
+
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/smoothscroll.js"></script>
+<script src="js/wow.min.js"></script>
+<script src="js/custom.js"></script>
+<script src="js/jquery.simple.timer.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.js"></script>
+
+<script type="text/javascript">
+  $('.datepicker').datepicker({
+      format: 'dd MM yyyy',
+  });
+</script>
+
+<script type="text/javascript">
+    $('.timer').startTimer({
+      loop: true,
+      loopInterval: 3
+    });
+</script>
+
+</body>
+</html>

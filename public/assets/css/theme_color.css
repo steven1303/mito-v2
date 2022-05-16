@@ -1,0 +1,20 @@
+:root {
+--main-color-one: #500ade;
+--main-color-two: #852aff;
+--secondary-color: #333333;
+--heading-color: #1c144e;
+--paragraph-color: #666666;
+--button-color-one: #5e2ced;
+--button-color-two: #9749f8;
+}
+
+/***** Blue Theme *****/
+
+:root {
+--main-color-one: #055f8e;
+--button-color-one: #055f8e;
+--button-color-two: #055f8e;
+--button-color-1: #ff3547;
+--button-color-2: #ff9a44;
+--box-color: rgba(244,244,244,0.8);
+}
