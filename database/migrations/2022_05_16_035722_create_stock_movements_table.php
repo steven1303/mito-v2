@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('stock_movements', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('id_stock_master');
-            $table->bigInteger('id_branch');
+            $table->bigInteger('stock_master_id');
+            $table->bigInteger('branch_id');
             $table->dateTime('move_date');
             $table->string('type');
             $table->string('doc_no');

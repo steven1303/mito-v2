@@ -50,7 +50,7 @@
 										    <option value="{{ $role->id }}">{{ $role->role_name }}</option>
                                         @else
                                             @if(Auth::user()->id_role == 1)
-                                            <option value="{{ $role->id }}">{{ $role->role_name }}</option>
+                                                <option value="{{ $role->id }}">{{ $role->role_name }}</option>
                                             @endif
                                         @endif
 									@endforeach

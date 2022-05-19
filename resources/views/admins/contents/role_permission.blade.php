@@ -217,6 +217,52 @@
                     </form>
                 </div>
             </div>
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header p-2">
+                        <ul class="nav nav-pills">
+                            <li class="nav-item"><a class="nav-link active" href="#inventory" data-toggle="tab">Inventory</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Settings</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#tools" data-toggle="tab">Tools</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#website" data-toggle="tab">Website</a></li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="inventory">
+                                <div class="col-md-2">
+                                    <label for="permission"><b>Branch Access</b></label>
+                                    @foreach ($permissions as $permission)
+                                    @if ($permission->for == 'Branch')
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="permission[]" value="{{ $permission->id }}"
+                                            @foreach ($role->permissions as $permit)
+                                            @if ($permit->id == $permission->id)
+                                            checked
+                                            @endif
+                                            {{-- @if ($role->id == 1)
+                                            disabled
+                                            @endif --}}
+                                            @endforeach
+                                            >
+                                            {{ $permission->name }}
+                                        </label>
+                                    </div>
+                                    @endif
+                                    @endforeach
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="settings"></div>
+                            <div class="tab-pane" id="tools"></div>
+                            <div class="tab-pane" id="website"></div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button id="btnSave" type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

@@ -7,12 +7,15 @@ use App\Models\Vendor;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Traits\ActionButton;
 use App\Http\Controllers\Admins\SettingAjaxController;
 use App\Http\Requests\Settings\VendorStorePostRequest;
 use App\Http\Requests\Settings\VendorUpdatePatchRequest;
 
 class VendorController extends SettingAjaxController
 {
+    use ActionButton;
+    
     public function index()
     {
         if(Auth::user()->can('vendor.view')){
@@ -129,27 +132,22 @@ class VendorController extends SettingAjaxController
     }
 
     public function record(){
-        if(Auth::user()->can('vendor.view')){
-            $data = Vendor::where('branch_id','=', Auth::user()->branch_id)->get();
-            $access =  Auth::user();
+        $auth =  Auth::user();
+        if($auth->can('vendor.view')){
+            $data = Vendor::where('branch_id','=', $auth->branch_id)->get();
+            $access =  $this->accessEditDelete( $auth, 'vendor');
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data) use($access){
-                    $vendor_detail = "javascript:ajaxLoad('".route('vendor.info', $data->id)."')";
-                    $action = "";
-                    $title = "'".$data->name."'";
-                    if($access->can('vendor.update')){
-                        $action .= '<button id="'. $data->id .'" onclick="editForm('. $data->id .')" class="btn btn-info btn-xs"> Edit</button> ';
-                    }
-                    if($access->can('vendor.delete')){
-                        $action .= '<button id="'. $data->id .'" onclick="deleteData('. $data->id .','.$title.')" class="btn btn-danger btn-xs"> Delete</button> ';
-                    }
-                    if($access->can('vendor.info')){
-                        $action .= '<a href="'.$vendor_detail.'" class="btn btn-warning btn-xs"> Info</a> ';
-                    }
+                    $action = $this->buttonEditDelete($data, $access, 'tax');
+                    // $vendor_detail = "javascript:ajaxLoad('".route('vendor.info', $data->id)."')";
+                    // if($access->can('vendor.info')){
+                    //     $action .= '<a href="'.$vendor_detail.'" class="btn btn-warning btn-xs"> Info</a> ';
+                    // }
                     return $action;
                 })
-                ->rawColumns(['action'])->make(true);
+                ->rawColumns(['action'])
+                ->only(['name','city','npwp','phone','action'])->make(true);
         }
         return response()
             ->json(['code'=>200,'message' => 'Error Vendor Access Denied', 'stat' => 'Error']);

@@ -54,7 +54,7 @@ class RoleController extends SettingAjaxController
                 'role'          => $roles,
                 'permissions'    => $permission,
             ];
-            return view('admins.contents.role_permission')->with($data);
+            return view('admins.contents.tools.role_permission')->with($data);
         }
         return view('admins.components.403');
     }

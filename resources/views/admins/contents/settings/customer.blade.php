@@ -148,6 +148,7 @@
                                 <th>City</th>
                                 <th>NPWP</th>
                                 <th>Phone</th>
+                                <th>Piutang</th>
                                 <th>Action</th>
                             </tr>
                             </thead>

@@ -7,12 +7,15 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\Debugbar\Facades\Debugbar;
+use App\Http\Controllers\Traits\ActionButton;
 use App\Http\Requests\Tools\BranchStorePostRequest;
 use App\Http\Requests\Tools\BranchUpdatePatchRequest;
 use App\Http\Controllers\Admins\SettingAjaxController;
 
 class BranchController extends SettingAjaxController
 {
+    use ActionButton;
+    
     public function index()
     {
         if(Auth::user()->can('branch.view')){
@@ -86,21 +89,20 @@ class BranchController extends SettingAjaxController
     }
 
     public function record(){
-        $data = Branch::all();
-        $access =  Auth::user();
-        return DataTables::of($data)
-            ->addIndexColumn()
-            ->addColumn('action', function($data)  use($access){
-                $action = "";
-                if($access->can('branch.update')){
-                    $action .= '<button id="'. $data->id .'" onclick="editForm('. $data->id .')" class="btn btn-info btn-xs"> Edit</button> ';
-                }
-                if($access->can('branch.delete')){
-                    $title = "'".$data->name."'";
-                    $action .= '<button id="'. $data->id .'" onclick="deleteData('. $data->id .','.$title.')" class="btn btn-danger btn-xs"> Delete</button>';
-                }
-                return $action;
-            })
-            ->rawColumns(['action'])->make(true);
+        $auth =  Auth::user();
+        if($auth->can('branch.view')){
+            $data = Branch::all();
+            $access =  $this->accessEditDelete( $auth, 'branch');
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($data)  use($access){
+                    $action = $action = $this->buttonEditDelete($data, $access);
+                    return $action;
+                })
+                ->rawColumns(['action'])
+                ->only(['name','city','npwp','phone','action'])->make(true);
+        }
+        return response()
+            ->json(['code'=>200,'message' => 'Error Branch Access Denied', 'stat' => 'Error']);
     }
 }

@@ -21,7 +21,7 @@
             {data: 'name', name: 'name'},
             {data: 'city', name: 'city'},
             {data: 'npwp', name: 'npwp'},
-            {data: 'bod', name: 'bod'},
+            {data: 'phone', name: 'phone'},
             {data: 'action', name:'action', orderable: false, searchable: false}
         ]
     });

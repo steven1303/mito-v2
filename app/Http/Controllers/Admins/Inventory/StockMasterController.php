@@ -6,20 +6,22 @@ use App\Models\StockMaster;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Traits\ActionButton;
 use App\Http\Controllers\Admins\SettingAjaxController;
 use App\Http\Requests\Inventory\StockMasterStorePostRequest;
 use App\Http\Requests\Inventory\StockMasterUpdatePatchRequest;
 
 class StockMasterController extends SettingAjaxController
 {
-    //
+    use ActionButton;
+
     public function index()
     {
         if(Auth::user()->can('stock.master.view')){
             $data = [];
             return view('admins.contents.inventory.stock_master')->with($data);
         }
-        return view('admin.components.403');
+        return view('admins.components.403');
     }
 
     public function store(StockMasterStorePostRequest $request)
@@ -106,9 +108,10 @@ class StockMasterController extends SettingAjaxController
     }
 
     public function record(){
+        $auth =  Auth::user();
         if(Auth::user()->can('stock.master.view')){
-            $data = StockMaster::where('branch_id','=', Auth::user()->branch_id)->latest()->get();
-            $access =  Auth::user();
+            $data = StockMaster::where('branch_id','=', $auth->branch_id)->latest()->get();
+            $access =   $this->accessEditDelete( $auth, 'stock.master');
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('soh', function($data){
@@ -120,15 +123,8 @@ class StockMasterController extends SettingAjaxController
                 //     return $soh;
                 // })
                 ->addColumn('action', function($data)  use($access){
+                    $action = $this->buttonEditDelete($data, $access);
                     // $stock_movement = "javascript:ajaxLoad('".route('local.stock_movement.index', $data->id)."')";
-                    $action = "";
-                    $title = "'".$data->name."'";
-                    if($access->can('stock.master.update')){
-                        $action .= '<button id="'. $data->id .'" onclick="editForm('. $data->id .')" class="btn btn-info btn-xs"> Edit</button> ';
-                    }
-                    if($access->can('stock.master.delete')){
-                        $action .= '<button id="'. $data->id .'" onclick="deleteData('. $data->id .','.$title.')" class="btn btn-danger btn-xs"> Delete</button> ';
-                    }
                     // if($access->can('stock.master.movement')){
                     //     $action .= '<a href="'.$stock_movement.'" class="btn btn-primary btn-xs"> History</a> ';
                     // }

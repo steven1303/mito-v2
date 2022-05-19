@@ -7,13 +7,15 @@ use App\Models\Customer;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Traits\ActionButton;
 use App\Http\Controllers\Admins\SettingAjaxController;
 use App\Http\Requests\Settings\CustomerStorePostRequest;
 use App\Http\Requests\Settings\CustomerUpdatePatchRequest;
 
 class CustomerController extends SettingAjaxController
 {
-    
+    use ActionButton;
+
     public function index()
     {
         if(Auth::user()->can('customer.view')){
@@ -135,27 +137,25 @@ class CustomerController extends SettingAjaxController
     }
 
     public function record(){
-        if(Auth::user()->can('customer.view')){
+        $auth =  Auth::user();
+        if($auth->can('customer.view')){
             $data = Customer::where('branch_id','=', Auth::user()->branch_id)->get();
-            $access =  Auth::user();
+            $access =  $this->accessEditDelete( $auth, 'customer');
+
+            // $data1 = $this->accessEditDelete( $access, 'customer');
+            // dd($data1);
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data) use($access){
+                    $action = $this->buttonEditDelete($data, $access);
                     // $invoice_detail = "javascript:ajaxLoad('".route('local.customer.info', $data->id)."')";
-                    $action = "";
-                    $title = "'".$data->name."'";
-                    if($access->can('customer.update')){
-                        $action .= '<button id="'. $data->id .'" onclick="editForm('. $data->id .')" class="btn btn-info btn-xs"> Edit</button> ';
-                    }
-                    if($access->can('customer.delete')){
-                        $action .= '<button id="'. $data->id .'" onclick="deleteData('. $data->id .','.$title.')" class="btn btn-danger btn-xs"> Delete</button> ';
-                    }
                     // if($access->can('customer.info')){
                     //     $action .= '<a href="'.$invoice_detail.'" class="btn btn-warning btn-xs"> Info</a> ';
                     // }
                     return $action;
                 })
-                ->rawColumns(['action'])->make(true);
+                ->rawColumns(['action'])
+                ->only(['name','city','npwp','phone','action'])->make(true);
         }
         return response()
             ->json(['code'=>200,'message' => 'Error Customer Access Denied', 'stat' => 'Error']);

@@ -6,12 +6,15 @@ use App\Models\Tax;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Traits\ActionButton;
 use App\Http\Requests\Settings\TaxStorePostRequest;
 use App\Http\Requests\Settings\TaxUpdatePatchRequest;
 use App\Http\Controllers\Admins\SettingAjaxController;
 
 class TaxController extends SettingAjaxController
 {
+    use ActionButton;
+    
     public function index(){
         if(Auth::user()->can('tax.view')){
             $data = [
@@ -73,25 +76,20 @@ class TaxController extends SettingAjaxController
     }
 
     public function record(){
-        $data = Tax::all();
-        $access =  Auth::user();
-        return DataTables::of($data)
-            ->addIndexColumn()
-            ->addColumn('tax_percent', function($data){
-                $tax_percent = ($data->ppn * 100 ). " %"; 
-                return $tax_percent;
-            })
-            ->addColumn('action', function($data)  use($access){
-                $action = "";
-                if($access->can('tax.update')){
-                    $action .= '<button id="'. $data->id .'" onclick="editForm('. $data->id .')" class="btn btn-info btn-xs"> Edit</button> ';
-                }
-                if($access->can('tax.delete')){
-                    $title = "'".$data->name."'";
-                    $action .= '<button id="'. $data->id .'" onclick="deleteData('. $data->id .','.$title.')" class="btn btn-danger btn-xs"> Delete</button>';
-                }
-                return $action;
-            })
-            ->rawColumns(['action'])->make(true);
+        $auth =  Auth::user();
+        if($auth->can('tax.view')){
+            $data = Tax::all();
+            $access =  $this->accessEditDelete( $auth, 'tax');
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($data)  use($access){                    
+                    $action = $this->buttonEditDelete($data, $access, 'tax');
+                    return $action;
+                })
+                ->rawColumns(['action'])
+                ->only(['name','ppn','tax_percent','action'])->make(true);
+        }
+        return response()
+            ->json(['code'=>200,'message' => 'Error Tax Access Denied', 'stat' => 'Error']);
     }
 }
