@@ -110,7 +110,7 @@ class StockMasterController extends SettingAjaxController
     public function record(){
         $auth =  Auth::user();
         if(Auth::user()->can('stock.master.view')){
-            $data = StockMaster::where('branch_id','=', $auth->branch_id)->latest()->get();
+            $data = StockMaster::latest()->get();
             $access =   $this->accessEditDelete( $auth, 'stock.master');
             return DataTables::of($data)
                 ->addIndexColumn()

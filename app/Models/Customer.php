@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use App\Scopes\BranchScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -27,7 +28,10 @@ class Customer extends Model
         'bod',
     ];
 
-    // protected $appends = ['bod1'];
+    protected static function booted()
+    {
+        static::addGlobalScope(new BranchScope);
+    }
 
 
     public function bod(): Attribute

@@ -139,11 +139,8 @@ class CustomerController extends SettingAjaxController
     public function record(){
         $auth =  Auth::user();
         if($auth->can('customer.view')){
-            $data = Customer::where('branch_id','=', Auth::user()->branch_id)->get();
+            $data = Customer::all();
             $access =  $this->accessEditDelete( $auth, 'customer');
-
-            // $data1 = $this->accessEditDelete( $access, 'customer');
-            // dd($data1);
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data) use($access){

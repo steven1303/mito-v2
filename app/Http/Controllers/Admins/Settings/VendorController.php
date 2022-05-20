@@ -134,7 +134,7 @@ class VendorController extends SettingAjaxController
     public function record(){
         $auth =  Auth::user();
         if($auth->can('vendor.view')){
-            $data = Vendor::where('branch_id','=', $auth->branch_id)->get();
+            $data = Vendor::all();
             $access =  $this->accessEditDelete( $auth, 'vendor');
             return DataTables::of($data)
                 ->addIndexColumn()

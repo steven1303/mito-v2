@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Scopes\BranchScope;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class StockMaster extends Model
 {
@@ -12,6 +13,11 @@ class StockMaster extends Model
     protected $fillable = [
         'stock_no','branch_id', 'bin', 'name', 'satuan', 'min_soh', 'max_soh', 'harga_modal', 'harga_jual'
     ];
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new BranchScope);
+    }
 
     public function stock_movement()
     {
