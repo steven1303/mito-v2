@@ -23,6 +23,19 @@ class CreateBranchesTable extends Migration
             $table->timestamps();
         });
 
+        DB::table('branches')->insert([
+            [
+                'id' => 1,
+                'name' => 'Pekanbaru',
+                'city' => 'Pekanbaru',
+                'address' => 'Pekanbaru',
+                'phone' => 'Pekanbaru',
+                'npwp' => 'Pekanbaru',
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ],
+        ]);
+
         DB::table('permissions')->insert([
             [
                 'id' => 16,

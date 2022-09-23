@@ -27,10 +27,10 @@ class StockMasterStorePostRequest extends FormRequest
             'stock_no' => ['required'],
             'name' => ['required'],
             'bin' => ['required'],
-            'min_soh' => ['regex:/^\d+(\.\d{1,3})?$/'],
-            'max_soh' => ['regex:/^\d+(\.\d{1,3})?$/'],
-            'harga_modal' => ['regex:/^\d+(\.\d{1,3})?$/'],
-            'harga_jual' => ['regex:/^\d+(\.\d{1,3})?$/'],
+            'min_soh' => ['max:9999'],
+            'max_soh' => ['max:9999'],
+            'harga_modal' => ['max:9999999999'],
+            'harga_jual' => ['max:9999999999'],
         ];
     }
 
@@ -40,10 +40,10 @@ class StockMasterStorePostRequest extends FormRequest
             'stock_no.required' => 'Stock Number is required',
             'name.required' => 'Stock Name is required',  
             'bin.required' => 'NPWP is required',   
-            'min_soh.regex' => 'Min SOH format must Decimal (9.999)',   
-            'max_soh.regex' => 'Max SOH format must Decimal (9.999)',   
-            'harga_modal.regex' => 'Format must Decimal (9.999)',   
-            'harga_jual.regex' => 'Format must Decimal (9.999)',   
+            'min_soh.regex' => 'Min SOH format must Decimal (9,999)',   
+            'max_soh.regex' => 'Max SOH format must Decimal (9,999)',   
+            'harga_modal.regex' => 'Format must Decimal (9,999)',   
+            'harga_jual.regex' => 'Format must Decimal (9,999)',   
         ];
     }
 }

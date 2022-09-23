@@ -28,7 +28,7 @@ class AdminController extends SettingAjaxController
 
         $admin = Admin::find($id);
             if(Auth::user()->can('admin.branch')){
-                $admin->id_branch    = $request['branch'];
+                $admin->branch_id    = $request['branch'];
             }
             if($request->get('password') != NULL || $request->get('password') != "" ){
                 $admin->password = Hash::make($request['password']);

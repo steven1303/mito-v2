@@ -26,10 +26,10 @@ class Admin extends Authenticatable
         'password', 'remember_token',
     ];
 
-    protected static function booted()
-    {
-        static::addGlobalScope(new BranchScope);
-    }
+    // protected static function booted()
+    // {
+    //     static::addGlobalScope(new BranchScope);
+    // }
 
     public function branch()
     {

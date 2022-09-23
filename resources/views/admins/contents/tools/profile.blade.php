@@ -49,7 +49,7 @@
                                         <select name="role" class="form-control" id="role" disabled>
                                             <option value="0">Empty</option>
                                             @foreach ($roles as $role)
-                                            <option value="{{ $role->id }}" @if ( Auth::user()->id_role == $role->id ) selected @endif >{{ $role->role_name }}</option>
+                                            <option value="{{ $role->id }}" @if ( Auth::user()->role_id == $role->id ) selected @endif >{{ $role->role_name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -58,7 +58,7 @@
                                         <select name="branch" class="form-control" id="branch" @cannot('admin.branch', Auth::user()) disabled @endcannot>
                                             <option value="0">Empty</option>
                                             @foreach ($branches as $branch)
-                                            <option value="{{ $branch->id }}" @if (Auth::user()->id_branch == $branch->id ) selected @endif >{{ $branch->name }}</option>
+                                            <option value="{{ $branch->id }}" @if (Auth::user()->branch_id == $branch->id ) selected @endif >{{ $branch->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>

@@ -1,6 +1,6 @@
 <script type="text/javascript">
-    $("#max_soh").inputmask('decimal', {rightAlign: true});
-    $("#min_soh").inputmask('decimal', {rightAlign: true});
+    $("#max_soh").inputmask('currency', {rightAlign: true});
+    $("#min_soh").inputmask('currency', {rightAlign: true});
     var save_method;
     save_method = 'add';
 
