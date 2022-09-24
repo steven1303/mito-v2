@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Scopes\BranchScope;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class StockMaster extends Model
@@ -17,6 +18,20 @@ class StockMaster extends Model
     protected static function booted()
     {
         static::addGlobalScope(new BranchScope);
+    }
+
+    protected function minSoh(): Attribute
+    {        
+        return new Attribute(
+            set: fn($value) => str_replace(",", "", $value),
+        );
+    }
+
+    protected function maxSoh(): Attribute
+    {        
+        return new Attribute(
+            set: fn($value) => str_replace(",", "", $value),
+        );
     }
 
     public function stock_movement()

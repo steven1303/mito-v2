@@ -25,6 +25,11 @@
                                 <i class="nav-icon fas fa-poll"></i><p>Stock Master</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="javascript:ajaxLoad('{{route('adj.index')}}')" class="nav-link">
+                                <i class="nav-icon fas fa-poll"></i><p>Adjustment</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 <li class="nav-item">

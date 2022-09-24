@@ -27,10 +27,10 @@ class StockMasterUpdatePatchRequest extends FormRequest
             'stock_no' => ['required'],
             'name' => ['required'],
             'bin' => ['required'],
-            'min_soh' => ['regex:/^\d+(\.\d{1,3})?$/'],
-            'max_soh' => ['regex:/^\d+(\.\d{1,3})?$/'],
-            'harga_modal' => ['regex:/^\d+(\.\d{1,3})?$/'],
-            'harga_jual' => ['regex:/^\d+(\.\d{1,3})?$/'],
+            'min_soh' => ['max:99999'],
+            'max_soh' => ['max:99999'],
+            'harga_modal' => ['max:9999999'],
+            'harga_jual' => ['max:99999'],
         ];
     }
 

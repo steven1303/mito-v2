@@ -27,8 +27,8 @@ class StockMasterStorePostRequest extends FormRequest
             'stock_no' => ['required'],
             'name' => ['required'],
             'bin' => ['required'],
-            'min_soh' => ['max:9999'],
-            'max_soh' => ['max:9999'],
+            'min_soh' => ['max:99999'],
+            'max_soh' => ['max:99999'],
             'harga_modal' => ['max:9999999999'],
             'harga_jual' => ['max:9999999999'],
         ];

@@ -30,5 +30,12 @@ class InventoryServiceProvider extends ServiceProvider
         Gate::define('stock.master.update', 'App\Policies\Inventory\StockMasterPolicy@update');
         Gate::define('stock.master.delete', 'App\Policies\Inventory\StockMasterPolicy@delete');
         Gate::define('stock.master.movement', 'App\Policies\Inventory\StockMasterPolicy@movement');
+
+        // Adjustment
+        Gate::define('adjustment.view', 'App\Policies\Inventory\AdjustmentPolicy@view');
+        Gate::define('adjustment.store', 'App\Policies\Inventory\AdjustmentPolicy@store');
+        Gate::define('adjustment.update', 'App\Policies\Inventory\AdjustmentPolicy@update');
+        Gate::define('adjustment.delete', 'App\Policies\Inventory\AdjustmentPolicy@delete');
+        // Gate::define('adjustment.movement', 'App\Policies\Inventory\AdjusmtentPolicy@movement');
     }
 }
