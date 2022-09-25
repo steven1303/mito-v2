@@ -19,8 +19,16 @@
                     <div class="card-header">
                         <h3 class="card-title">List Adjustment</h3>
                     </div>
+                    <div class="card-body row">
+                        <div class="col-md-2">
+                            <form role="form" id="AdjForm" method="POST">
+                            {{ csrf_field() }} {{ method_field('POST') }}
+                                <button type="submit" class="btn btn-outline-primary btn-block">Create Adjustment</button>
+                            </form>
+                        </div>
+                    </div>
                     <div class="card-body">
-                        <table id="stockMasterTable" class="table table-bordered table-striped">
+                        <table id="adjustmentTable" class="table table-bordered table-striped">
                             <thead>
                             <tr>
                                 <th>No</th>
@@ -41,4 +49,4 @@
 
 </section>
 <!-- /.content -->
-@include('admins.javascript.inventory.stock_master')
+@include('admins.javascript.inventory.adjustment.adjustmentList')

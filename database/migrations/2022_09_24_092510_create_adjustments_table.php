@@ -18,7 +18,7 @@ return new class extends Migration
             $table->bigInteger('branch_id');
             $table->string('adj_no')->unique();
             $table->string('status');
-            $table->string('user_name');
+            $table->string('username');
             $table->dateTime('adj_open')->nullable();
             $table->dateTime('adj_print')->nullable();
             $table->timestamps();

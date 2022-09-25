@@ -30,44 +30,16 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="nama">Adjustment Number</label>
-                                        <input type="text" class="form-control" id="stock_no" name="stock_no" placeholder="Input Stock Number"> 
+                                        <input type="text" class="form-control" id="stock_no" name="stock_no" placeholder="Input Stock Number" value="{{$adj->adj_no}}" readonly> 
                                         <span class="text-danger error-text stock_no_error"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-5">
                                     <div class="form-group">
-                                        <label for="city">Stock Name</label>
-                                        <input type="text" class="form-control" id="name" name="name" placeholder="Input Stock Name">
+                                        <label for="city">Date</label>
+                                        {{-- <input type="text" class="form-control" id="name" name="name" placeholder="Input Stock Name" value="{{$adj->adj_no}}"> --}}
+                                        <input type="text" id="datemask" name="date" class="form-control" data-inputmask="'alias': 'yyyy-mm-dd'" data-mask="" value="2022-09-22 14:00:46" readonly="">
                                         <span class="text-danger error-text name_error"></span>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-2">
-                                    <div class="form-group">
-                                        <label for="phone">Maximal SOH</label>
-                                        <input type="text" class="form-control" id="max_soh" name="max_soh" placeholder="Input Max SOH" value="0">
-                                        <span class="text-danger error-text max_soh_error"></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="form-group">
-                                        <label for="phone">Minimal SOH</label>
-                                        <input type="text" class="form-control" id="min_soh" name="min_soh" placeholder="Input Min SOH" value="0">
-                                        <span class="text-danger error-text min_soh_error"></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="phone">Bin</label>
-                                        <input type="text" class="form-control" id="bin" name="bin" placeholder="Input Bin">
-                                        <span class="text-danger error-text bin_error"></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="phone">Satuan</label>
-                                        <input type="text" class="form-control" id="satuan" name="satuan" placeholder="Input Unit">
-                                        <span class="text-danger error-text satuan_error"></span>
                                     </div>
                                 </div>
                             </div> 
@@ -75,7 +47,7 @@
                       <!-- /.card-body -->
       
                         <div class="card-footer">
-                            <button id="btnSave" type="submit" class="btn btn-primary">Create New</button>
+                            <button id="btnSave" type="submit" class="btn btn-primary">Save</button>
                             <button type="button" class="btn btn-default" onclick="cancel()">Cancel</button>
                         </div>
                     </form>
@@ -111,4 +83,4 @@
 
 </section>
 <!-- /.content -->
-@include('admins.javascript.inventory.stock_master')
+@include('admins.javascript.inventory.adjustment.adjustmentList')

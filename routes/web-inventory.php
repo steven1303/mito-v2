@@ -19,6 +19,7 @@ Route::group([
     // Adjustment
     Route::controller(Admins\Inventory\AdjustmentController::class)->group(function (){
         Route::get('/adj', 'index')->name('adj.index');    
+        Route::get('/adj/form/{id}', 'create_adjustment_form')->name('adj.form');    
         Route::post('/adj', 'store')->name('adj.store');
         Route::patch('/adj/{id}', 'update')->name('adj.update');
         Route::get('/adj/{id}/edit', 'edit')->name('adj.edit');

@@ -1,6 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Admins\Traits;
+namespace App\Http\Controllers\Traits;
+
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 trait DocNumber {
 
