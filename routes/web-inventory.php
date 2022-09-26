@@ -25,5 +25,6 @@ Route::group([
         Route::get('/adj/{id}/edit', 'edit')->name('adj.edit');
         Route::delete('/adj/{id}', 'destroy')->name('adj.delete');
         Route::get('record/adj', 'record')->name('adj.record');
+        Route::get('record/adj/{id}', 'record_detail')->name('adj.record.detail');
     });    
 });

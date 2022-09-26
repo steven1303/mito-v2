@@ -16,7 +16,7 @@
         "columns": [
             {data: 'DT_RowIndex', name: 'DT_RowIndex' },
             {data: 'adj_no', name: 'adj_no'},
-            {data: 'created_at', name: 'created_at'},
+            {data: 'created_format', name: 'created_format'},
             {data: 'status', name: 'status'},
             {data: 'action', name:'action', orderable: false, searchable: false}
         ]

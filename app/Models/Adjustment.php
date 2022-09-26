@@ -20,14 +20,14 @@ class Adjustment extends Model
         'adj_print',
     ];
 
-    // protected $casts = [
-    //     'created_format' => 'string',
-    // ];
+    protected $appends = [
+        'created_format',
+    ];
 
-    public function createdFormatTime(): Attribute
+    public function createdFormat(): Attribute
     {
         return new Attribute(
-            get: fn () => Carbon::createFromFormat('Y-m-d', $this->created_at)->format('d/m/Y'),
+            get: fn () => $this->created_at->format('d/m/Y H:m'),
         );
     }
 
