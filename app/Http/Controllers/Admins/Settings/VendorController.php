@@ -140,10 +140,6 @@ class VendorController extends SettingAjaxController
                 ->addIndexColumn()
                 ->addColumn('action', function($data) use($access){
                     $action = $this->buttonEditDelete($data, $access, 'tax');
-                    // $vendor_detail = "javascript:ajaxLoad('".route('vendor.info', $data->id)."')";
-                    // if($access->can('vendor.info')){
-                    //     $action .= '<a href="'.$vendor_detail.'" class="btn btn-warning btn-xs"> Info</a> ';
-                    // }
                     return $action;
                 })
                 ->rawColumns(['action'])

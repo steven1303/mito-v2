@@ -118,16 +118,8 @@ class StockMasterController extends SettingAjaxController
                     $action = "";
                     return $action;
                 })
-                // ->addColumn('soh', function($data){
-                //     $soh = $data->stock_movement()->where([['in_qty','>', 0],['status','=', 0]])->sum('in_qty') - $data->stock_movement()->where([['out_qty','>', 0],['status','=', 0]])->sum('out_qty');
-                //     return $soh;
-                // })
                 ->addColumn('action', function($data)  use($access){
                     $action = $this->buttonEditDelete($data, $access);
-                    // $stock_movement = "javascript:ajaxLoad('".route('local.stock_movement.index', $data->id)."')";
-                    // if($access->can('stock.master.movement')){
-                    //     $action .= '<a href="'.$stock_movement.'" class="btn btn-primary btn-xs"> History</a> ';
-                    // }
                     return $action;
                 })
                 ->rawColumns(['action'])->make(true);

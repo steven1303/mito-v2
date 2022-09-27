@@ -2,15 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Scopes\BranchScope;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class AdjustmentDetail extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'branch_id',
         'adj_id',
         'stock_master_id',
         'in_qty',
@@ -19,6 +20,34 @@ class AdjustmentDetail extends Model
         'harga_jual',
         'keterangan',
     ];
+
+    protected function inQty(): Attribute
+    {        
+        return new Attribute(
+            set: fn($value) => floatval(preg_replace('/[^\d\.]/', '', $value)),
+        );
+    }
+
+    protected function outQty(): Attribute
+    {        
+        return new Attribute(
+            set: fn($value) => floatval(preg_replace('/[^\d\.]/', '', $value)),
+        );
+    }
+
+    protected function hargaModal(): Attribute
+    {        
+        return new Attribute(
+            set: fn($value) => floatval(preg_replace('/[^\d\.]/', '', $value)),
+        );
+    }
+
+    protected function hargaJual(): Attribute
+    {        
+        return new Attribute(
+            set: fn($value) => floatval(preg_replace('/[^\d\.]/', '', $value)),
+        );
+    }
 
     public function stock_master()
     {

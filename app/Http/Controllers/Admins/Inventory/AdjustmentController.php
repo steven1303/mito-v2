@@ -9,11 +9,13 @@ use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Traits\DocNumber;
 use App\Http\Controllers\Traits\ActionButton;
+use App\Http\Controllers\Traits\ValidationAdjustment;
 use App\Http\Controllers\Admins\SettingAjaxController;
 
 class AdjustmentController extends SettingAjaxController
 {
     use ActionButton;
+    use ValidationAdjustment;
     use DocNumber;
 
     public function index()
@@ -41,7 +43,7 @@ class AdjustmentController extends SettingAjaxController
     {
         if(Auth::user()->can('adjustment.store')){
             $draf = Adjustment::where([
-                ['status','=', 'Draf'],
+                ['status','=', 'Draft'],
                 ['branch_id','=', Auth::user()->branch_id]
             ])->count();
 
@@ -49,10 +51,10 @@ class AdjustmentController extends SettingAjaxController
                 return response()->json(['code'=>200,'message' => 'Use the previous Draf Adjustment First', 'stat' => 'Warning']);
             }
             $data = [
-                'adj_no' => $this->documentFormat('ADJ').'/'.$draf + 1,
+                'adj_no' => $this->documentFormat('ADJ').'/'.sprintf("%03d", $draf + 1),
                 'branch_id' => Auth::user()->branch_id,
                 'username' => Auth::user()->name,
-                'status' => 'Draf',
+                'status' => 'Draft',
             ];
             $activity = Adjustment::create($data);
             if ($activity->exists) {
@@ -66,12 +68,73 @@ class AdjustmentController extends SettingAjaxController
         
     }
 
+    public function store_detail(Request $request, $id)
+    {
+        if(Auth::user()->can('adjustment.store')){
+            $data = [
+                'id_branch' => Auth::user()->id_branch,
+                'adj_id' => $id,
+                'stock_master_id' => $request['stock_master'],
+                'in_qty' => $request['in_qty'],
+                'out_qty' => $request['out_qty'],
+                'harga_modal' => $request['harga_modal'],
+                'harga_jual' => $request['harga_jual'],
+                'keterangan' => $request['keterangan'],
+            ];
+
+            $activity = AdjustmentDetail::create($data);
+
+            if ($activity->exists) {
+                return response()
+                    ->json(['code'=>200,'message' => 'Add new item Adjustment Success', 'stat' => 'Success', 'process' => 'update']);
+
+            } else {
+                return response()
+                    ->json(['code'=>200,'message' => 'Error item Adjustment Store', 'stat' => 'Error']);
+            }
+        }
+        return response()->json(['code'=>200,'message' => 'Error Adjustment Access Denied', 'stat' => 'Error']);
+    }
+
     /**
-     * Remove the specified resource from storage.
+     * Show the form for editing the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function edit_detail($id)
+    {
+        if(Auth::user()->can('adjustment.update')){
+            $data = AdjustmentDetail::with('stock_master')->findOrFail($id);
+            return $data;
+        }
+        return response()->json(['code'=>200,'message' => 'Error Adjustment Access Denied', 'stat' => 'Error']);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update_detail(Request $request, $id)
+    {
+        if(Auth::user()->can('adjustment.update')){
+            $data = AdjustmentDetail::find($id);
+            $data->stock_master_id    = $request['stock_master'];
+            $data->in_qty    = $request['in_qty'];
+            $data->out_qty    = $request['out_qty'];
+            $data->harga_modal    = $request['harga_modal'];
+            $data->harga_jual    = $request['harga_jual'];
+            $data->keterangan    = $request['keterangan'];
+            $data->update();
+            return response()
+                ->json(['code'=>200,'message' => 'Edit Item Adjustment Success', 'stat' => 'Success']);
+        }
+        return response()->json(['code'=>200,'message' => 'Error Adjustment Access Denied', 'stat' => 'Error']);
+    }
+
     public function destroy($id)
     {
         if(Auth::user()->can('adjustment.delete')){
@@ -81,31 +144,26 @@ class AdjustmentController extends SettingAjaxController
         return response()->json(['code'=>200,'message' => 'Error Adjustment Access Denied', 'stat' => 'Error']);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy_detail($id)
     {
-        AdjustmentDetail::destroy($id);
-        return response()
-            ->json(['code'=>200,'message' => 'Adjustment Detail Success Deleted', 'stat' => 'Success']);
+        if(Auth::user()->can('adjustment.delete')){
+            AdjustmentDetail::destroy($id);
+            return response()->json(['code'=>200,'message' => 'Adjustment Detail Success Deleted', 'stat' => 'Success']);
+        }
+        return response()->json(['code'=>200,'message' => 'Error Adjustment Access Denied', 'stat' => 'Error']);
     }
 
     public function record(){
         $auth =  Auth::user();
         if(Auth::user()->can('adjustment.view')){
             $data = Adjustment::latest()->get();
-            $access =   $this->accessEditDelete( $auth, 'adjustment');
+            $access =   $this->accessAdjustment( $auth, 'adjustment');
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data)  use($access){
                     $adj_detail = "javascript:ajaxLoad('".route('adj.form', ['id' => $data->id])."')";
                     // dd($adj_detail);
-                    $action = $this->buttonEditDelete($data, $access);                    
-                    $action .= '<a href="'.$adj_detail.'" class="btn btn-success btn-xs"> Open</a> ';
+                    $action = $this->buttonAction($data, $access);      
                     return $action;
                 })
                 ->rawColumns(['action'])->make(true);
@@ -117,15 +175,12 @@ class AdjustmentController extends SettingAjaxController
     public function record_detail($id){
         $auth =  Auth::user();
         if(Auth::user()->can('adjustment.view')){
-            $data = AdjustmentDetail::where('adj_id', '=', $id)->get();
-            $access =   $this->accessEditDelete( $auth, 'adjustment');
+            $data = AdjustmentDetail::with(['stock_master'])->where('adj_id', '=', $id)->get();
+            $access =   $this->accessAdjustment( $auth, 'adjustment');
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data)  use($access){
-                    $adj_detail = "javascript:ajaxLoad('".route('adj.form', ['id' => $data->id])."')";
-                    // dd($adj_detail);
-                    $action = $this->buttonEditDelete($data, $access);                    
-                    $action .= '<a href="'.$adj_detail.'" class="btn btn-success btn-xs"> Open</a> ';
+                    $action = $this->buttonEditDelete($data, $access, $data->stock_master->stock_no);       
                     return $action;
                 })
                 ->rawColumns(['action'])->make(true);

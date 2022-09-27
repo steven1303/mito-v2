@@ -45,14 +45,14 @@
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label for="phone">Maximal SOH</label>
-                                        <input type="text" class="form-control" id="max_soh" name="max_soh" placeholder="Input Max SOH" value="0">
+                                        <input type="text" class="form-control" id="max_soh" name="max_soh" placeholder="Input Max SOH">
                                         <span class="text-danger error-text max_soh_error"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label for="phone">Minimal SOH</label>
-                                        <input type="text" class="form-control" id="min_soh" name="min_soh" placeholder="Input Min SOH" value="0">
+                                        <input type="text" class="form-control" id="min_soh" name="min_soh" placeholder="Input Min SOH">
                                         <span class="text-danger error-text min_soh_error"></span>
                                     </div>
                                 </div>

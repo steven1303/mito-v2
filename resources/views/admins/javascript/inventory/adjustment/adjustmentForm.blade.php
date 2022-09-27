@@ -1,5 +1,11 @@
 
 <script type="text/javascript">
+    
+    $("#in_qty").inputmask('currency', {rightAlign: true});
+    $("#out_qty").inputmask('currency', {rightAlign: true});
+    $("#harga_modal").inputmask('currency', {rightAlign: true, prefix: "Rp "});
+    $("#harga_jual").inputmask('currency', {rightAlign: true, prefix: "Rp "});
+
     var save_method;
     save_method = 'add';
     var table = $('#adjDetailTable')
@@ -16,14 +22,166 @@
         "ajax": "{{route('adj.record.detail', ['id' => $adj->id]) }}",
         "columns": [
             {data: 'DT_RowIndex', name: 'DT_RowIndex' },
-            {data: 'stock_master', name: 'stock_master'},
+            {data: 'stock_master.stock_no', name: 'stock_master.stock_no'},
             {data: 'in_qty', name: 'in_qty'},
             {data: 'out_qty', name: 'out_qty'},
             {data: 'harga_modal', name: 'out_qty'},
             {data: 'harga_jual', name: 'out_qty'},
-            {data: 'satuan', name: 'satuan'},
+            {data: 'stock_master.satuan', name: 'stock_master.satuan'},
             {data: 'action', name:'action', orderable: false, searchable: false}
         ]
     });
 
+    @canany(['adjustment.store', 'adjustment.update'], Auth::user())
+    $('#stock_master').select2({
+        placeholder: "Select and Search",
+        ajax:{
+            url:"{{route('stock_master.search') }}",
+            dataType: 'json',
+            data: function (params) {
+                return {
+                    q: $.trim(params.term)
+                }
+            },
+            processResults: function (data) {
+                return {
+                    results: data
+                };
+            },
+            cache: true
+        },
+    })
+
+    $('#stock_master').on('select2:select', function (e) {
+        var data = e.params.data;
+        $('#satuan').val(data.satuan);
+        $('#harga_jual').val(data.harga_jual);
+        $('#harga_modal').val(data.harga_modal);
+    });
+
+    $('#AdjDetailForm').validator().on('submit', function (e) {
+        var id = $('#id').val();
+        if (!e.isDefaultPrevented()){
+            if (save_method == 'add')
+            {
+                url = "{{route('adj.store.detail', $adj->id) }}";
+                $('input[name=_method]').val('POST');
+            } else {
+                url = "{{ url('adj/detail') . '/' }}" + id;
+                $('input[name=_method]').val('PATCH');
+            }
+            $.ajax({
+                url : url,
+                type : "POST",
+                data : $('#AdjDetailForm').serialize(),
+                success : function(data) {
+                    table.ajax.reload();
+                    if(data.stat == 'Success'){
+                        save_method = 'add';
+                        $('input[name=_method]').val('POST');
+                        $('#id').val('');
+                        $('#AdjDetailForm')[0].reset();
+                        $('#btnSave').text('Submit');
+                        $('#stock_master').val(null).trigger('change');
+                        toastr.success(data.stat, data.message);
+                        $('#modal-input-item').modal('hide')
+                    }
+                    if(data.stat == 'Error'){
+                        toastr.error(data.stat, data.message);
+                    }
+                    if(data.stat == 'Warning'){
+                        toastr.error(data.stat, data.message);
+                    }
+                },
+                error : function(){
+                    error('Error', 'Oops! Something Error! Try to reload your page first...');
+                }
+            });
+            return false;
+        }
+    });
+    function cancel(){
+        save_method = 'add';
+        $('#AdjDetailForm')[0].reset();
+        $('#btnSave').text('Submit');
+        $('#btnSave').attr('disabled',false);
+        $('#stock_master').val(null).trigger('change');
+        $('input[name=_method]').val('POST');
+    }
+    @endcanany
+
+    @can('adjustment.update', Auth::user())
+    function editForm(id) {
+        save_method = 'edit';
+        $('input[name=_method]').val('PATCH');
+        $.ajax({
+        url: "{{ url('adj/detail') }}" + '/' + id,
+        type: "GET",
+        dataType: "JSON",
+        success: function(data) {
+            $('#modal-input-item').modal('show');
+            $('#button_modal').text('Update');
+            $('#modal_title').text('Edit Item');
+            $('#button_modal').attr('disabled',false);
+            $('#id').val(data.id);
+            var newOption = new Option(data.stock_master.stock_no, data.stock_master_id, true, true);
+            $('#stock_master').append(newOption).trigger('change');
+            $('#in_qty').val(data.in_qty);
+            $('#out_qty').val(data.out_qty);
+            $('#harga_modal').val(data.harga_modal);
+            $('#harga_jual').val(data.harga_jual);
+            $('#satuan').val(data.stock_master.satuan);
+            $('#keterangan').val(data.keterangan);
+        },
+        error : function() {
+            error('Error', 'Nothing Data');
+        }
+        });
+    }
+    @endcan
+
+    @can('adjustment.delete', Auth::user())
+    function deleteData(id, title){
+        Swal.fire({
+            title: 'Are you sure want to delete ' + title + ' ?',
+            text: 'You won\'t be able to revert this!',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        })
+        .then((willDelete) => {
+            if (willDelete.value) {
+                var csrf_token = $('meta[name="csrf-token"]').attr('content');
+                $.ajax({
+                    url : "{{ url('adj/detail') }}" + '/' + id,
+                    type : "POST",
+                    data : {'_method' : 'DELETE', '_token' : csrf_token},
+                    success : function(data) {
+                        table.ajax.reload();
+                        swal({
+                            type: 'success',
+                            title: 'Deleted',
+                            text: 'Poof! Your record has been deleted!',
+                        });
+                    },
+                    error : function () {
+                        swal( {
+                            type: 'error',
+                            title: 'Oops...',
+                            text: 'Something went wrong!'
+                        });
+                    }
+                });
+            } else {
+                swal({
+                    type: 'success',
+                    title: 'Canceled',
+                    text: 'Your record is still safe!',
+                });
+            }
+        });
+    }
+    @endcan
 </script>

@@ -40,17 +40,17 @@
                             $('input[name=_method]').val('POST');
                             $('#id').val('');
                             $('#AdjForm')[0].reset();
-                            success(data.stat, data.message);
+                            toastr.success(data.stat, data.message);
                             if (data.process == 'add')
                             {
                                 ajaxLoad("{{ url('adj/form') }}" + '/' + data.id);
                             }
                         }
                         if(data.stat == 'Error'){
-                            error(data.stat, data.message);
+                            toastr.error(data.stat, data.message);
                         }
                         if(data.stat == 'Warning'){
-                            error(data.stat, data.message);
+                            toastr.error(data.stat, data.message);
                         }
 				    },
 				    error : function(){

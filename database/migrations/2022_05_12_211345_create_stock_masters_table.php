@@ -23,7 +23,7 @@ return new class extends Migration
             $table->decimal('min_soh', 15, 3)->default(0);
             $table->decimal('max_soh', 15, 3)->default(0);
             $table->decimal('harga_modal', 20, 3)->default(0);
-            $table->decimal('harga_jual', 20, 3)->default(1);
+            $table->decimal('harga_jual', 20, 3)->default(0);
             $table->timestamps();
         });
 
