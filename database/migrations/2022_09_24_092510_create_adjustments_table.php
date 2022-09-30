@@ -53,6 +53,27 @@ return new class extends Migration
                 'updated_at' => date('Y-m-d H:i:s'),
                 'stat' => 1,
             ],
+            [
+                'for' => 'Adjustment',
+                'name' => 'adjustment-open',
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+                'stat' => 1,
+            ],
+            [
+                'for' => 'Adjustment',
+                'name' => 'adjustment-approve',
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+                'stat' => 1,
+            ],
+            [
+                'for' => 'Adjustment',
+                'name' => 'adjustment-print',
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+                'stat' => 1,
+            ],
         ]);
     }
 

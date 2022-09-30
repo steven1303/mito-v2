@@ -58,4 +58,34 @@ class AdjustmentPolicy
         }
         return false;
     }
+
+    public function open(Admin $user)
+    {
+        foreach ($user->roles->permissions_for('Adjustment')->get() as $permission ) {
+            if($permission->name == 'adjustment-open'){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function approve(Admin $user)
+    {
+        foreach ($user->roles->permissions_for('Adjustment')->get() as $permission ) {
+            if($permission->name == 'adjustment-approve'){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function print(Admin $user)
+    {
+        foreach ($user->roles->permissions_for('Adjustment')->get() as $permission ) {
+            if($permission->name == 'adjustment-print'){
+                return true;
+            }
+        }
+        return false;
+    }
 }

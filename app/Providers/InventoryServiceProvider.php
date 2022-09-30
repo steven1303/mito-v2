@@ -36,6 +36,9 @@ class InventoryServiceProvider extends ServiceProvider
         Gate::define('adjustment.store', 'App\Policies\Inventory\AdjustmentPolicy@store');
         Gate::define('adjustment.update', 'App\Policies\Inventory\AdjustmentPolicy@update');
         Gate::define('adjustment.delete', 'App\Policies\Inventory\AdjustmentPolicy@delete');
-        // Gate::define('adjustment.movement', 'App\Policies\Inventory\AdjusmtentPolicy@movement');
+        Gate::define('adjustment.open', 'App\Policies\Inventory\AdjustmentPolicy@open');
+        Gate::define('adjustment.approve', 'App\Policies\Inventory\AdjustmentPolicy@approve');
+        Gate::define('adjustment.print', 'App\Policies\Inventory\AdjustmentPolicy@print');
+        
     }
 }

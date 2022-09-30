@@ -39,6 +39,16 @@ class StockMaster extends Model
         return $this->hasMany('App\Models\StockMovement','stock_master_id');
     }
 
+    public function avg_modal()
+    {
+
+    }
+
+    public function avg_jual()
+    {
+
+    }
+
     public function branch()
     {
     	return $this->belongsTo('App\Models\Branch','branch_id');

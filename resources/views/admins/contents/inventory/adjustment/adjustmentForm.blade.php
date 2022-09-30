@@ -47,7 +47,9 @@
                       <!-- /.card-body -->
       
                         <div class="card-footer">
-                            <button id="btnSave" type="submit" onclick="open_adj_Form()" class="btn btn-primary">Save</button>
+                            @if($adj->status == 'Draft' )
+                                <button id="btnSave" type="submit" onclick="open_adj_Form()" class="btn btn-primary">Open / Request</button>
+                            @endif
                             <button type="button" class="btn btn-default" onclick="ajaxLoad('{{route('adj.index')}}')">Cancel</button>
                         </div>
                     </form>

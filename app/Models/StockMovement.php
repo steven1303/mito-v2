@@ -13,7 +13,6 @@ class StockMovement extends Model
         'stock_master_id',
         'branch_id',
         'move_date',
-        // 'bin',
         'type',
         'doc_no',
         'order_qty',

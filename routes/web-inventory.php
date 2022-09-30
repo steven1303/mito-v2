@@ -22,7 +22,7 @@ Route::group([
         Route::get('/adj', 'index')->name('adj.index');    
         Route::get('/adj/form/{id}', 'create_adjustment_form')->name('adj.form');    
         Route::post('/adj', 'store')->name('adj.store');
-        // Route::patch('/adj/{id}', 'update')->name('adj.update');
+        Route::patch('/adj/open/{id}', 'open')->name('adj.open');
         // Route::get('/adj/{id}/edit', 'edit')->name('adj.edit');
         Route::delete('/adj/{id}', 'destroy')->name('adj.delete');
         Route::get('record/adj', 'record')->name('adj.record');

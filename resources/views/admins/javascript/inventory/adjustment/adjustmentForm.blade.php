@@ -59,6 +59,10 @@
         $('#harga_modal').val(data.harga_modal);
     });
 
+    $('#modal-input-item').on('hidden.bs.modal', function (e) {
+        cancel();
+    })
+
     $('#AdjDetailForm').validator().on('submit', function (e) {
         var id = $('#id').val();
         if (!e.isDefaultPrevented()){
@@ -74,15 +78,14 @@
                 url : url,
                 type : "POST",
                 data : $('#AdjDetailForm').serialize(),
+                beforeSend:function(){
+                    $(document).find('span.error-text').text('');
+                    $('#btnSave').attr('disabled',true);
+                },
                 success : function(data) {
-                    table.ajax.reload();
+                    table.ajax.reload();                    
                     if(data.stat == 'Success'){
-                        save_method = 'add';
-                        $('input[name=_method]').val('POST');
-                        $('#id').val('');
-                        $('#AdjDetailForm')[0].reset();
-                        $('#btnSave').text('Submit');
-                        $('#stock_master').val(null).trigger('change');
+                        cancel();
                         toastr.success(data.stat, data.message);
                         $('#modal-input-item').modal('hide')
                     }
@@ -94,7 +97,14 @@
                     }
                 },
                 error : function(){
-                    error('Error', 'Oops! Something Error! Try to reload your page first...');
+                    if(data.status == 422){
+                        Object.keys(data.responseJSON.errors).forEach(function(key) {
+                            $('span.'+key+'_error').text(data.responseJSON.errors[key]);
+                        })
+                    }else{
+                        toastr.error('Error', 'Oops! Something Error! Try to reload your page first...');                       
+                    }					    
+                    $('#btnSave').attr('disabled',false);
                 }
             });
             return false;
@@ -102,13 +112,44 @@
     });
     function cancel(){
         save_method = 'add';
+        $('#id').val('');
         $('#AdjDetailForm')[0].reset();
-        $('#btnSave').text('Submit');
         $('#btnSave').attr('disabled',false);
         $('#stock_master').val(null).trigger('change');
         $('input[name=_method]').val('POST');
+        $('#button_modal').text('Save changes');
     }
     @endcanany
+
+    @can('adjustment.update', Auth::user())
+    function open_adj_Form() {
+        $.ajax({
+        url: "{{route('adj.open', $adj->id) }}",
+        type: "GET",
+        dataType: "JSON",
+        success: function(data) {
+            if(data.stat == 'Success')
+            {
+                success(data.stat, data.message);
+                print_adj( "{{ $adj->id }}" );
+                ajaxLoad("{{ route('adj.index') }}");
+            }
+            if(data.stat == 'Error')
+            {
+                error(data.stat, data.message);
+            }
+        },
+        error : function() {
+            error('Error', 'Nothing Data');
+        }
+        });
+    }
+    @endcan
+    @can('adjustment.print', Auth::user())
+    function print_adj(id){
+        window.open("{{ url('adj/print') }}" + '/' + id,"_blank");
+    }
+    @endcan
 
     @can('adjustment.update', Auth::user())
     function editForm(id) {
