@@ -6,14 +6,14 @@ use App\Models\StockMaster;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Traits\ActionButton;
+use App\Http\Controllers\Traits\ValidationStockMaster;
 use App\Http\Controllers\Admins\SettingAjaxController;
 use App\Http\Requests\Inventory\StockMasterStorePostRequest;
 use App\Http\Requests\Inventory\StockMasterUpdatePatchRequest;
 
 class StockMasterController extends SettingAjaxController
 {
-    use ActionButton;
+    use ValidationStockMaster;
 
     public function index()
     {
@@ -111,7 +111,7 @@ class StockMasterController extends SettingAjaxController
         $auth =  Auth::user();
         if(Auth::user()->can('stock.master.view')){
             $data = StockMaster::latest()->get();
-            $access =   $this->accessEditDelete( $auth, 'stock.master');
+            $access =   $this->accessStockMaster( $auth, 'stock.master');
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('soh', function($data){
@@ -119,7 +119,7 @@ class StockMasterController extends SettingAjaxController
                     return $action;
                 })
                 ->addColumn('action', function($data)  use($access){
-                    $action = $this->buttonEditDelete($data, $access);
+                    $action = $this->buttonAction($data, $access);
                     return $action;
                 })
                 ->rawColumns(['action'])->make(true);

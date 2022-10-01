@@ -17,6 +17,11 @@ Route::group([
         Route::get('search/stock_master', 'searchStockMaster')->name('stock_master.search');
     });
 
+    // Stock Movement
+    Route::controller(Admins\Inventory\StockMovementController::class)->group(function (){
+        Route::get('/stockmovement/{id}', 'index')->name('stock_master.movement');  
+    });
+
     // Adjustment
     Route::controller(Admins\Inventory\AdjustmentController::class)->group(function (){
         Route::get('/adj', 'index')->name('adj.index');    
