@@ -78,8 +78,4 @@ class StockMaster extends Model
         return $this->hasMany('App\Models\StockMovement','stock_master_id')->where([['out_qty','>', 0],['status','=', 0]]);
     }
 
-    public function branch()
-    {
-    	return $this->belongsTo('App\Models\Branch','branch_id');
-    }
 }
