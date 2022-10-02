@@ -20,6 +20,7 @@ Route::group([
     // Stock Movement
     Route::controller(Admins\Inventory\StockMovementController::class)->group(function (){
         Route::get('/stockmovement/{id}', 'index')->name('stock_master.movement');  
+        Route::get('/record/stockmovement/{id}', 'record')->name('stock_master.movement.record');  
     });
 
     // Adjustment
@@ -27,10 +28,10 @@ Route::group([
         Route::get('/adj', 'index')->name('adj.index');    
         Route::get('/adj/form/{id}', 'create_adjustment_form')->name('adj.form');    
         Route::post('/adj', 'store')->name('adj.store');
-        Route::patch('/adj/open/{id}', 'open')->name('adj.open');
-        // Route::get('/adj/{id}/edit', 'edit')->name('adj.edit');
         Route::delete('/adj/{id}', 'destroy')->name('adj.delete');
         Route::get('record/adj', 'record')->name('adj.record');
+        Route::get('/adj/{id}/request', 'request')->name('adj.request');
+        Route::get('/adj/{id}/approve', 'approve')->name('adj.approve');
 
         // Detail Adjustment
         Route::post('adj/detail/{id}', 'store_detail')->name('adj.store.detail');

@@ -144,7 +144,6 @@ class StockMasterController extends SettingAjaxController
 
         $tags = StockMaster::where([
             ['stock_no','like','%'.$term.'%'],
-            ['branch_id','=', Auth::user()->branch_id]
         ])->get();
 
         $formatted_tags = [];

@@ -6,18 +6,17 @@ use Carbon\Carbon;
 use App\Models\StockMovement;
 use Illuminate\Support\Facades\Auth;
 
-trait Stock_Movement {
+trait StockMasterMovement {
 
-    public function addStockMovement($data)
+    public function addStockMovement($data, $doc_number, $type,$keterangan, $create_at)
     {
         foreach ($data as $detail ) {
             $data = [
-                'id_stock_master' => $detail->id_stock_master,
-                'id_branch' => $detail->id_branch,
-                'move_date' => $detail->adj->created_at,
-                // 'bin' => "-",
-                'type' => 'ADJ',
-                'doc_no' => $detail->adj->adj_no,
+                'stock_master_id' => $detail->stock_master_id,
+                'branch_id' => Auth::user()->branch_id,
+                'move_date' => $create_at,
+                'type' => $type,
+                'doc_no' => $doc_number,
                 'order_qty' => 0,
                 'sell_qty' => 0,
                 'in_qty' => $detail->in_qty,
@@ -25,9 +24,9 @@ trait Stock_Movement {
                 'harga_modal' => $detail->harga_modal,
                 'harga_jual' => $detail->harga_jual,
                 'user' => Auth::user()->name,
-                'ket' => 'Adjustment Approved at ('.Carbon::now().')',
+                'ket' => $keterangan.'at ('.Carbon::now().')',
             ];
-            $movement = StockMovement::create($data);
+            StockMovement::create($data);
         }
     }
 }

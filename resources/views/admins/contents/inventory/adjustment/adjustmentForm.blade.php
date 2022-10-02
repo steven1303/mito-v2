@@ -18,7 +18,7 @@
             <div class="col-md-12">
                 <div class="card card-primary">
                     <div class="card-header">
-                        <h3 class="card-title" id="formTitle">Add New Adjustment </h3>
+                        <h3 class="card-title" id="formTitle">Detail Adjustment </h3>
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
@@ -48,7 +48,7 @@
       
                         <div class="card-footer">
                             @if($adj->status == 'Draft' )
-                                <button id="btnSave" type="submit" onclick="open_adj_Form()" class="btn btn-primary">Open / Request</button>
+                                <button id="btnSave" type="button" onclick="request_adj()" class="btn btn-primary">Request</button>
                             @endif
                             <button type="button" class="btn btn-default" onclick="ajaxLoad('{{route('adj.index')}}')">Cancel</button>
                         </div>
@@ -59,7 +59,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Adjustment Detail</h3>
+                        <h3 class="card-title">Adjustment Item</h3>
                     </div>
                     <div class="card-body row">
                         <div class="col-md-1">                            

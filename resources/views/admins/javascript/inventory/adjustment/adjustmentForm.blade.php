@@ -122,25 +122,25 @@
     @endcanany
 
     @can('adjustment.update', Auth::user())
-    function open_adj_Form() {
+    function request_adj() {
         $.ajax({
-        url: "{{route('adj.open', $adj->id) }}",
+        url: "{{route('adj.request', $adj->id) }}",
         type: "GET",
         dataType: "JSON",
         success: function(data) {
             if(data.stat == 'Success')
             {
-                success(data.stat, data.message);
+                toastr.success(data.stat, data.message);
                 print_adj( "{{ $adj->id }}" );
                 ajaxLoad("{{ route('adj.index') }}");
             }
             if(data.stat == 'Error')
             {
-                error(data.stat, data.message);
+                toastr.error(data.stat, data.message);
             }
         },
         error : function() {
-            error('Error', 'Nothing Data');
+            toastr.error('Error', 'Nothing Data');
         }
         });
     }

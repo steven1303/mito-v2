@@ -2,21 +2,22 @@
 
 namespace App\Http\Controllers\Admins\Inventory;
 
+use Carbon\Carbon;
 use App\Models\Adjustment;
 use Illuminate\Http\Request;
 use App\Models\AdjustmentDetail;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Traits\DocNumber;
-use App\Http\Controllers\Traits\ActionButton;
+use App\Http\Controllers\Traits\StockMasterMovement;
 use App\Http\Controllers\Traits\ValidationAdjustment;
 use App\Http\Controllers\Admins\SettingAjaxController;
 
 class AdjustmentController extends SettingAjaxController
 {
-    use ActionButton;
     use ValidationAdjustment;
     use DocNumber;
+    use StockMasterMovement;
 
     public function index()
     {
@@ -175,17 +176,60 @@ class AdjustmentController extends SettingAjaxController
     public function record_detail($id){
         $auth =  Auth::user();
         if(Auth::user()->can('adjustment.view')){
-            $data = AdjustmentDetail::with(['stock_master'])->where('adj_id', '=', $id)->get();
+            $data = Adjustment::findOrFail($id);
+            $detail = $data->adj_detail()->with('stock_master')->get();
             $access =   $this->accessAdjustment( $auth, 'adjustment');
-            return DataTables::of($data)
+            return DataTables::of($detail)
                 ->addIndexColumn()
-                ->addColumn('action', function($data)  use($access){
-                    $action = $this->buttonEditDelete($data, $access, $data->stock_master->stock_no);       
+                ->addColumn('action', function($detail)  use($access, $data){
+                    $action = $this->buttonActionDetail($detail, $access, $data);       
                     return $action;
                 })
                 ->rawColumns(['action'])->make(true);
         }
         return response()
             ->json(['code'=>200,'message' => 'Error Adjustment Access Denied', 'stat' => 'Error']);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function request($id)
+    {
+        if(Auth::user()->can('adjustment.request')){
+            $data = Adjustment::findOrFail($id);
+            if($data->adj_detail->count() < 1)
+            {
+                return response()->json(['code'=>200,'message' => 'Error Adjustment not have detail', 'stat' => 'Error']);
+            }
+            $data->status = "Request";
+            $data->adj_open = Carbon::now();
+            $data->update();
+            return response()
+                ->json(['code'=>200,'message' => 'Open Adjustment Success', 'stat' => 'Success']);
+        }
+        return response()->json(['code'=>200,'message' => 'Error Adjustment Access Denied', 'stat' => 'Error']);
+    }
+
+     /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function approve($id)
+    {
+        if(Auth::user()->can('adjustment.approve')){
+            $data = Adjustment::findOrFail($id);
+            $data->status = "Approved";
+            $this->addStockMovement($data->adj_detail()->get(), $data->adj_no, "ADJ","Adjustment Approved at", $data->created_at);
+            $data->update();
+            return response()
+                ->json(['code'=>200,'message' => 'Adjustment Approve Success', 'stat' => 'Success']);
+        }
+        return response()->json(['code'=>200,'message' => 'Error Adjustment Access Denied', 'stat' => 'Error']);
     }
 }

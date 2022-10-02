@@ -55,7 +55,7 @@ return new class extends Migration
             ],
             [
                 'for' => 'Adjustment',
-                'name' => 'adjustment-open',
+                'name' => 'adjustment-request',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
                 'stat' => 1,

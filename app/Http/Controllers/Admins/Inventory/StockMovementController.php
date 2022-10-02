@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admins\Inventory;
 use App\Models\StockMaster;
 use Illuminate\Http\Request;
 use App\Models\StockMovement;
+use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admins\SettingAjaxController;
 

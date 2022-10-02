@@ -59,10 +59,10 @@ class AdjustmentPolicy
         return false;
     }
 
-    public function open(Admin $user)
+    public function request(Admin $user)
     {
         foreach ($user->roles->permissions_for('Adjustment')->get() as $permission ) {
-            if($permission->name == 'adjustment-open'){
+            if($permission->name == 'adjustment-request'){
                 return true;
             }
         }

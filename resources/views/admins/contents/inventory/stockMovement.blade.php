@@ -117,3 +117,4 @@
         </div>
     </div>
 </section>
+@include('admins.javascript.inventory.stockMovement', ['stock_detail' => $stock_detail,])

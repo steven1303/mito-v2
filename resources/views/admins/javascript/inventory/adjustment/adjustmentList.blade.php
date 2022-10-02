@@ -71,4 +71,70 @@
         $('input[name=_method]').val('POST');
     }
     @endcanany
+    @can('adjustment.print', Auth::user())
+    function print_adj(id){
+        window.open("{{ url('adj_print') }}" + '/' + id,"_blank");
+    }
+    @endcan
+    @can('adjustment.approve', Auth::user())
+    function approve(id) {
+        save_method = 'edit';
+        $.ajax({
+        url: "{{ url('adj') }}" + '/' + id + "/approve",
+        type: "GET",
+        dataType: "JSON",
+        success: function(data) {
+            table.ajax.reload();
+            toastr.success(data.stat, data.message);
+        },
+        error : function() {
+            error('Error', 'Nothing Data');
+        }
+        });
+    }
+    @endcan
+    @can('adjustment.delete', Auth::user())
+    function deleteData(id, title){
+        swal.fire({
+            title: 'Are you sure want to delete ' + title + ' ?',
+            text: 'You won\'t be able to revert this!',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        })
+        .then((willDelete) => {
+            if (willDelete.value) {
+                var csrf_token = $('meta[name="csrf-token"]').attr('content');
+                $.ajax({
+                    url : "{{ url('adj') }}" + '/' + id,
+                    type : "POST",
+                    data : {'_method' : 'DELETE', '_token' : csrf_token},
+                    success : function(data) {
+                        table.ajax.reload();
+                        swal({
+                            type: 'success',
+                            title: 'Deleted',
+                            text: 'Poof! Your record has been deleted!',
+                        });
+                    },
+                    error : function () {
+                        swal( {
+                            type: 'error',
+                            title: 'Oops...',
+                            text: 'Something went wrong!'
+                        });
+                    }
+                });
+            } else {
+                swal({
+                    type: 'success',
+                    title: 'Canceled',
+                    text: 'Your record is still safe!',
+                });
+            }
+        });
+    }
+    @endcan
 </script>
