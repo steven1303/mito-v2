@@ -57,6 +57,7 @@ class AdminController extends SettingAjaxController
                 'email' => $request['email'],
                 'password' => Hash::make($request['password']),
                 'role_id' => $request['role'],
+                'branch_id' => Auth::user()->branch_id,
             ];
             $activity = Admin::create($data);
             if ($activity->exists) {

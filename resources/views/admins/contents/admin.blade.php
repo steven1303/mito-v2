@@ -29,18 +29,22 @@
                             <div class="form-group">
                                 <label for="nama">Name</label>
                                 <input type="text" class="form-control" id="nama" name="nama" placeholder="Enter Nama">
+                                <span class="text-danger error-text nama_error"></span>
                             </div>
                             <div class="form-group">
                                 <label for="username">Username</label>
                                 <input type="text" class="form-control" id="username" name="username" placeholder="Enter Username">
+                                <span class="text-danger error-text username_error"></span>
                             </div>
                             <div class="form-group">
                                 <label for="email">Email</label>
                                 <input type="email" class="form-control" id="email" name="email" placeholder="Enter Email">
+                                <span class="text-danger error-text email_error"></span>
                             </div>
                             <div class="form-group">
                                 <label for="password">Password</label>
                                 <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                                <span class="text-danger error-text password_error"></span>
                             </div>
                             <div class="form-group">
                                 <label>Select Role</label>
@@ -49,12 +53,13 @@
                                         @if($role->id != 1)
 										    <option value="{{ $role->id }}">{{ $role->role_name }}</option>
                                         @else
-                                            @if(Auth::user()->id_role == 1)
+                                            @if(Auth::user()->role_id == 1)
                                                 <option value="{{ $role->id }}">{{ $role->role_name }}</option>
                                             @endif
                                         @endif
 									@endforeach
                                 </select>
+                                <span class="text-danger error-text role_error"></span>
                             </div>
                         </div>
                       <!-- /.card-body -->

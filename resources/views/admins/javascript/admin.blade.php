@@ -25,6 +25,7 @@
     });
     function cancel(){
         save_method = 'add';
+        $('#id').val('');
         $('#adminForm')[0].reset();
         $('#btnSave').text('Create');
         $('#btnSave').attr('disabled',false);
@@ -48,14 +49,14 @@
 				    url : url,
 				    type : "POST",
 				    data : $('#adminForm').serialize(),
+                    beforeSend: function(){
+                        $('#btnSave').attr('disabled',true);
+                        $(document).find('span.error-text').text('');
+                    },
 				    success : function(data) {
                         table.ajax.reload();
                         if(data.stat == 'Success'){
-                            save_method = 'add';
-                            $('input[name=_method]').val('POST');
-                            $('#id').val('');
-                            $('#adminForm')[0].reset();
-                            $('#btnSave').text('Create');
+                            cancel();
                             toastr.success(data.stat, data.message);
                         }
                         if(data.stat == 'Error'){
@@ -65,8 +66,15 @@
                             toastr.warning(data.stat, data.message);
                         }
 				    },
-				    error : function(){
-					    toastr.error('Error', 'Oops! Something Error! Try to reload your page first...');
+				    error : function(data){
+					    if(data.status == 422){
+                            Object.keys(data.responseJSON.errors).forEach(function(key) {
+                                $('span.'+key+'_error').text(data.responseJSON.errors[key]);
+                            })
+                        }else{
+                            toastr.error('Error', 'Oops! Something Error! Try to reload your page first...');                       
+                        }					    
+                        $('#btnSave').attr('disabled',false);
 				    }
 			    });
 			    return false;
