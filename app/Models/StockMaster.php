@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Scopes\BranchScope;
+use App\Models\StockMovement;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -28,10 +29,18 @@ class StockMaster extends Model
         static::addGlobalScope(new BranchScope);
     }
 
+    public function scopeIncludeData($query)
+    {
+        $query->addSelect(['soh' => StockMovement::whereColumn('stock_master_id', 'stock_masters.id')
+            ->selectRaw('sum(in_qty - out_qty) as soh')
+        ]);
+    }
+
     protected function minSoh(): Attribute
     {        
         return new Attribute(
             set: fn($value) => str_replace(",", "", $value),
+            get: fn($value) => $value - 0
         );
     }
 
@@ -39,6 +48,7 @@ class StockMaster extends Model
     {        
         return new Attribute(
             set: fn($value) => str_replace(",", "", $value),
+            get: fn($value) => $value - 0
         );
     }
 

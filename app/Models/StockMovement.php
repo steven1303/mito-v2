@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Scopes\BranchScope;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class StockMovement extends Model
 {
@@ -24,6 +26,59 @@ class StockMovement extends Model
         'user',
         'ket',
     ];
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new BranchScope);
+    }    
+
+    protected function orderQty(): Attribute
+    {        
+        return new Attribute(
+            set: fn($value) => str_replace(",", "", $value),
+            get: fn($value) => $value - 0
+        );
+    }
+
+    protected function sellQty(): Attribute
+    {        
+        return new Attribute(
+            set: fn($value) => str_replace(",", "", $value),
+            get: fn($value) => $value - 0
+        );
+    }
+
+    protected function inQty(): Attribute
+    {        
+        return new Attribute(
+            set: fn($value) => str_replace(",", "", $value),
+            get: fn($value) => $value - 0
+        );
+    }
+
+    protected function outQty(): Attribute
+    {        
+        return new Attribute(
+            set: fn($value) => str_replace(",", "", $value),
+            get: fn($value) => $value - 0
+        );
+    }
+
+    protected function hargaModal(): Attribute
+    {        
+        return new Attribute(
+            set: fn($value) => str_replace(",", "", $value),
+            get: fn($value) => $value - 0
+        );
+    }
+
+    protected function hargaJual(): Attribute
+    {        
+        return new Attribute(
+            set: fn($value) => str_replace(",", "", $value),
+            get: fn($value) => $value - 0
+        );
+    }
 
     public function stock_master()
     {

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 trait StockMasterMovement {
 
-    public function addStockMovement($data, $doc_number, $type,$keterangan, $create_at)
+    public function addSAdjustmentMovement($data, $doc_number, $type,$keterangan, $create_at)
     {
         foreach ($data as $detail ) {
             $data = [

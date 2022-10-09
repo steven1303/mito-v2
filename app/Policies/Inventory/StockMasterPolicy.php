@@ -21,7 +21,7 @@ class StockMasterPolicy
 
     public function view(Admin $user)
     {
-        foreach ($user->roles->permissions_for('StockMaster')->get() as $permission ) {
+        foreach ($user->roles->permissions_for_access('StockMaster','stock-master-view')->get() as $permission ) {
             if($permission->name == 'stock-master-view'){
                 return true;
             }
@@ -31,7 +31,7 @@ class StockMasterPolicy
 
     public function store(Admin $user)
     {
-        foreach ($user->roles->permissions_for('StockMaster')->get() as $permission ) {
+        foreach ($user->roles->permissions_for_access('StockMaster','stock-master-store')->get() as $permission ) {
             if($permission->name == 'stock-master-store'){
                 return true;
             }
@@ -41,7 +41,7 @@ class StockMasterPolicy
 
     public function update(Admin $user)
     {
-        foreach ($user->roles->permissions_for('StockMaster')->get() as $permission ) {
+        foreach ($user->roles->permissions_for_access('StockMaster','stock-master-update')->get() as $permission ) {
             if($permission->name == 'stock-master-update'){
                 return true;
             }
@@ -51,7 +51,7 @@ class StockMasterPolicy
 
     public function delete(Admin $user)
     {
-        foreach ($user->roles->permissions_for('StockMaster')->get() as $permission ) {
+        foreach ($user->roles->permissions_for_access('StockMaster','stock-master-delete')->get() as $permission ) {
             if($permission->name == 'stock-master-delete'){
                 return true;
             }
@@ -61,7 +61,7 @@ class StockMasterPolicy
 
     public function movement(Admin $user)
     {
-        foreach ($user->roles->permissions_for('StockMaster')->get() as $permission ) {
+        foreach ($user->roles->permissions_for_access('StockMaster','stock-master-movement')->get() as $permission ) {
             if($permission->name == 'stock-master-movement'){
                 return true;
             }

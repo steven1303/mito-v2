@@ -225,7 +225,7 @@ class AdjustmentController extends SettingAjaxController
         if(Auth::user()->can('adjustment.approve')){
             $data = Adjustment::findOrFail($id);
             $data->status = "Approved";
-            $this->addStockMovement($data->adj_detail()->get(), $data->adj_no, "ADJ","Adjustment Approved at", $data->created_at);
+            $this->addSAdjustmentMovement($data->adj_detail()->get(), $data->adj_no, "ADJ","Adjustment Approved at", $data->created_at);
             $data->update();
             return response()
                 ->json(['code'=>200,'message' => 'Adjustment Approve Success', 'stat' => 'Success']);

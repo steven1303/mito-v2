@@ -66,22 +66,22 @@
                             <tr>
                                 <td>1.</td>
                                 <td>Harga Jual</td>
-                                <td>{{ $stock_detail->harga_jual - 0 }}</td>
+                                <td>{{ $stock_detail->harga_jual }}</td>
                             </tr>
                             <tr>
                                 <td>2.</td>
                                 <td>Harga rata-rata jual</td>
-                                <td>{{ $stock_detail->avg_jual()->avg('harga_jual') - 0 }}</td>
+                                <td>{{ $stock_detail->avg_jual()->avg('harga_jual') - 0}}</td>
                             </tr>
                             <tr>
                                 <td>3.</td>
                                 <td>Max. Stock</td>
-                                <td>{{ $stock_detail->max_soh - 0 }}</td>
+                                <td>{{ $stock_detail->max_soh }}</td>
                             </tr>
                             <tr>
                                 <td>4.</td>
                                 <td>Min. Stock</td>
-                                <td>{{ $stock_detail->min_soh - 0 }}</td>
+                                <td>{{ $stock_detail->min_soh }}</td>
                             </tr>
                         </table>
                     </div>
