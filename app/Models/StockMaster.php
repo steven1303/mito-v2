@@ -30,6 +30,51 @@ class StockMaster extends Model
     }
 
     public function scopeIncludeData($query)
+    {            
+        $query->addSelect([
+            'avg_modal' => StockMovement::whereColumn('stock_master_id', 'stock_masters.id')
+            ->where([['harga_modal','>', 0],['status','=', 0]])
+            ->selectRaw('sum(harga_modal) as avg_modal')
+        ]);
+
+        $query->addSelect([
+            'avg_jual' => StockMovement::whereColumn('stock_master_id', 'stock_masters.id')
+            ->where([['harga_jual','>', 0],['status','=', 0]])
+            ->selectRaw('sum(harga_jual) as avg_jual')
+        ]);
+
+        $query->addSelect([
+            'total_order_qty' => StockMovement::whereColumn('stock_master_id', 'stock_masters.id')
+            ->where([['order_qty','>', 0],['status','=', 0]])
+            ->selectRaw('sum(order_qty) as total_order_qty')
+        ]);
+
+        $query->addSelect([
+            'total_order_qty' => StockMovement::whereColumn('stock_master_id', 'stock_masters.id')
+            ->where([['order_qty','>', 0],['status','=', 0]])
+            ->selectRaw('sum(order_qty) as total_order_qty')
+        ]);
+
+        $query->addSelect([
+            'total_sell_qty' => StockMovement::whereColumn('stock_master_id', 'stock_masters.id')
+            ->where([['sell_qty','>', 0],['status','=', 0]])
+            ->selectRaw('sum(sell_qty) as total_sell_qty')
+        ]);
+
+        $query->addSelect([
+            'total_in_qty' => StockMovement::whereColumn('stock_master_id', 'stock_masters.id')
+            ->where([['in_qty','>', 0],['status','=', 0]])
+            ->selectRaw('sum(in_qty) as total_in_qty')
+        ]);
+
+        $query->addSelect([
+            'total_out_qty' => StockMovement::whereColumn('stock_master_id', 'stock_masters.id')
+            ->where([['out_qty','>', 0],['status','=', 0]])
+            ->selectRaw('sum(out_qty) as total_out_qty')
+        ]);
+    }
+
+    public function scopeSoh($query)
     {
         $query->addSelect(['soh' => StockMovement::whereColumn('stock_master_id', 'stock_masters.id')
             ->selectRaw('sum(in_qty - out_qty) as soh')
