@@ -49,11 +49,6 @@
                                 <i class="nav-icon fas fa-poll"></i><p>Vendor</p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="javascript:ajaxLoad('{{route('tax.index')}}')" class="nav-link">
-                                <i class="nav-icon fas fa-poll"></i><p>Tax</p>
-                            </a>
-                        </li>
                     </ul>
                 </li>
                 <li class="nav-item">

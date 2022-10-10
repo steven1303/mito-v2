@@ -14,7 +14,7 @@ class StockMovementController extends SettingAjaxController
     public function index($id)
     {
         if(Auth::user()->can('stock.master.movement')){
-            $stock_master = StockMaster::where([
+            $stock_master = StockMaster::includeData()->where([
                 ['id', '=', $id]
             ])->first();
             $data = [

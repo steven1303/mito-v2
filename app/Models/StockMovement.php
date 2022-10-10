@@ -25,12 +25,24 @@ class StockMovement extends Model
         'harga_jual',
         'user',
         'ket',
+        'status'
+    ];
+
+    protected $appends = [
+        'status_desc',
     ];
 
     protected static function booted()
     {
         static::addGlobalScope(new BranchScope);
-    }    
+    }
+
+    public function statusDesc(): Attribute
+    {
+        return new Attribute(
+            get: fn () => ($this->status == 0) ? 'Accept' : 'Reject',
+        );
+    }
 
     protected function orderQty(): Attribute
     {        

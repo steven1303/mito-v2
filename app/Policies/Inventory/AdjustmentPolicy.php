@@ -21,7 +21,6 @@ class AdjustmentPolicy
 
     public function view(Admin $user)
     {
-        // dd($user->roles->permissions_for_access('Adjustment','adjustment-view')->get());
         foreach ($user->roles->permissions_for_access('Adjustment','adjustment-view')->get() as $permission ) {
             if($permission->name == 'adjustment-view'){
                 return true;

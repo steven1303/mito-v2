@@ -51,7 +51,7 @@ class AdjustmentDetail extends Model
 
     public function stock_master()
     {
-        return $this->belongsTo('App\Models\StockMaster','stock_master_id');
+        return $this->belongsTo('App\Models\StockMaster','stock_master_id')->soh();
     }
 
     public function adj()

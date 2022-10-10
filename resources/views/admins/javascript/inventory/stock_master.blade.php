@@ -20,8 +20,8 @@
             {data: 'DT_RowIndex', name: 'DT_RowIndex' },
             {data: 'stock_no', name: 'stock_no'},
             {data: 'name', name: 'name'},
-            {data: 'bin', name: 'soh'},
-            {data: 'name', name: 'name'},
+            {data: 'bin', name: 'bin'},
+            {data: 'soh', name: 'soh'},
             {data: 'satuan', name: 'satuan'},
             {data: 'action', name:'action', orderable: false, searchable: false}
         ]
