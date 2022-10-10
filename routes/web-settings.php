@@ -12,16 +12,6 @@ Route::group([
     Route::get('/', 'Admins\DashboardController@index')->name('admin.home');
     Route::get('/dashboard', 'Admins\DashboardController@dashboard')->name('admin.dashboard');
 
-    // Tax
-    Route::controller(Admins\Settings\TaxController::class)->group(function (){
-        Route::get('/tax', 'index')->name('tax.index');    
-        Route::post('/tax', 'store')->name('tax.store');
-        Route::patch('/tax/{id}', 'update')->name('tax.update');
-        Route::get('/tax/{id}/edit', 'edit')->name('tax.edit');
-        Route::delete('/tax/{id}', 'destroy')->name('tax.delete');
-        Route::get('record/tax', 'record')->name('tax.record');
-    });
-
     Route::controller(Admins\Settings\CustomerController::class)->group(function (){
         Route::get('/customer', 'index')->name('customer.index');
         Route::post('/customer', 'store')->name('customer.store');

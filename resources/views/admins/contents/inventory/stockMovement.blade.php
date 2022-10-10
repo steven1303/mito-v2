@@ -19,31 +19,31 @@
                     <div class="card-footer p-0">
                         <ul class="nav flex-column">
                             <li class="nav-item">
-                                <a href="#" class="nav-link"> Branch <span class="float-right badge bg-primary">{{ ($stock_detail->total_in_qty()->sum('in_qty') - 0) - ($stock_detail->total_out_qty()->sum('out_qty') - 0) }}</span></a>
+                                <a href="#" class="nav-link"> Branch <span class="float-right badge bg-primary">{{ ($stock_detail->total_in_qty - 0) - ($stock_detail->total_out_qty - 0) }}</span></a>
                             </li>
                         </ul>
                         <div class="row">
                             <div class="col-sm-3 border-right">
                                 <div class="description-block">
-                                    <h5 class="description-header">{{ $stock_detail->total_order_qty()->sum('order_qty') - 0 }}</h5>
+                                    <h5 class="description-header">{{ $stock_detail->total_order_qty - 0 }}</h5>
                                     <span class="description-text">Order</span>
                                 </div>
                             </div>
                             <div class="col-sm-3 border-right">
                                 <div class="description-block">
-                                    <h5 class="description-header">{{ $stock_detail->total_sell_qty()->sum('sell_qty') - 0 }}</h5>
+                                    <h5 class="description-header">{{ $stock_detail->total_sell_qty - 0 }}</h5>
                                     <span class="description-text">Sell</span>
                                 </div>
                             </div>
                             <div class="col-sm-3">
                                 <div class="description-block">
-                                    <h5 class="description-header">{{ $stock_detail->total_in_qty()->sum('in_qty') - 0 }}</h5>
+                                    <h5 class="description-header">{{ $stock_detail->total_in_qty - 0 }}</h5>
                                     <span class="description-text">In</span>
                                 </div>
                             </div>
                             <div class="col-sm-3">
                                 <div class="description-block">
-                                    <h5 class="description-header">{{ $stock_detail->total_out_qty()->sum('out_qty') - 0 }}</h5>
+                                    <h5 class="description-header">{{ $stock_detail->total_out_qty - 0 }}</h5>
                                     <span class="description-text">Out</span>
                                 </div>
                             </div>
@@ -66,22 +66,22 @@
                             <tr>
                                 <td>1.</td>
                                 <td>Harga Jual</td>
-                                <td>{{ $stock_detail->harga_jual - 0 }}</td>
+                                <td>{{ $stock_detail->harga_jual }}</td>
                             </tr>
                             <tr>
                                 <td>2.</td>
                                 <td>Harga rata-rata jual</td>
-                                <td>{{ $stock_detail->avg_jual()->avg('harga_jual') - 0 }}</td>
+                                <td>{{ $stock_detail->avg_jual - 0}}</td>
                             </tr>
                             <tr>
                                 <td>3.</td>
                                 <td>Max. Stock</td>
-                                <td>{{ $stock_detail->max_soh - 0 }}</td>
+                                <td>{{ $stock_detail->max_soh }}</td>
                             </tr>
                             <tr>
                                 <td>4.</td>
                                 <td>Min. Stock</td>
-                                <td>{{ $stock_detail->min_soh - 0 }}</td>
+                                <td>{{ $stock_detail->min_soh }}</td>
                             </tr>
                         </table>
                     </div>

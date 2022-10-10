@@ -39,6 +39,14 @@ class InventoryServiceProvider extends ServiceProvider
         Gate::define('adjustment.request', 'App\Policies\Inventory\AdjustmentPolicy@request');
         Gate::define('adjustment.approve', 'App\Policies\Inventory\AdjustmentPolicy@approve');
         Gate::define('adjustment.print', 'App\Policies\Inventory\AdjustmentPolicy@print');
-        
+
+        // Transfer Branch
+        Gate::define('transfer.branch.view', 'App\Policies\Inventory\TransferBranchPolicy@view');
+        Gate::define('transfer.branch.store', 'App\Policies\Inventory\TransferBranchPolicy@store');
+        Gate::define('transfer.branch.update', 'App\Policies\Inventory\TransferBranchPolicy@update');
+        Gate::define('transfer.branch.delete', 'App\Policies\Inventory\TransferBranchPolicy@delete');
+        Gate::define('transfer.branch.request', 'App\Policies\Inventory\TransferBranchPolicy@request');
+        Gate::define('transfer.branch.approve', 'App\Policies\Inventory\TransferBranchPolicy@approve');
+        Gate::define('transfer.branch.print', 'App\Policies\Inventory\TransferBranchPolicy@print');
     }
 }

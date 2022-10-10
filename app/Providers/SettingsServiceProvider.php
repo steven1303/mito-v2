@@ -24,11 +24,6 @@ class SettingsServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // Tax
-        Gate::define('tax.view', 'App\Policies\Settings\TaxPolicy@view');
-        Gate::define('tax.store', 'App\Policies\Settings\TaxPolicy@store');
-        Gate::define('tax.update', 'App\Policies\Settings\TaxPolicy@update');
-        Gate::define('tax.delete', 'App\Policies\Settings\TaxPolicy@delete');
 
         // Customer
         Gate::define('customer.view', 'App\Policies\Settings\CustomerPolicy@view');

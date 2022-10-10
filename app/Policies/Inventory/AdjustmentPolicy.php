@@ -21,7 +21,7 @@ class AdjustmentPolicy
 
     public function view(Admin $user)
     {
-        foreach ($user->roles->permissions_for('Adjustment')->get() as $permission ) {
+        foreach ($user->roles->permissions_for_access('Adjustment','adjustment-view')->get() as $permission ) {
             if($permission->name == 'adjustment-view'){
                 return true;
             }
@@ -31,7 +31,7 @@ class AdjustmentPolicy
 
     public function store(Admin $user)
     {
-        foreach ($user->roles->permissions_for('Adjustment')->get() as $permission ) {
+        foreach ($user->roles->permissions_for_access('Adjustment','adjustment-store')->get() as $permission ) {
             if($permission->name == 'adjustment-store'){
                 return true;
             }
@@ -41,7 +41,7 @@ class AdjustmentPolicy
 
     public function update(Admin $user)
     {
-        foreach ($user->roles->permissions_for('Adjustment')->get() as $permission ) {
+        foreach ($user->roles->permissions_for_access('Adjustment','adjustment-update')->get() as $permission ) {
             if($permission->name == 'adjustment-update'){
                 return true;
             }
@@ -51,7 +51,7 @@ class AdjustmentPolicy
 
     public function delete(Admin $user)
     {
-        foreach ($user->roles->permissions_for('Adjustment')->get() as $permission ) {
+        foreach ($user->roles->permissions_for_access('Adjustment','adjustment-delete')->get() as $permission ) {
             if($permission->name == 'adjustment-delete'){
                 return true;
             }
@@ -61,7 +61,7 @@ class AdjustmentPolicy
 
     public function request(Admin $user)
     {
-        foreach ($user->roles->permissions_for('Adjustment')->get() as $permission ) {
+        foreach ($user->roles->permissions_for_access('Adjustment','adjustment-request')->get() as $permission ) {
             if($permission->name == 'adjustment-request'){
                 return true;
             }
@@ -71,7 +71,7 @@ class AdjustmentPolicy
 
     public function approve(Admin $user)
     {
-        foreach ($user->roles->permissions_for('Adjustment')->get() as $permission ) {
+        foreach ($user->roles->permissions_for_access('Adjustment','adjustment-approve')->get() as $permission ) {
             if($permission->name == 'adjustment-approve'){
                 return true;
             }
@@ -81,7 +81,7 @@ class AdjustmentPolicy
 
     public function print(Admin $user)
     {
-        foreach ($user->roles->permissions_for('Adjustment')->get() as $permission ) {
+        foreach ($user->roles->permissions_for_access('Adjustment','adjustment-print')->get() as $permission ) {
             if($permission->name == 'adjustment-print'){
                 return true;
             }
