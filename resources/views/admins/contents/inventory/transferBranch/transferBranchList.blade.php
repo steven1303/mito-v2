@@ -4,7 +4,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Adjustment</h1>
+                <h1>Transfer Branch</h1>
             </div>
         </div>
     </div><!-- /.container-fluid -->
@@ -17,24 +17,23 @@
             <div class="col-md-12">
                 <div class="card card-primary">
                     <div class="card-header">
-                        <h3 class="card-title">List Adjustment</h3>
+                        <h3 class="card-title">List Transfer Branch</h3>
                     </div>
-                    @can('adjustment.store', Auth::user())
-                    <div class="card-body row">                        
+                    <div class="card-body row">
                         <div class="col-md-2">
-                            <form role="form" id="AdjForm" method="POST">
+                            <form role="form" id="transferBranchForm" method="POST">
                             {{ csrf_field() }} {{ method_field('POST') }}
-                                <button type="submit" class="btn btn-outline-primary btn-block">Create Adjustment</button>
+                                <button type="submit" class="btn btn-outline-primary btn-block">Create Transfer</button>
                             </form>
-                        </div>                        
+                        </div>
                     </div>
-                    @endcan
                     <div class="card-body">
-                        <table id="adjustmentTable" class="table table-bordered table-striped">
+                        <table id="transferBranchTable" class="table table-bordered table-striped">
                             <thead>
                             <tr>
                                 <th>No</th>
                                 <th>Document No</th>
+                                <th>To Branch</th>
                                 <th>Date</th>
                                 <th>Status</th>
                                 <th>Action</th>
@@ -51,4 +50,4 @@
 
 </section>
 <!-- /.content -->
-@include('admins.javascript.inventory.adjustment.adjustmentList')
+@include('admins.javascript.inventory.transferBranch.transferBranchList')

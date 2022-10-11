@@ -51,8 +51,14 @@ class AdjustmentController extends SettingAjaxController
             if($draf > 0){
                 return response()->json(['code'=>200,'message' => 'Use the previous Draf Adjustment First', 'stat' => 'Warning']);
             }
+
+            $document = Adjustment::where([
+                ['adj_no','like', $this->documentFormat('ADJ').'%'],
+                ['branch_id','=', Auth::user()->branch_id]
+            ])->count();
+
             $data = [
-                'adj_no' => $this->documentFormat('ADJ').'/'.sprintf("%03d", $draf + 1),
+                'adj_no' => $this->documentFormat('ADJ').'/'.sprintf("%03d", $document + 1),
                 'branch_id' => Auth::user()->branch_id,
                 'username' => Auth::user()->name,
                 'status' => 'Draft',

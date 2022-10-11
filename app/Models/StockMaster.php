@@ -79,7 +79,7 @@ class StockMaster extends Model
     {        
         return new Attribute(
             set: fn($value) => str_replace(",", "", $value),
-            get: fn($value) => $value - 0
+            get: fn($value) => (float)$value - 0
         );
     }
 
@@ -87,7 +87,7 @@ class StockMaster extends Model
     {        
         return new Attribute(
             set: fn($value) => str_replace(",", "", $value),
-            get: fn($value) => $value - 0
+            get: fn($value) => (float)$value - 0
         );
     }
 

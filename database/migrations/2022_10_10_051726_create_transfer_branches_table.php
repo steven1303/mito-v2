@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('branch_id');
             $table->string('transfer_no')->unique();
-            $table->bigInteger('to_branch');
+            $table->bigInteger('to_branch')->default(0);
             $table->dateTime('transfer_date');
             $table->string('status');
             $table->string('username');

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Scopes\BranchScope;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -24,28 +25,28 @@ class AdjustmentDetail extends Model
     protected function inQty(): Attribute
     {        
         return new Attribute(
-            set: fn($value) => floatval(preg_replace('/[^\d\.]/', '', $value)),
+            set: fn($value) => (float)Str::of($value)->replaceMatches('/[^\d\.]/', '')->value,
         );
     }
 
     protected function outQty(): Attribute
     {        
         return new Attribute(
-            set: fn($value) => floatval(preg_replace('/[^\d\.]/', '', $value)),
+            set: fn($value) => (float)Str::of($value)->replaceMatches('/[^\d\.]/', '')->value,
         );
     }
 
     protected function hargaModal(): Attribute
     {        
         return new Attribute(
-            set: fn($value) => floatval(preg_replace('/[^\d\.]/', '', $value)),
+            set: fn($value) => (float)Str::of($value)->replaceMatches('/[^\d\.]/', '')->value,
         );
     }
 
     protected function hargaJual(): Attribute
     {        
         return new Attribute(
-            set: fn($value) => floatval(preg_replace('/[^\d\.]/', '', $value)),
+            set: fn($value) => (float)Str::of($value)->replaceMatches('/[^\d\.]/', '')->value,
         );
     }
 

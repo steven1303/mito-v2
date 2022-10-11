@@ -30,6 +30,11 @@
                                 <i class="nav-icon fas fa-poll"></i><p>Adjustment</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="javascript:ajaxLoad('{{route('transfer.branch.index')}}')" class="nav-link">
+                                <i class="nav-icon fas fa-poll"></i><p>Transfer</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 <li class="nav-item">

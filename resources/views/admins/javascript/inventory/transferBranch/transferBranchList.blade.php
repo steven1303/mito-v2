@@ -1,5 +1,7 @@
 <script type="text/javascript">
-    var table = $('#adjustmentTable')
+    var save_method;
+    save_method = 'add';
+    var table = $('#transferBranchTable')
     .DataTable({
         'paging'      	: true,
         'lengthChange'	: true,
@@ -20,9 +22,9 @@
         ]
     });
 
-    @can('adjustment.store', Auth::user())
+    @canany(['adjustment.store', 'adjustment.update'], Auth::user())
     $(function(){
-	    $('#AdjForm').validator().on('submit', function (e) {
+	    $('#transferBranchForm').validator().on('submit', function (e) {
 		    var id = $('#id').val();
 		    if (!e.isDefaultPrevented()){
                 url = "{{route('adj.store') }}";
@@ -34,6 +36,10 @@
 				    success : function(data) {
                         table.ajax.reload();
                         if(data.stat == 'Success'){
+                            save_method = 'add';
+                            $('input[name=_method]').val('POST');
+                            $('#id').val('');
+                            $('#transferBranchForm')[0].reset();
                             toastr.success(data.stat, data.message);
                             if (data.process == 'add')
                             {
@@ -55,7 +61,16 @@
 		    }
 	    });
     });
-    @endcan
+    function cancel(){
+        save_method = 'add';
+        $('#AdjForm')[0].reset();
+        $('#btnSave').text('Submit');
+        $('#formTitle').text('Create SPBD');
+        $('#btnSave').attr('disabled',false);
+        $('#vendor').val(null).trigger('change');
+        $('input[name=_method]').val('POST');
+    }
+    @endcanany
     @can('adjustment.print', Auth::user())
     function print_adj(id){
         window.open("{{ url('adj_print') }}" + '/' + id,"_blank");

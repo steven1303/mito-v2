@@ -44,7 +44,7 @@ Route::group([
     // Transfer Branch
     Route::controller(Admins\Inventory\TransferBranchController::class)->group(function (){
         Route::get('/transfer_branch', 'index')->name('transfer.branch.index');    
-        // Route::get('/transfer_branch/form/{id}', 'transfer_branch_form')->name('transfer.branch.form');    
+        Route::get('/transfer_branch/form/{id}', 'transfer_branch_form')->name('transfer.branch.form');    
         // Route::post('/transfer_branch', 'store')->name('transfer.branch.store');
         // Route::delete('/transfer_branch/{id}', 'destroy')->name('transfer.branch.delete');
         // Route::get('record/transfer_branch', 'record')->name('transfer.branch.record');
