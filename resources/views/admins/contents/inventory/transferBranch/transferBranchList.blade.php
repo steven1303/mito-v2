@@ -20,7 +20,7 @@
                         <h3 class="card-title">List Transfer Branch</h3>
                     </div>
                     <div class="card-body row">
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <form role="form" id="transferBranchForm" method="POST">
                             {{ csrf_field() }} {{ method_field('POST') }}
                                 <button type="submit" class="btn btn-outline-primary btn-block">Create Transfer</button>

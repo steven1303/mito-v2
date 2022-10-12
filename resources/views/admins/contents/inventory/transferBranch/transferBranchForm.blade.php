@@ -36,13 +36,6 @@
                                 </div>
                                 <div class="col-md-2">
                                     <div class="form-group">
-                                        <label for="city">Transfer Date</label>
-                                        <input type="text" id="datemask" name="date" class="form-control" data-inputmask="'alias': 'yyyy-mm-dd'" data-mask="" value="{{$transferBranch->created_format}}" readonly="">
-                                        <span class="text-danger error-text name_error"></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="form-group">
                                         <label>Select Role</label>
                                         <select class="form-control"  id="branch" name="branch">
                                             @foreach ($branchs as $branch)
@@ -52,6 +45,13 @@
                                             @endforeach
                                         </select>
                                         <span class="text-danger error-text branch_error"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label for="city">Transfer Date</label>
+                                        <input type="text" id="datemask" name="date" class="form-control" value="{{($transferBranch->created_format == NULL) ? '0000-00-00 00:00' : $transferBranch->created_format }}" readonly>
+                                        <span class="text-danger error-text name_error"></span>
                                     </div>
                                 </div>
                             </div> 
@@ -74,7 +74,7 @@
                         <h3 class="card-title">Transfer Branch Item</h3>
                     </div>
                     <div class="card-body row">
-                        <div class="col-md-1">                            
+                        <div class="col-md-2">                            
                             <button type="button" class="btn btn-outline-primary btn-block"  data-toggle="modal" data-target="#modal-input-item">Add item</button>
                         </div>
                     </div>

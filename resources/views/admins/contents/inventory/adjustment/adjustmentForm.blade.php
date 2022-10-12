@@ -38,7 +38,7 @@
                                     <div class="form-group">
                                         <label for="city">Date</label>
                                         {{-- <input type="text" class="form-control" id="name" name="name" placeholder="Input Stock Name" value="{{$adj->adj_no}}"> --}}
-                                        <input type="text" id="datemask" name="date" class="form-control" data-inputmask="'alias': 'yyyy-mm-dd'" data-mask="" value="{{$adj->created_format}}" readonly="">
+                                        <input type="text" id="datemask" name="date" class="form-control" value="{{$adj->created_format}}" readonly="">
                                         <span class="text-danger error-text name_error"></span>
                                     </div>
                                 </div>
@@ -62,7 +62,7 @@
                         <h3 class="card-title">Adjustment Item</h3>
                     </div>
                     <div class="card-body row">
-                        <div class="col-md-1">                            
+                        <div class="col-md-2">                            
                             <button type="button" class="btn btn-outline-primary btn-block"  data-toggle="modal" data-target="#modal-input-item">Add item</button>
                         </div>
                     </div>

@@ -19,4 +19,11 @@ class TransferBranch extends Model
         'transfer_print',
         'status'
     ];
+
+    public function transferDate(): Attribute
+    {
+        return new Attribute(
+            get: fn () => $this->transfer_date->format('d/m/Y H:m'),
+        );
+    }
 }
