@@ -68,7 +68,7 @@
         if (!e.isDefaultPrevented()){
             if (save_method == 'add')
             {
-                url = "{{route('adj.store.detail', $adj->id) }}";
+                // url = "{{route('adj.store.detail', $transferBranch->id) }}";
                 $('input[name=_method]').val('POST');
             } else {
                 url = "{{ url('adj/detail') . '/' }}" + id;
@@ -124,14 +124,14 @@
     @can('adjustment.update', Auth::user())
     function request_adj() {
         $.ajax({
-        url: "{{route('adj.request', $adj->id) }}",
+        // url: "{{route('adj.request', $transferBranch->id) }}",
         type: "GET",
         dataType: "JSON",
         success: function(data) {
             if(data.stat == 'Success')
             {
                 toastr.success(data.stat, data.message);
-                print_adj( "{{ $adj->id }}" );
+                // print_adj( "{{ $transferBranch->id }}" );
                 ajaxLoad("{{ route('adj.index') }}");
             }
             if(data.stat == 'Error')
