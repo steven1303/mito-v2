@@ -8,7 +8,7 @@
 
     var save_method;
     save_method = 'add';
-    var table = $('#adjDetailTable')
+    var table = $('#transferBranchTable')
     .DataTable({
         'paging'      	: true,
         'lengthChange'	: true,
@@ -19,7 +19,7 @@
         "processing"	: true,
         "serverSide"	: true,
         responsive      : true,
-        "ajax": "{{route('adj.record.detail', ['id' => $adj->id]) }}",
+        "ajax": "{{route('adj.record.detail', ['id' => $transferBranch->id]) }}",
         "columns": [
             {data: 'DT_RowIndex', name: 'DT_RowIndex' },
             {data: 'stock_master.stock_no', name: 'stock_master.stock_no'},

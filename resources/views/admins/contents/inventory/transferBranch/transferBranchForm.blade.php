@@ -4,7 +4,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Adjustment</h1>
+                <h1>Trasfer Branch Form</h1>
             </div>
         </div>
     </div><!-- /.container-fluid -->
@@ -18,7 +18,7 @@
             <div class="col-md-12">
                 <div class="card card-primary">
                     <div class="card-header">
-                        <h3 class="card-title" id="formTitle">Detail Adjustment </h3>
+                        <h3 class="card-title" id="formTitle">Detail Transfer Branch </h3>
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
@@ -29,17 +29,29 @@
                             <div class="row">
                                 <div class="col-md-2">
                                     <div class="form-group">
-                                        <label for="nama">Adjustment Number</label>
-                                        <input type="text" class="form-control" id="stock_no" name="stock_no" placeholder="Input Stock Number" value="{{$adj->adj_no}}" readonly> 
+                                        <label for="nama">Transfer Number</label>
+                                        <input type="text" class="form-control" id="transfer_no" name="transfer_no" placeholder="Input Stock Number" value="{{$transferBranch->transfer_no}}" readonly> 
                                         <span class="text-danger error-text stock_no_error"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-2">
                                     <div class="form-group">
-                                        <label for="city">Date</label>
-                                        {{-- <input type="text" class="form-control" id="name" name="name" placeholder="Input Stock Name" value="{{$adj->adj_no}}"> --}}
-                                        <input type="text" id="datemask" name="date" class="form-control" data-inputmask="'alias': 'yyyy-mm-dd'" data-mask="" value="{{$adj->created_format}}" readonly="">
+                                        <label for="city">Transfer Date</label>
+                                        <input type="text" id="datemask" name="date" class="form-control" data-inputmask="'alias': 'yyyy-mm-dd'" data-mask="" value="{{$transferBranch->created_format}}" readonly="">
                                         <span class="text-danger error-text name_error"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>Select Role</label>
+                                        <select class="form-control"  id="branch" name="branch">
+                                            @foreach ($branchs as $branch)
+                                                @if($branch->id != Auth::user()->branch_id)
+                                                    <option value="{{ $branch->id }}">{{ $branch->name }}</option>
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                        <span class="text-danger error-text branch_error"></span>
                                     </div>
                                 </div>
                             </div> 
@@ -47,10 +59,10 @@
                       <!-- /.card-body -->
       
                         <div class="card-footer">
-                            @if($adj->status == 'Draft' )
+                            @if($transferBranch->status == 'Draft' )
                                 <button id="btnSave" type="button" onclick="request_adj()" class="btn btn-primary">Request</button>
                             @endif
-                            <button type="button" class="btn btn-default" onclick="ajaxLoad('{{route('adj.index')}}')">Cancel</button>
+                            <button type="button" class="btn btn-default" onclick="ajaxLoad('{{route('transfer.branch.index')}}')">Cancel</button>
                         </div>
                     </form>
                 </div>
@@ -59,7 +71,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Adjustment Item</h3>
+                        <h3 class="card-title">Transfer Branch Item</h3>
                     </div>
                     <div class="card-body row">
                         <div class="col-md-1">                            
@@ -67,7 +79,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <table id="adjDetailTable" class="table table-bordered table-striped">
+                        <table id="transferBranchTable" class="table table-bordered table-striped">
                             <thead>
                             <tr>
                                 <th>No</th>
@@ -168,4 +180,4 @@
 </div>
 @endcanany
 <!-- /.content -->
-@include('admins.javascript.inventory.adjustment.adjustmentForm',['adj' => $adj])
+@include('admins.javascript.inventory.transferBranch.transferBranchForm',['transferBranch' => $transferBranch, 'branchs', $branchs])

@@ -12,11 +12,12 @@
         "processing"	: true,
         "serverSide"	: true,
         responsive      : true,
-        "ajax": "{{route('adj.record') }}",
+        "ajax": "{{route('transfer.branch.record') }}",
         "columns": [
             {data: 'DT_RowIndex', name: 'DT_RowIndex' },
-            {data: 'adj_no', name: 'adj_no'},
-            {data: 'created_format', name: 'created_format'},
+            {data: 'transfer_no', name: 'transfer_no'},
+            {data: 'to_branch', name: 'to_branch'},
+            {data: 'transfer_date', name: 'transfer_date'},
             {data: 'status', name: 'status'},
             {data: 'action', name:'action', orderable: false, searchable: false}
         ]
@@ -27,12 +28,12 @@
 	    $('#transferBranchForm').validator().on('submit', function (e) {
 		    var id = $('#id').val();
 		    if (!e.isDefaultPrevented()){
-                url = "{{route('adj.store') }}";
+                url = "{{route('transfer.branch.store') }}";
 				$('input[name=_method]').val('POST');
 			    $.ajax({
 				    url : url,
 				    type : "POST",
-				    data : $('#AdjForm').serialize(),
+				    data : $('#transferBranchForm').serialize(),
 				    success : function(data) {
                         table.ajax.reload();
                         if(data.stat == 'Success'){

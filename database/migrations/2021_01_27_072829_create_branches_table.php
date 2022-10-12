@@ -26,7 +26,7 @@ class CreateBranchesTable extends Migration
         DB::table('branches')->insert([
             [
                 'id' => 1,
-                'name' => 'Pekanbaru',
+                'name' => 'PKU',
                 'city' => 'Pekanbaru',
                 'address' => 'Pekanbaru',
                 'phone' => 'Pekanbaru',

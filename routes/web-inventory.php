@@ -45,9 +45,9 @@ Route::group([
     Route::controller(Admins\Inventory\TransferBranchController::class)->group(function (){
         Route::get('/transfer_branch', 'index')->name('transfer.branch.index');    
         Route::get('/transfer_branch/form/{id}', 'transfer_branch_form')->name('transfer.branch.form');    
-        // Route::post('/transfer_branch', 'store')->name('transfer.branch.store');
+        Route::post('/transfer_branch', 'store')->name('transfer.branch.store');
         // Route::delete('/transfer_branch/{id}', 'destroy')->name('transfer.branch.delete');
-        // Route::get('record/transfer_branch', 'record')->name('transfer.branch.record');
+        Route::get('record/transfer_branch', 'record')->name('transfer.branch.record');
         // Route::get('/transfer_branch/{id}/request', 'request')->name('transfer.branch.request');
         // Route::get('/transfer_branch/{id}/approve', 'approve')->name('transfer.branch.approve');
 
@@ -56,6 +56,6 @@ Route::group([
         // Route::get('transfer_branch/detail/{id}', 'edit_detail')->name('transfer.branch.edit.detail');
         // Route::patch('transfer_branch/detail/{id}', 'update_detail')->name('transfer.branch.update.detail');
         // Route::delete('/transfer_branch/detail/{id}', 'destroy_detail')->name('transfer.branch.delete.detail');
-        // Route::get('record/transfer_branch/{id}', 'record_detail')->name('transfer.branch.record.detail');
+        Route::get('record/transfer_branch/{id}', 'record_detail')->name('transfer.branch.record.detail');
     });
 });

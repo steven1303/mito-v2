@@ -10,13 +10,13 @@ trait StockMasterMovement {
 
     public function addSAdjustmentMovement($data, $doc_number, $type, $keterangan, $create_at)
     {
-        $movement = collect([]);
+        $movement = [];
         foreach ($data as $detail ) {
             if($type == 'ADJ'){
-                $movement->push($this->saveAjustment($detail, $doc_number, $type,$keterangan, $create_at));
+                $movement[] = $this->saveAjustment($detail, $doc_number, $type,$keterangan, $create_at);
             }            
-            
         }
+        // dd($movement);
         StockMovement::insert($movement);
     }
 

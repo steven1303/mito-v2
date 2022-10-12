@@ -30,7 +30,7 @@
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label for="nama">Adjustment Number</label>
-                                        <input type="text" class="form-control" id="stock_no" name="stock_no" placeholder="Input Stock Number" value="{{$adj->adj_no}}" readonly> 
+                                        <input type="text" class="form-control" id="adj_no" name="adj_no" placeholder="Input Stock Number" value="{{$adj->adj_no}}" readonly> 
                                         <span class="text-danger error-text stock_no_error"></span>
                                     </div>
                                 </div>

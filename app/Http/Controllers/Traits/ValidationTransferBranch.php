@@ -12,9 +12,9 @@ trait ValidationTransferBranch {
     function buttonAction($data, $access ){
         $action = "";
         $title = "'".$data->adj_no."'";
-        $adj_detail = "javascript:ajaxLoad('".route('adj.form', ['id' => $data->id])."')";
+        $transfer_branch_detail = "javascript:ajaxLoad('".route('transfer.branch.form', ['id' => $data->id])."')";
         if($access['edit']){
-            $action .= '<a href="'.$adj_detail.'" class="btn btn-primary btn-xs"> Open</a> ';
+            $action .= '<a href="'.$transfer_branch_detail.'" class="btn btn-primary btn-xs"> Open</a> ';
         }
         if($access['approve'] && $data->status == 'Request'){
             $action .= '<button id="'. $data->id .'" onclick="approve('. $data->id .')" class="btn btn-success btn-xs"> Approve</button> ';
@@ -40,10 +40,11 @@ trait ValidationTransferBranch {
         return $action;
     }
 
-    function accessAdjustment($auth, $permission){
+    function accessTransferBranch($auth, $permission){
 
         $access = [
-            'edit' => $auth->can($permission.'.view'),
+            'view' => $auth->can($permission.'.view'),
+            'edit' => $auth->can($permission.'.update'),
             'delete' => $auth->can($permission.'.delete'),
             'request' => $auth->can($permission.'.request'),
             'approve' => $auth->can($permission.'.approve'),

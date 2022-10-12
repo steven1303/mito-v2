@@ -43,7 +43,8 @@ trait ValidationAdjustment {
     function accessAdjustment($auth, $permission){
 
         $access = [
-            'edit' => $auth->can($permission.'.view'),
+            'view' => $auth->can($permission.'.view'),
+            'edit' => $auth->can($permission.'.update'),
             'delete' => $auth->can($permission.'.delete'),
             'request' => $auth->can($permission.'.request'),
             'approve' => $auth->can($permission.'.approve'),

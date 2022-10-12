@@ -21,7 +21,7 @@ return new class extends Migration
             $table->dateTime('transfer_date');
             $table->string('status');
             $table->string('username');
-            $table->dateTime('transfer_open')->nullable();
+            $table->dateTime('transfer_request')->nullable();
             $table->dateTime('transfer_print')->nullable();
             $table->timestamps();
         });
