@@ -12,6 +12,8 @@ use App\Http\Controllers\Traits\DocNumber;
 use App\Http\Controllers\Traits\StockMasterMovement;
 use App\Http\Controllers\Traits\ValidationAdjustment;
 use App\Http\Controllers\Admins\SettingAjaxController;
+use App\Http\Requests\Inventory\AdjustmentDetailStorePostRequest;
+use App\Http\Requests\Inventory\AdjustmentDetailUpdatePatchRequest;
 
 class AdjustmentController extends SettingAjaxController
 {
@@ -75,7 +77,7 @@ class AdjustmentController extends SettingAjaxController
         
     }
 
-    public function store_detail(Request $request, $id)
+    public function store_detail(AdjustmentDetailStorePostRequest $request, $id)
     {
         if(Auth::user()->can('adjustment.store')){
             $data = [
@@ -125,7 +127,7 @@ class AdjustmentController extends SettingAjaxController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update_detail(Request $request, $id)
+    public function update_detail(AdjustmentDetailUpdatePatchRequest $request, $id)
     {
         if(Auth::user()->can('adjustment.update')){
             $data = AdjustmentDetail::find($id);

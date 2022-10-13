@@ -19,9 +19,7 @@ return new class extends Migration
             $table->bigInteger('transfer_branch_id')->unsigned();
             $table->bigInteger('stock_master_id');
             $table->decimal('qty', 10, 3)->default(0);
-            $table->decimal('price',20, 3)->default(0);
             $table->string('keterangan')->nullable();
-            $table->string('transfer_detail_status');
             $table->timestamps();
         });
     }

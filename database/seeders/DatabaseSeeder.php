@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Branch;
 use App\Models\StockMaster;
+use Database\Seeders\Inventory\BranchSeeder;
 use Database\Seeders\Inventory\StockMasterSeeder;
 use Illuminate\Database\Seeder;
 
@@ -17,7 +19,8 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
         $this->call([
-            StockMasterSeeder::class
+            StockMasterSeeder::class,
+            BranchSeeder::class
         ]);
     }
 }

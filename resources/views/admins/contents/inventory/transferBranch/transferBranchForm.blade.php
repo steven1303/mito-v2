@@ -22,8 +22,8 @@
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form  role="form" id="stockMasterForm" method="POST">
-                        {{ csrf_field() }} {{ method_field('POST') }}
+                    <form  role="form" id="TransferBranchForm">
+                        {{ csrf_field() }} {{ method_field('PATCH') }}
                         <input type="hidden" id="id" name="id">
                         <div class="card-body">
                             <div class="row">
@@ -40,7 +40,7 @@
                                         <select class="form-control"  id="branch" name="branch">
                                             @foreach ($branchs as $branch)
                                                 @if($branch->id != Auth::user()->branch_id)
-                                                    <option value="{{ $branch->id }}">{{ $branch->name }}</option>
+                                                    <option value="{{ $branch->id }}"  {{ ($branch->id == $transferBranch->to_branch) ? 'selected' : ''}}>{{ $branch->name }}</option>
                                                 @endif
                                             @endforeach
                                         </select>
@@ -62,6 +62,7 @@
                             @if($transferBranch->status == 'Draft' )
                                 <button id="btnSave" type="button" onclick="request_adj()" class="btn btn-primary">Request</button>
                             @endif
+                            <button type="submit" class="btn btn-primary">Update Detail</button>
                             <button type="button" class="btn btn-default" onclick="ajaxLoad('{{route('transfer.branch.index')}}')">Cancel</button>
                         </div>
                     </form>
@@ -84,10 +85,7 @@
                             <tr>
                                 <th>No</th>
                                 <th>Stock Master</th>
-                                <th>In</th>
-                                <th>Out</th>
-                                <th>Price in</th>
-                                <th>Price out</th>
+                                <th>QTY</th>
                                 <th>Satuan</th>
                                 <th>Action</th>
                             </tr>
@@ -103,10 +101,10 @@
 
 </section>
 
-@canany(['adjustment.store', 'adjustment.update'], Auth::user())
+@canany(['transfer.branch.store', 'transfer.branch.update'], Auth::user())
 <div class="modal fade" id="modal-input-item">
     <div class="modal-dialog modal-lg">
-        <form role="form" id="AdjDetailForm" method="POST">
+        <form role="form" id="transferBranchDetailForm" method="POST">
             {{ csrf_field() }} {{ method_field('POST') }}
             <input type="hidden" id="id" name="id">
             <div class="modal-content">
@@ -128,37 +126,16 @@
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label>In QTY</label>
-                            <input type="text" class="form-control" id="in_qty" name="in_qty" placeholder="Input QTY">
-                            <span class="text-danger error-text in_qty_error"></span>
+                            <label>QTY</label>
+                            <input type="text" class="form-control" id="qty" name="qty" placeholder="Input QTY">
+                            <span class="text-danger error-text qty_error"></span>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label>Out QTY</label>
-                            <input type="text" class="form-control" id="out_qty" name="out_qty" placeholder="Input QTY">
-                            <span class="text-danger error-text out_qty_error"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
                             <label>Satuan</label>
-                            <input type="text" class="form-control" id="satuan" name="satuan" placeholder="Satuan">
+                            <input type="text" class="form-control" id="satuan" name="satuan" placeholder="Satuan" readonly>
                             <span class="text-danger error-text satuan_error"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label>Harga Modal</label>
-                            <input type="text" class="form-control" id="harga_modal" name="harga_modal" placeholder="Input Modal">
-                            <span class="text-danger error-text harga_modal_error"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label>Harga Jual</label>
-                            <input type="text" class="form-control" id="harga_jual" name="harga_jual" placeholder="Input Jual">
-                            <span class="text-danger error-text harga_jual_error"></span>
                         </div>
                     </div>
                     <div class="col-md-12">

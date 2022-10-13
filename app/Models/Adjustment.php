@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use App\Scopes\BranchScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -23,6 +24,11 @@ class Adjustment extends Model
     protected $appends = [
         'created_format',
     ];
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new BranchScope);
+    }
 
     public function createdFormat(): Attribute
     {

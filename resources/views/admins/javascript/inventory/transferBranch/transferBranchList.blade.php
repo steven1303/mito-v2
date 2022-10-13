@@ -23,7 +23,7 @@
         ]
     });
 
-    @canany(['adjustment.store', 'adjustment.update'], Auth::user())
+    @can('transfer.branch.store', Auth::user())
     $(function(){
 	    $('#transferBranchForm').validator().on('submit', function (e) {
 		    var id = $('#id').val();
@@ -35,16 +35,11 @@
 				    type : "POST",
 				    data : $('#transferBranchForm').serialize(),
 				    success : function(data) {
-                        table.ajax.reload();
                         if(data.stat == 'Success'){
-                            save_method = 'add';
-                            $('input[name=_method]').val('POST');
-                            $('#id').val('');
-                            $('#transferBranchForm')[0].reset();
                             toastr.success(data.stat, data.message);
                             if (data.process == 'add')
                             {
-                                ajaxLoad("{{ url('adj/form') }}" + '/' + data.id);
+                                ajaxLoad("{{ url('transfer_branch/form') }}" + '/' + data.id);
                             }
                         }
                         if(data.stat == 'Error'){
@@ -62,16 +57,8 @@
 		    }
 	    });
     });
-    function cancel(){
-        save_method = 'add';
-        $('#AdjForm')[0].reset();
-        $('#btnSave').text('Submit');
-        $('#formTitle').text('Create SPBD');
-        $('#btnSave').attr('disabled',false);
-        $('#vendor').val(null).trigger('change');
-        $('input[name=_method]').val('POST');
-    }
-    @endcanany
+    @endcan
+
     @can('adjustment.print', Auth::user())
     function print_adj(id){
         window.open("{{ url('adj_print') }}" + '/' + id,"_blank");

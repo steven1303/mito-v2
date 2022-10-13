@@ -19,14 +19,11 @@
         "processing"	: true,
         "serverSide"	: true,
         responsive      : true,
-        "ajax": "{{route('adj.record.detail', ['id' => $transferBranch->id]) }}",
+        "ajax": "{{route('transfer.branch.record.detail', ['id' => $transferBranch->id]) }}",
         "columns": [
             {data: 'DT_RowIndex', name: 'DT_RowIndex' },
             {data: 'stock_master.stock_no', name: 'stock_master.stock_no'},
-            {data: 'in_qty', name: 'in_qty'},
-            {data: 'out_qty', name: 'out_qty'},
-            {data: 'harga_modal', name: 'out_qty'},
-            {data: 'harga_jual', name: 'out_qty'},
+            {data: 'qty', name: 'qty'},
             {data: 'stock_master.satuan', name: 'stock_master.satuan'},
             {data: 'action', name:'action', orderable: false, searchable: false}
         ]
@@ -52,32 +49,56 @@
         },
     })
 
+    $('#TransferBranchForm').validator().on('submit', function (e) {
+        if (!e.isDefaultPrevented()){
+            url = "{{route('transfer.branch.update', $transferBranch->id) }}";
+            $.ajax({
+                url : url,
+                type : "PATCH",
+                data : $('#TransferBranchForm').serialize(),
+                success : function(data) {
+                    if(data.stat == 'Success'){
+                        toastr.success(data.stat, data.message);
+                    }
+                    if(data.stat == 'Error'){
+                        toastr.error(data.stat, data.message);
+                    }
+                    if(data.stat == 'Warning'){
+                        toastr.error(data.stat, data.message);
+                    }
+                },
+                error : function(){
+                    error('Error', 'Oops! Something Error! Try to reload your page first...');
+                }
+            });
+            return false;
+        }
+    });
+
     $('#stock_master').on('select2:select', function (e) {
         var data = e.params.data;
         $('#satuan').val(data.satuan);
-        $('#harga_jual').val(data.harga_jual);
-        $('#harga_modal').val(data.harga_modal);
     });
 
     $('#modal-input-item').on('hidden.bs.modal', function (e) {
         cancel();
     })
 
-    $('#AdjDetailForm').validator().on('submit', function (e) {
+    $('#transferBranchDetailForm').validator().on('submit', function (e) {
         var id = $('#id').val();
         if (!e.isDefaultPrevented()){
             if (save_method == 'add')
             {
-                // url = "{{route('adj.store.detail', $transferBranch->id) }}";
+                url = "{{route('transfer.branch.store.detail', $transferBranch->id) }}";
                 $('input[name=_method]').val('POST');
             } else {
-                url = "{{ url('adj/detail') . '/' }}" + id;
+                url = "{{ url('transfer_branch/detail') . '/' }}" + id;
                 $('input[name=_method]').val('PATCH');
             }
             $.ajax({
                 url : url,
                 type : "POST",
-                data : $('#AdjDetailForm').serialize(),
+                data : $('#transferBranchDetailForm').serialize(),
                 beforeSend:function(){
                     $(document).find('span.error-text').text('');
                     $('#btnSave').attr('disabled',true);
@@ -113,7 +134,7 @@
     function cancel(){
         save_method = 'add';
         $('#id').val('');
-        $('#AdjDetailForm')[0].reset();
+        $('#transferBranchDetailForm')[0].reset();
         $('#btnSave').attr('disabled',false);
         $('#stock_master').val(null).trigger('change');
         $('input[name=_method]').val('POST');

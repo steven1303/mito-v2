@@ -3,16 +3,18 @@
 namespace App\Http\Controllers\Admins\Inventory;
 
 use Carbon\Carbon;
+use App\Models\Branch;
 use Illuminate\Http\Request;
 use App\Models\TransferBranch;
 use Yajra\DataTables\DataTables;
+use App\Models\TransferBranchDetail;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Traits\DocNumber;
 use App\Http\Controllers\Traits\StockMasterMovement;
 use App\Http\Controllers\Admins\SettingAjaxController;
 use App\Http\Controllers\Traits\ValidationTransferBranch;
-use App\Models\Branch;
-use App\Models\TransferBranchDetail;
+use App\Http\Requests\Inventory\AdjustmentDetailStorePostRequest;
+use App\Http\Requests\Inventory\TransferBranchDetailStorePostRequest;
 
 class TransferBranchController extends SettingAjaxController
 {
@@ -78,6 +80,44 @@ class TransferBranchController extends SettingAjaxController
         return response()->json(['code'=>200,'message' => 'Error Transfer Access Denied', 'stat' => 'Error']);
     }
 
+    public function store_detail(TransferBranchDetailStorePostRequest $request, $id)
+    {
+        if(Auth::user()->can('transfer.branch.store')){
+            $data = [
+                'branch_id' => Auth::user()->branch_id,
+                'transfer_branch_id' => $id,
+                'stock_master_id' => $request['stock_master'],
+                'qty' => $request['qty'],
+                'keterangan' => $request['keterangan'],
+            ];
+
+            $activity = TransferBranchDetail::create($data);
+
+            if ($activity->exists) {
+                return response()
+                    ->json(['code'=>200,'message' => 'Add new item Adjustment Success', 'stat' => 'Success', 'process' => 'update']);
+
+            } else {
+                return response()
+                    ->json(['code'=>200,'message' => 'Error item Adjustment Store', 'stat' => 'Error']);
+            }
+        }
+        return response()->json(['code'=>200,'message' => 'Error Adjustment Access Denied', 'stat' => 'Error']);
+    }
+
+    public function update(Request $request, $id)
+    {
+        if(Auth::user()->can('transfer.branch.update')){
+            $data = TransferBranch::find($id);
+            $data->to_branch    = $request['branch'];
+            $data->update();
+            return response()
+                ->json(['code'=>200,'message' => 'Update Transfer Detail Success', 'stat' => 'Success']);
+        }
+        return response()
+            ->json(['code'=>200,'message' => 'Error Transfer Branch Access Denied', 'stat' => 'Error']);
+    }
+
     public function record(){
         $auth =  Auth::user();
         if(Auth::user()->can('transfer.branch.view')){
@@ -87,8 +127,6 @@ class TransferBranchController extends SettingAjaxController
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data)  use($access){
-                    // $adj_detail = "javascript:ajaxLoad('".route('adj.form', ['id' => $data->id])."')";
-                    // dd($adj_detail);
                     $action = $this->buttonAction($data, $access);      
                     return $action;
                 })
@@ -101,9 +139,9 @@ class TransferBranchController extends SettingAjaxController
     public function record_detail($id){
         $auth =  Auth::user();
         if(Auth::user()->can('transfer.branch.view')){
-            $data = TransferBranchDetail::findOrFail($id);
-            $detail = $data->with('stock_master')->get();
-            $access =   $this->accessAdjustment( $auth, 'transfer.branch');
+            $data = TransferBranch::findOrFail($id);
+            $detail = $data->transfer_branch_detail()->with('stock_master')->get();
+            $access =   $this->accessTransferBranch( $auth, 'transfer.branch');
             return DataTables::of($detail)
                 ->addIndexColumn()
                 ->addColumn('action', function($detail)  use($access, $data){

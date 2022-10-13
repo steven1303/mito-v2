@@ -4,7 +4,7 @@ namespace App\Http\Requests\Inventory;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AdjustmentDetailUpdatePatchRequest extends FormRequest
+class TransferBranchDetailUpdatePatchRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
