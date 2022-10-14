@@ -21,6 +21,7 @@ return new class extends Migration
             $table->decimal('qty', 10, 3)->default(0);
             $table->string('keterangan')->nullable();
             $table->timestamps();
+            $table->foreign('transfer_branch_id')->references('id')->on('transfer_branches')->onDelete('cascade');
         });
     }
 

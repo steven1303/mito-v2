@@ -13,65 +13,67 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('transfer_branches', function (Blueprint $table) {
+        Schema::create('transfer_receipts', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('branch_id');
-            $table->string('transfer_no')->unique();
-            $table->bigInteger('to_branch')->default(0);
-            $table->dateTime('transfer_date')->nullable();
-            $table->string('status');
-            $table->string('username');
-            $table->dateTime('transfer_request')->nullable();
-            $table->dateTime('transfer_print')->nullable();
+            $table->bigInteger('transfer_id');
+            $table->string('transfer_receipt_no')->unique();
+            $table->bigInteger('from_branch');
+            $table->dateTime('transfer_receipt_date')->nullable();
+            $table->integer('transfer_receipt_status');
+            $table->string('user_name');
+            $table->dateTime('transfer_receipt_request');
+            $table->dateTime('transfer_receipt_print')->nullable();
+            $table->string('keterangan')->nullable();
             $table->timestamps();
         });
 
         DB::table('permissions')->insert([
             [
-                'for' => 'Transfer',
-                'name' => 'transfer-view',
+                'for' => 'Transfer Receipt',
+                'name' => 'transfer-receipt-view',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
                 'stat' => 1,
             ],
             [
-                'for' => 'Transfer',
-                'name' => 'transfer-store',
+                'for' => 'Transfer Receipt',
+                'name' => 'transfer-receipt-store',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
                 'stat' => 1,
             ],
             [
-                'for' => 'Transfer',
-                'name' => 'transfer-update',
+                'for' => 'Transfer Receipt',
+                'name' => 'transfer-receipt-update',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
                 'stat' => 1,
             ],
             [
-                'for' => 'Transfer',
-                'name' => 'transfer-delete',
+                'for' => 'Transfer Receipt',
+                'name' => 'transfer-receipt-delete',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
                 'stat' => 1,
             ],
             [
-                'for' => 'Transfer',
-                'name' => 'transfer-request',
+                'for' => 'Transfer Receipt',
+                'name' => 'transfer-receipt-request',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
                 'stat' => 1,
             ],
             [
-                'for' => 'Transfer',
-                'name' => 'transfer-approve',
+                'for' => 'Transfer Receipt',
+                'name' => 'transfer-receipt-approve',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
                 'stat' => 1,
             ],
             [
-                'for' => 'Transfer',
-                'name' => 'transfer-print',
+                'for' => 'Transfer Receipt',
+                'name' => 'transfer-receipt-print',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
                 'stat' => 1,
@@ -86,6 +88,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('transfer_branches');
+        Schema::dropIfExists('transfer_receipts');
     }
 };

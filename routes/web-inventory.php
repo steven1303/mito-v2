@@ -47,16 +47,16 @@ Route::group([
         Route::get('/transfer_branch/form/{id}', 'transfer_branch_form')->name('transfer.branch.form');    
         Route::post('/transfer_branch', 'store')->name('transfer.branch.store');        
         Route::patch('transfer_branch/{id}', 'update')->name('transfer.branch.update');
-        // Route::delete('/transfer_branch/{id}', 'destroy')->name('transfer.branch.delete');
+        Route::delete('/transfer_branch/{id}', 'destroy')->name('transfer.branch.delete');
         Route::get('record/transfer_branch', 'record')->name('transfer.branch.record');
-        // Route::get('/transfer_branch/{id}/request', 'request')->name('transfer.branch.request');
-        // Route::get('/transfer_branch/{id}/approve', 'approve')->name('transfer.branch.approve');
+        Route::get('/transfer_branch/{id}/request', 'request')->name('transfer.branch.request');
+        Route::get('/transfer_branch/{id}/approve', 'approve')->name('transfer.branch.approve');
 
         // Detail Transfer Branch
         Route::post('transfer_branch/detail/{id}', 'store_detail')->name('transfer.branch.store.detail');
-        // Route::get('transfer_branch/detail/{id}', 'edit_detail')->name('transfer.branch.edit.detail');
+        Route::get('transfer_branch/detail/{id}', 'edit_detail')->name('transfer.branch.edit.detail');
         Route::patch('transfer_branch/detail/{id}', 'update_detail')->name('transfer.branch.update.detail');
-        // Route::delete('/transfer_branch/detail/{id}', 'destroy_detail')->name('transfer.branch.delete.detail');
+        Route::delete('/transfer_branch/detail/{id}', 'destroy_detail')->name('transfer.branch.delete.detail');
         Route::get('record/transfer_branch/{id}', 'record_detail')->name('transfer.branch.record.detail');
     });
 });

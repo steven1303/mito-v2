@@ -15,6 +15,7 @@ use App\Http\Controllers\Admins\SettingAjaxController;
 use App\Http\Controllers\Traits\ValidationTransferBranch;
 use App\Http\Requests\Inventory\AdjustmentDetailStorePostRequest;
 use App\Http\Requests\Inventory\TransferBranchDetailStorePostRequest;
+use App\Http\Requests\Inventory\TransferBranchDetailUpdatePatchRequest;
 
 class TransferBranchController extends SettingAjaxController
 {
@@ -65,7 +66,6 @@ class TransferBranchController extends SettingAjaxController
             $data = [
                 'branch_id' => Auth::user()->branch_id,
                 'transfer_no' => $this->documentFormat('TB').'/'.sprintf("%03d", $document + 1),
-                'transfer_date' => Carbon::now(),
                 'status' => 'Draft',
                 'username' => Auth::user()->name,
             ];
@@ -118,6 +118,47 @@ class TransferBranchController extends SettingAjaxController
             ->json(['code'=>200,'message' => 'Error Transfer Branch Access Denied', 'stat' => 'Error']);
     }
 
+    public function edit_detail($id)
+    {
+        if(Auth::user()->can('transfer.branch.update')){
+            $data = TransferBranchDetail::with('stock_master')->findOrFail($id);
+            return $data;
+        }
+        return response()->json(['code'=>200,'message' => 'Error Transfer Branch Access Denied', 'stat' => 'Error']);
+    }
+
+    public function update_detail(TransferBranchDetailUpdatePatchRequest $request, $id)
+    {
+        if(Auth::user()->can('transfer.branch.update')){
+            $data = TransferBranchDetail::find($id);
+            $data->stock_master_id    = $request['stock_master'];
+            $data->qty    = $request['qty'];
+            $data->keterangan    = $request['keterangan'];
+            $data->update();
+            return response()
+                ->json(['code'=>200,'message' => 'Edit Item Transfer Success', 'stat' => 'Success']);
+        }
+        return response()->json(['code'=>200,'message' => 'Error Transfer Access Denied', 'stat' => 'Error']);
+    }
+
+    public function destroy($id)
+    {
+        if(Auth::user()->can('transfer.branch.delete')){
+            TransferBranch::destroy($id);
+            return response()->json(['code'=>200,'message' => 'Transfer Branch Success Deleted', 'stat' => 'Success']);
+        }
+        return response()->json(['code'=>200,'message' => 'Error Transfer Access Denied', 'stat' => 'Error']);
+    }
+
+    public function destroy_detail($id)
+    {
+        if(Auth::user()->can('transfer.branch.delete')){
+            TransferBranchDetail::destroy($id);
+            return response()->json(['code'=>200,'message' => 'Transfer Item Success Deleted', 'stat' => 'Success']);
+        }
+        return response()->json(['code'=>200,'message' => 'Error Transfer Access Denied', 'stat' => 'Error']);
+    }
+
     public function record(){
         $auth =  Auth::user();
         if(Auth::user()->can('transfer.branch.view')){
@@ -153,4 +194,82 @@ class TransferBranchController extends SettingAjaxController
         return response()
             ->json(['code'=>200,'message' => 'Error Adjustment Access Denied', 'stat' => 'Error']);
     }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function request($id)
+    {
+        if(Auth::user()->can('transfer.branch.request')){
+            $data = TransferBranch::findOrFail($id);
+            if($data->transfer_branch_detail->count() < 1)
+            {
+                return response()->json(['code'=>200,'message' => 'Error Transfer Branch not have detail', 'stat' => 'Error']);
+            }
+            $data->status = "Request";
+            $data->transfer_request = Carbon::now();
+            $data->update();
+            return response()
+                ->json(['code'=>200,'message' => 'Open Transfer Branch Success', 'stat' => 'Success']);
+        }
+        return response()->json(['code'=>200,'message' => 'Error Transfer Branch Access Denied', 'stat' => 'Error']);
+    }
+
+     /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function approve($id)
+    {
+        if(Auth::user()->can('transfer.branch.approve')){
+            $data = TransferBranch::findOrFail($id);
+            $data->status = "Approved";
+            $data->transfer_date = Carbon::now();
+            $data->update();
+            $this->addMovement($data->transfer_branch_detail()->get(), $data->transfer_no, "TB","Transfer Branch Approved at", $data->transfer_date);
+            return response()
+                ->json(['code'=>200,'message' => 'Transfer Branch Approve Success', 'stat' => 'Success']);
+        }
+        return response()->json(['code'=>200,'message' => 'Error Transfer Branch Access Denied', 'stat' => 'Error']);
+    }
+
+     /**
+     * Search a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function searchTransfer(Request $request)
+    {
+        $term = trim($request->q);
+
+        if (empty($term)) {
+            return response()->json([]);
+        }
+
+        $tags = TransferBranch::where([
+            ['transfer_no','like','%'.$term.'%'],
+            ['to_branch','=', Auth::user()->id_branch],
+            ['transfer_status','=', 3],
+        ])->get();
+
+        $formatted_tags = [];
+
+        foreach ($tags as $tag) {
+            $formatted_tags[] = [
+                'id'    => $tag->id,
+                'text'  => $tag->transfer_no,
+                'branch_id'  => $tag->id_branch,
+                'branch_name'  => $tag->branch->city,
+            ];
+        }
+
+        return response()->json($formatted_tags);
+    }
+    
 }

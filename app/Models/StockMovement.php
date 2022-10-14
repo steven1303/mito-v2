@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use App\Scopes\BranchScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -35,6 +36,15 @@ class StockMovement extends Model
     protected static function booted()
     {
         static::addGlobalScope(new BranchScope);
+    }
+
+    public function moveDate(): Attribute
+    {
+        return new Attribute(
+            set: fn ($value) => Carbon::createFromFormat('d/m/Y H:m A', $value)->format('Y-m-d H:i:s'),
+            get: fn ($value) => Carbon::createFromFormat('Y-m-d H:i:s', $value)->format('d/m/Y H:m A'),
+            
+        );
     }
 
     public function statusDesc(): Attribute

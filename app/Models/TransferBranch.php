@@ -31,7 +31,7 @@ class TransferBranch extends Model
     public function transferDate(): Attribute
     {
         return new Attribute(
-            get: fn ($value) => Carbon::createFromFormat('Y-m-d H:i:s', $value)->format('d/m/Y H:m A'),
+            get: fn ($value) => (!$value) ? '00-00-0000 00:00' : Carbon::createFromFormat('Y-m-d H:i:s', $value)->format('d/m/Y H:m A'),
         );
     }
 

@@ -59,16 +59,16 @@
     });
     @endcan
 
-    @can('adjustment.print', Auth::user())
-    function print_adj(id){
-        window.open("{{ url('adj_print') }}" + '/' + id,"_blank");
+    @can('transfer.branch.print', Auth::user())
+    function print_transfer_branch(id){
+        window.open("{{ url('transfer_branch_print') }}" + '/' + id,"_blank");
     }
     @endcan
-    @can('adjustment.approve', Auth::user())
+    @can('transfer.branch.approve', Auth::user())
     function approve(id) {
         save_method = 'edit';
         $.ajax({
-        url: "{{ url('adj') }}" + '/' + id + "/approve",
+        url: "{{ url('transfer_branch') }}" + '/' + id + "/approve",
         type: "GET",
         dataType: "JSON",
         success: function(data) {
@@ -81,7 +81,7 @@
         });
     }
     @endcan
-    @can('adjustment.delete', Auth::user())
+    @can('transfer.branch.delete', Auth::user())
     function deleteData(id, title){
         swal.fire({
             title: 'Are you sure want to delete ' + title + ' ?',
@@ -96,7 +96,7 @@
             if (willDelete.value) {
                 var csrf_token = $('meta[name="csrf-token"]').attr('content');
                 $.ajax({
-                    url : "{{ url('adj') }}" + '/' + id,
+                    url : "{{ url('transfer_branch') }}" + '/' + id,
                     type : "POST",
                     data : {'_method' : 'DELETE', '_token' : csrf_token},
                     success : function(data) {

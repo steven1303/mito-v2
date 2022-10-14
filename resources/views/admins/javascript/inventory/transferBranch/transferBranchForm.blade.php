@@ -1,4 +1,4 @@
-
+0
 <script type="text/javascript">
     
     $("#in_qty").inputmask('currency', {rightAlign: true});
@@ -29,7 +29,7 @@
         ]
     });
 
-    @canany(['adjustment.store', 'adjustment.update'], Auth::user())
+    @canany(['transfer.branch.store', 'transfer.branch.update'], Auth::user())
     $('#stock_master').select2({
         placeholder: "Select and Search",
         ajax:{
@@ -142,18 +142,18 @@
     }
     @endcanany
 
-    @can('adjustment.update', Auth::user())
-    function request_adj() {
+    @can('transfer.branch.request', Auth::user())
+    function request_transfer_branch() {
         $.ajax({
-        // url: "{{route('adj.request', $transferBranch->id) }}",
+        url: "{{route('transfer.branch.request',$transferBranch->id)}} ",
         type: "GET",
         dataType: "JSON",
         success: function(data) {
             if(data.stat == 'Success')
             {
                 toastr.success(data.stat, data.message);
-                // print_adj( "{{ $transferBranch->id }}" );
-                ajaxLoad("{{ route('adj.index') }}");
+                print_transfer_branch( "{{ $transferBranch->id }}" );
+                ajaxLoad("{{ route('transfer.branch.index') }}");
             }
             if(data.stat == 'Error')
             {
@@ -166,18 +166,18 @@
         });
     }
     @endcan
-    @can('adjustment.print', Auth::user())
-    function print_adj(id){
-        window.open("{{ url('adj/print') }}" + '/' + id,"_blank");
+    @can('transfer.branch.print', Auth::user())
+    function print_transfer_branch(id){
+        window.open("{{ url('transfer_branch/print') }}" + '/' + id,"_blank");
     }
     @endcan
 
-    @can('adjustment.update', Auth::user())
+    @can('transfer.branch.update', Auth::user())
     function editForm(id) {
         save_method = 'edit';
         $('input[name=_method]').val('PATCH');
         $.ajax({
-        url: "{{ url('adj/detail') }}" + '/' + id,
+        url: "{{ url('transfer_branch/detail') }}" + '/' + id,
         type: "GET",
         dataType: "JSON",
         success: function(data) {
@@ -188,10 +188,7 @@
             $('#id').val(data.id);
             var newOption = new Option(data.stock_master.stock_no, data.stock_master_id, true, true);
             $('#stock_master').append(newOption).trigger('change');
-            $('#in_qty').val(data.in_qty);
-            $('#out_qty').val(data.out_qty);
-            $('#harga_modal').val(data.harga_modal);
-            $('#harga_jual').val(data.harga_jual);
+            $('#qty').val(data.qty);
             $('#satuan').val(data.stock_master.satuan);
             $('#keterangan').val(data.keterangan);
         },
@@ -202,7 +199,7 @@
     }
     @endcan
 
-    @can('adjustment.delete', Auth::user())
+    @can('transfer.branch.delete', Auth::user())
     function deleteData(id, title){
         Swal.fire({
             title: 'Are you sure want to delete ' + title + ' ?',
@@ -217,7 +214,7 @@
             if (willDelete.value) {
                 var csrf_token = $('meta[name="csrf-token"]').attr('content');
                 $.ajax({
-                    url : "{{ url('adj/detail') }}" + '/' + id,
+                    url : "{{ url('transfer_branch/detail') }}" + '/' + id,
                     type : "POST",
                     data : {'_method' : 'DELETE', '_token' : csrf_token},
                     success : function(data) {

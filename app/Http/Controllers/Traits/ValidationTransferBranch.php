@@ -23,7 +23,7 @@ trait ValidationTransferBranch {
             $action .= '<button id="'. $data->id .'" onclick="deleteData('. $data->id .','.$title.')" class="btn btn-danger btn-xs"> Delete</button> ';
         }
         if($access['print'] && ($data->status == 'Request' || $data->status == 'Approved')){
-            $action .= '<button id="'. $data->id .'" onclick="print_adj('. $data->id .')" class="btn btn-default btn-xs"> Print</button> ';
+            $action .= '<button id="'. $data->id .'" onclick="print_transfer_branch('. $data->id .')" class="btn btn-default btn-xs"> Print</button> ';
         }
         return $action;
     }

@@ -11,14 +11,13 @@
 </section>
 
 <section class="content">
-
     <div class="container-fluid">
         <div class="row">
             @canany(['adjustment.store', 'adjustment.update'], Auth::user())
             <div class="col-md-12">
                 <div class="card card-primary">
                     <div class="card-header">
-                        <h3 class="card-title" id="formTitle">Detail Transfer Branch </h3>
+                        <h3 class="card-title" id="formTitle">Detail Transfer Branch ({{$transferBranch->status}})</h3>
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
@@ -50,7 +49,7 @@
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label for="city">Transfer Date</label>
-                                        <input type="text" id="datemask" name="date" class="form-control" value="{{($transferBranch->created_format == NULL) ? '0000-00-00 00:00' : $transferBranch->created_format }}" readonly>
+                                        <input type="text" id="datemask" name="date" class="form-control" value="{{($transferBranch->transfer_date == NULL) ? '0000-00-00 00:00' : $transferBranch->transfer_date }}" readonly>
                                         <span class="text-danger error-text name_error"></span>
                                     </div>
                                 </div>
@@ -60,9 +59,9 @@
       
                         <div class="card-footer">
                             @if($transferBranch->status == 'Draft' )
-                                <button id="btnSave" type="button" onclick="request_adj()" class="btn btn-primary">Request</button>
-                            @endif
-                            <button type="submit" class="btn btn-primary">Update Detail</button>
+                                <button id="btnSave" type="button" onclick="request_transfer_branch()" class="btn btn-primary">Request</button>
+                                <button type="submit" class="btn btn-primary">Update Detail</button>
+                            @endif                            
                             <button type="button" class="btn btn-default" onclick="ajaxLoad('{{route('transfer.branch.index')}}')">Cancel</button>
                         </div>
                     </form>
