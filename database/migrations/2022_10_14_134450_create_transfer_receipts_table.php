@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('transfer_receipt_no')->unique();
             $table->bigInteger('from_branch');
             $table->dateTime('transfer_receipt_date')->nullable();
-            $table->integer('transfer_receipt_status');
+            $table->integer('status');
             $table->string('user_name');
             $table->dateTime('transfer_receipt_request');
             $table->dateTime('transfer_receipt_print')->nullable();

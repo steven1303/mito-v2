@@ -32,7 +32,12 @@
                         </li>
                         <li class="nav-item">
                             <a href="javascript:ajaxLoad('{{route('transfer.branch.index')}}')" class="nav-link">
-                                <i class="nav-icon fas fa-poll"></i><p>Transfer</p>
+                                <i class="nav-icon fas fa-poll"></i><p>Transfer Branch</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="javascript:ajaxLoad('{{route('transfer.receipt.index')}}')" class="nav-link">
+                                <i class="nav-icon fas fa-poll"></i><p>Transfer Receipt</p>
                             </a>
                         </li>
                     </ul>

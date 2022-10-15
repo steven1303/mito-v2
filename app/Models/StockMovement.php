@@ -40,9 +40,9 @@ class StockMovement extends Model
 
     public function moveDate(): Attribute
     {
-        return new Attribute(
-            set: fn ($value) => Carbon::createFromFormat('d/m/Y H:m A', $value)->format('Y-m-d H:i:s'),
+        return Attribute::make (
             get: fn ($value) => Carbon::createFromFormat('Y-m-d H:i:s', $value)->format('d/m/Y H:m A'),
+            set: fn ($value) => Carbon::createFromFormat('d/m/Y H:m A', $value)->format('Y-m-d H:i:s'),
             
         );
     }

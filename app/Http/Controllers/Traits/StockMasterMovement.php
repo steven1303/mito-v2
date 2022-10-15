@@ -19,6 +19,7 @@ trait StockMasterMovement {
                 $movement[] = $this->saveTransferBranch($detail, $doc_number, $type,$keterangan, $create_at);
             }            
         }
+        // dd($movement);
         StockMovement::insert($movement);
     }
 
@@ -53,7 +54,7 @@ trait StockMasterMovement {
             'order_qty' => 0,
             'sell_qty' => 0,
             'in_qty' => 0,
-            'out_qty' => $detail->out_qty,
+            'out_qty' => $detail->qty,
             'harga_modal' => 0,
             'harga_jual' => 0,
             'user' => Auth::user()->name,

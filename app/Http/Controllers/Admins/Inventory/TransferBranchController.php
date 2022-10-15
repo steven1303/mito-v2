@@ -231,7 +231,7 @@ class TransferBranchController extends SettingAjaxController
             $data->status = "Approved";
             $data->transfer_date = Carbon::now();
             $data->update();
-            $this->addMovement($data->transfer_branch_detail()->get(), $data->transfer_no, "TB","Transfer Branch Approved at", $data->transfer_date);
+            $this->addMovement($data->transfer_branch_detail()->get(), $data->transfer_no, "TB","Transfer Branch Approved at", Carbon::createFromFormat('d/m/Y H:m A', $data->transfer_date)->format('Y-m-d H:i:s'));
             return response()
                 ->json(['code'=>200,'message' => 'Transfer Branch Approve Success', 'stat' => 'Success']);
         }
