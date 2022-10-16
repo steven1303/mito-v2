@@ -13,7 +13,6 @@ use App\Http\Controllers\Traits\DocNumber;
 use App\Http\Controllers\Traits\StockMasterMovement;
 use App\Http\Controllers\Admins\SettingAjaxController;
 use App\Http\Controllers\Traits\ValidationTransferBranch;
-use App\Http\Requests\Inventory\AdjustmentDetailStorePostRequest;
 use App\Http\Requests\Inventory\TransferBranchDetailStorePostRequest;
 use App\Http\Requests\Inventory\TransferBranchDetailUpdatePatchRequest;
 
@@ -209,6 +208,10 @@ class TransferBranchController extends SettingAjaxController
             {
                 return response()->json(['code'=>200,'message' => 'Error Transfer Branch not have detail', 'stat' => 'Error']);
             }
+            if($data->to_branch == 0)
+            {
+                return response()->json(['code'=>200,'message' => 'Error Transfer To Branch Not Set', 'stat' => 'Error']);
+            }
             $data->status = "Request";
             $data->transfer_request = Carbon::now();
             $data->update();
@@ -244,7 +247,7 @@ class TransferBranchController extends SettingAjaxController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function searchTransfer(Request $request)
+    public function searchTransferBranch(Request $request)
     {
         $term = trim($request->q);
 
@@ -252,10 +255,10 @@ class TransferBranchController extends SettingAjaxController
             return response()->json([]);
         }
 
-        $tags = TransferBranch::where([
+        $tags = TransferBranch::withoutGlobalScopes()->where([
             ['transfer_no','like','%'.$term.'%'],
-            ['to_branch','=', Auth::user()->id_branch],
-            ['transfer_status','=', 3],
+            ['to_branch','=', Auth::user()->branch_id],
+            ['status','=', 'Approved'],
         ])->get();
 
         $formatted_tags = [];
@@ -264,7 +267,7 @@ class TransferBranchController extends SettingAjaxController
             $formatted_tags[] = [
                 'id'    => $tag->id,
                 'text'  => $tag->transfer_no,
-                'branch_id'  => $tag->id_branch,
+                'branch_id'  => $tag->branch_id,
                 'branch_name'  => $tag->branch->city,
             ];
         }

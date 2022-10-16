@@ -51,6 +51,7 @@ Route::group([
         Route::get('record/transfer_branch', 'record')->name('transfer.branch.record');
         Route::get('/transfer_branch/{id}/request', 'request')->name('transfer.branch.request');
         Route::get('/transfer_branch/{id}/approve', 'approve')->name('transfer.branch.approve');
+        Route::get('search/transfer_branch', 'searchTransferBranch')->name('transfer.branch.search');
 
         // Detail Transfer Branch
         Route::post('transfer_branch/detail/{id}', 'store_detail')->name('transfer.branch.store.detail');
@@ -63,8 +64,8 @@ Route::group([
     // Transfer Branch
     Route::controller(Admins\Inventory\TransferReceiptController::class)->group(function (){
         Route::get('/transfer_receipt', 'index')->name('transfer.receipt.index');    
-        // Route::get('/transfer_receipt/form/{id}', 'transfer_receipt_form')->name('transfer.receipt.form');    
-        // Route::post('/transfer_receipt', 'store')->name('transfer.receipt.store');        
+        Route::get('/transfer_receipt/form/{id}', 'transfer_receipt_form')->name('transfer.receipt.form');    
+        Route::post('/transfer_receipt', 'store')->name('transfer.receipt.store');        
         // Route::patch('transfer_receipt/{id}', 'update')->name('transfer.receipt.update');
         // Route::delete('/transfer_receipt/{id}', 'destroy')->name('transfer.receipt.delete');
         Route::get('record/transfer_receipt', 'record')->name('transfer.receipt.record');

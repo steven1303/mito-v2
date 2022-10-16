@@ -17,30 +17,55 @@
             {data: 'DT_RowIndex', name: 'DT_RowIndex' },
             {data: 'transfer_receipt_no', name: 'transfer_receipt_no'},
             {data: 'transfer_no', name: 'transfer_no'},
-            {data: 'to_branch', name: 'to_branch'},
-            {data: 'transfer_date', name: 'transfer_date'},
+            {data: 'from_branch', name: 'from_branch'},
+            {data: 'transfer_receipt_date', name: 'transfer_receipt_date'},
             {data: 'status', name: 'status'},
             {data: 'action', name:'action', orderable: false, searchable: false}
         ]
     });
 
-    @can('transfer.branch.store', Auth::user())
-    $(function(){
-	    $('#transferBranchForm').validator().on('submit', function (e) {
+    $('#transfer_branch').select2({
+        placeholder: "Select and Search",
+        ajax:{
+            url:"{{route('transfer.branch.search') }}",
+            dataType: 'json',
+            data: function (params) {
+                return {
+                    q: $.trim(params.term)
+                }
+            },
+            processResults: function (data) {
+                return {
+                    results: data
+                };
+            },
+            cache: true
+        },
+    })
+
+    $('#transfer_branch').on('select2:select', function (e) {
+        var data = e.params.data;
+        $('#transfer_id').val(data.id);
+        $('#branch').val(data.branch_id);
+    });
+
+
+    @can('transfer.receipt.store', Auth::user())
+	    $('#transferReceiptForm').validator().on('submit', function (e) {
 		    var id = $('#id').val();
 		    if (!e.isDefaultPrevented()){
-                url = "{{route('transfer.branch.store') }}";
+                url = "{{route('transfer.receipt.store') }}";
 				$('input[name=_method]').val('POST');
 			    $.ajax({
 				    url : url,
 				    type : "POST",
-				    data : $('#transferBranchForm').serialize(),
+				    data : $('#transferReceiptForm').serialize(),
 				    success : function(data) {
                         if(data.stat == 'Success'){
                             toastr.success(data.stat, data.message);
                             if (data.process == 'add')
                             {
-                                ajaxLoad("{{ url('transfer_branch/form') }}" + '/' + data.id);
+                                ajaxLoad("{{ url('transfer_receipt/form') }}" + '/' + data.id);
                             }
                         }
                         if(data.stat == 'Error'){
@@ -57,7 +82,6 @@
 			    return false;
 		    }
 	    });
-    });
     @endcan
 
     @can('transfer.branch.print', Auth::user())

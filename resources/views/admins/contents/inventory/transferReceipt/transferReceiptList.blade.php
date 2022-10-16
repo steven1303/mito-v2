@@ -19,7 +19,8 @@
                     <div class="card-header">
                         <h3 class="card-title">List Transfer Receipt</h3>
                     </div>
-                    <form role="form" id="transferReceiptForm" class="form-horizontal" method="POST">
+                    <form role="form" id="transferReceiptForm" class="form-horizontal" method="POST">                        
+                        <input type="hidden" id="branch" name="branch">
                         {{ csrf_field() }} {{ method_field('POST') }}
                         <div class="card-body">
                             <div class="form-group row">
@@ -60,4 +61,4 @@
 
 </section>
 <!-- /.content -->
-@include('admins.javascript.inventory.transferBranch.transferBranchList')
+@include('admins.javascript.inventory.transferReceipt.transferReceiptList')

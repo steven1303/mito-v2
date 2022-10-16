@@ -4,7 +4,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Trasfer Branch Form</h1>
+                <h1>Trasfer Receipt Form</h1>
             </div>
         </div>
     </div><!-- /.container-fluid -->
@@ -17,7 +17,7 @@
             <div class="col-md-12">
                 <div class="card card-primary">
                     <div class="card-header">
-                        <h3 class="card-title" id="formTitle">Detail Transfer Branch ({{$transferBranch->status}})</h3>
+                        <h3 class="card-title" id="formTitle">Detail Transfer Branch ({{$transferReceipt->status}})</h3>
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
@@ -28,28 +28,29 @@
                             <div class="row">
                                 <div class="col-md-2">
                                     <div class="form-group">
-                                        <label for="nama">Transfer Number</label>
-                                        <input type="text" class="form-control" id="transfer_no" name="transfer_no" placeholder="Input Stock Number" value="{{$transferBranch->transfer_no}}" readonly> 
+                                        <label for="nama">Document Number</label>
+                                        <input type="text" class="form-control" id="transfer_receipt_no" name="transfer_receipt_no" placeholder="Input Stock Number" value="{{$transferReceipt->transfer_receipt_no}}" readonly> 
                                         <span class="text-danger error-text stock_no_error"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-2">
                                     <div class="form-group">
-                                        <label>Select Role</label>
-                                        <select class="form-control"  id="branch" name="branch">
-                                            @foreach ($branchs as $branch)
-                                                @if($branch->id != Auth::user()->branch_id)
-                                                    <option value="{{ $branch->id }}"  {{ ($branch->id == $transferBranch->to_branch) ? 'selected' : ''}}>{{ $branch->name }}</option>
-                                                @endif
-                                            @endforeach
-                                        </select>
-                                        <span class="text-danger error-text branch_error"></span>
+                                        <label for="nama">Transfer Number</label>
+                                        <input type="text" class="form-control" id="transfer_no" name="transfer_no" placeholder="Input Stock Number" value="{{$transferReceipt->transfer_no}}" readonly> 
+                                        <span class="text-danger error-text stock_no_error"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>From Branch</label>
+                                        <input type="text" class="form-control" id="from_branch" name="from_branch" placeholder="Input Stock Number" value="{{$transferReceipt->from_branch}}" readonly> 
+                                        <span class="text-danger error-text from_branch_error"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label for="city">Transfer Date</label>
-                                        <input type="text" id="datemask" name="date" class="form-control" value="{{($transferBranch->transfer_date == NULL) ? '0000-00-00 00:00' : $transferBranch->transfer_date }}" readonly>
+                                        <input type="text" id="datemask" name="date" class="form-control" value="{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $transferReceipt->transfer_date)->format('d/m/Y H:m A') }}" readonly>
                                         <span class="text-danger error-text name_error"></span>
                                     </div>
                                 </div>
@@ -58,11 +59,10 @@
                       <!-- /.card-body -->
       
                         <div class="card-footer">
-                            @if($transferBranch->status == 'Draft' )
-                                <button id="btnSave" type="button" onclick="request_transfer_branch()" class="btn btn-primary">Request</button>
-                                <button type="submit" class="btn btn-primary">Update Detail</button>
+                            @if($transferReceipt->status == 'Draft' )
+                                <button id="btnSave" type="button" onclick="request_transfer_receipt()" class="btn btn-primary">Request</button>
                             @endif                            
-                            <button type="button" class="btn btn-default" onclick="ajaxLoad('{{route('transfer.branch.index')}}')">Cancel</button>
+                            <button type="button" class="btn btn-default" onclick="ajaxLoad('{{route('transfer.receipt.index')}}')">Cancel</button>
                         </div>
                     </form>
                 </div>
@@ -71,12 +71,29 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Transfer Branch Item</h3>
+                        <h3 class="card-title">Transfer Receipt Item</h3>
                     </div>
-                    <div class="card-body row">
-                        <div class="col-md-2">                            
-                            <button type="button" class="btn btn-outline-primary btn-block"  data-toggle="modal" data-target="#modal-input-item">Add item</button>
-                        </div>
+                    <div class="card-body">
+                        <table id="transferBranchTable" class="table table-bordered table-striped">
+                            <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Stock Master</th>
+                                <th>QTY</th>
+                                <th>Satuan</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Transfer Branch Item</h3>
                     </div>
                     <div class="card-body">
                         <table id="transferBranchTable" class="table table-bordered table-striped">
@@ -100,10 +117,10 @@
 
 </section>
 
-@canany(['transfer.branch.store', 'transfer.branch.update'], Auth::user())
+@canany(['transfer.receipt.store', 'transfer.receipt.update'], Auth::user())
 <div class="modal fade" id="modal-input-item">
     <div class="modal-dialog modal-lg">
-        <form role="form" id="transferBranchDetailForm" method="POST">
+        <form role="form" id="transferReceiptDetailForm" method="POST">
             {{ csrf_field() }} {{ method_field('POST') }}
             <input type="hidden" id="id" name="id">
             <div class="modal-content">
@@ -156,4 +173,4 @@
 </div>
 @endcanany
 <!-- /.content -->
-@include('admins.javascript.inventory.transferBranch.transferBranchForm',['transferBranch' => $transferBranch, 'branchs', $branchs])
+@include('admins.javascript.inventory.transferBranch.transferBranchForm',['transferBranch' => $transferReceipt, 'branchs', $branches])

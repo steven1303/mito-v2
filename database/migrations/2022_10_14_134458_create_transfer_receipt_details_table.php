@@ -15,7 +15,17 @@ return new class extends Migration
     {
         Schema::create('transfer_receipt_details', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('branch_id');
+            $table->bigInteger('transfer_receipt_id')->unsigned();
+            $table->bigInteger('transfer_branch_detail_id');
+            $table->bigInteger('stock_master_from_id');
+            $table->bigInteger('stock_master_id');
+            $table->decimal('qty', 10, 2)->default(0);
+            $table->string('keterangan')->nullable();
+            $table->string('transfer_receipt_detail_status');
             $table->timestamps();
+
+            $table->foreign('transfer_receipt_id')->references('id')->on('transfer_receipts')->onDelete('cascade');
         });
     }
 

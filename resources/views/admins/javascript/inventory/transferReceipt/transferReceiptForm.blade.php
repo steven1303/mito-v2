@@ -1,4 +1,3 @@
-0
 <script type="text/javascript">
     
     $("#in_qty").inputmask('currency', {rightAlign: true});

@@ -35,8 +35,9 @@
                                 </div>
                                 <div class="col-md-2">
                                     <div class="form-group">
-                                        <label>Select Role</label>
+                                        <label>To Branch</label>
                                         <select class="form-control"  id="branch" name="branch">
+                                            <option value="0"  {{ ($transferBranch->to_branch == 0) ? 'selected' : ''}}>None</option>
                                             @foreach ($branchs as $branch)
                                                 @if($branch->id != Auth::user()->branch_id)
                                                     <option value="{{ $branch->id }}"  {{ ($branch->id == $transferBranch->to_branch) ? 'selected' : ''}}>{{ $branch->name }}</option>
