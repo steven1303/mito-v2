@@ -71,6 +71,7 @@ class StockMaster extends Model
     public function scopeSoh($query)
     {
         $query->addSelect(['soh' => StockMovement::whereColumn('stock_master_id', 'stock_masters.id')
+            ->where('status','=', 0)
             ->selectRaw('TRIM(IFNULL(sum(in_qty - out_qty),0))+0 as soh')
         ]);
     }

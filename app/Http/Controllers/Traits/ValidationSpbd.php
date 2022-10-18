@@ -46,7 +46,7 @@ trait ValidationSpbd {
         return $action;
     }
 
-    function accessTransferBranch($auth, $permission){
+    function accessSpbd($auth, $permission){
 
         $access = [
             'view' => $auth->can($permission.'.view'),

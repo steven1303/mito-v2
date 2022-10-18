@@ -49,4 +49,4 @@
 
 </section>
 <!-- /.content -->
-@include('admins.javascript.inventory.transferBranch.transferBranchList')
+@include('admins.javascript.ordering.spbd.spbdList')

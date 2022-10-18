@@ -81,7 +81,6 @@ class AdjustmentController extends SettingAjaxController
     {
         if(Auth::user()->can('adjustment.store')){
             $data = [
-                'id_branch' => Auth::user()->id_branch,
                 'adj_id' => $id,
                 'stock_master_id' => $request['stock_master'],
                 'in_qty' => $request['in_qty'],

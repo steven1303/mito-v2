@@ -17,12 +17,11 @@ return new class extends Migration
             $table->id();            
             $table->bigInteger('branch_id');
             $table->string('spbd_no')->unique();
-            $table->dateTime('spbd_date');
-            $table->string('status');
-            $table->string('username');
-            $table->dateTime('spbd_request')->nullable();
-            $table->dateTime('spbd_approve')->nullable();
+            $table->dateTime('request')->nullable();
+            $table->dateTime('approve')->nullable();
             $table->dateTime('spbd_print')->nullable();
+            $table->string('username');
+            $table->string('status');
             $table->timestamps();
         });
 
@@ -58,6 +57,20 @@ return new class extends Migration
             [
                 'for' => 'SPBD',
                 'name' => 'spbd-request',
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+                'stat' => 1,
+            ],
+            [
+                'for' => 'SPBD',
+                'name' => 'spbd-verify1',
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+                'stat' => 1,
+            ],
+            [
+                'for' => 'SPBD',
+                'name' => 'spbd-verify2',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
                 'stat' => 1,

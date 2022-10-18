@@ -9,10 +9,10 @@ Route::group([
     Route::controller(Admins\Ordering\SpbdController::class)->group(function (){
         Route::get('/spbd', 'index')->name('spbd.index');    
         Route::get('/spbd/form/{id}', 'transfer_branch_form')->name('spbd.form');    
-        // Route::post('/spbd', 'store')->name('spbd.store');        
+        Route::post('/spbd', 'store')->name('spbd.store');     
         // Route::patch('spbd/{id}', 'update')->name('spbd.update');
         // Route::delete('/spbd/{id}', 'destroy')->name('spbd.delete');
-        // Route::get('record/spbd', 'record')->name('spbd.record');
+        Route::get('record/spbd', 'record')->name('spbd.record');
         // Route::get('/spbd/{id}/request', 'request')->name('spbd.request');
         // Route::get('/spbd/{id}/verify1', 'verify1')->name('spbd.verify1');
         // Route::get('/spbd/{id}/verify2', 'verify2')->name('spbd.verify2');

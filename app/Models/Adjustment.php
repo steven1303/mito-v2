@@ -33,7 +33,7 @@ class Adjustment extends Model
     public function createdFormat(): Attribute
     {
         return new Attribute(
-            get: fn () => $this->created_at->format('d/m/Y H:m'),
+            get: fn () => $this->created_at->format('d/m/Y H:m A'),
         );
     }
 
