@@ -16,6 +16,40 @@
                 <li class="nav-item">
                     <a class="nav-link">
                         <i class="nav-icon fas fa-cog"></i>
+                        <p>Ordering</p>
+                        <i class="fas fa-angle-left right"></i>
+                    </a>
+                    <ul class="nav nav-treeview" style="display: none;">
+                        <li class="nav-item">
+                            <a href="javascript:ajaxLoad('{{route('spbd.index')}}')" class="nav-link">
+                                <i class="nav-icon fas fa-poll"></i><p>SPBD</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="javascript:ajaxLoad('{{route('vendor.index')}}')" class="nav-link">
+                                <i class="nav-icon fas fa-poll"></i><p>PO Stock</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="javascript:ajaxLoad('{{route('vendor.index')}}')" class="nav-link">
+                                <i class="nav-icon fas fa-poll"></i><p>Receipt</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="javascript:ajaxLoad('{{route('vendor.index')}}')" class="nav-link">
+                                <i class="nav-icon fas fa-poll"></i><p>SPB</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="javascript:ajaxLoad('{{route('vendor.index')}}')" class="nav-link">
+                                <i class="nav-icon fas fa-poll"></i><p>PO Non Stock</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link">
+                        <i class="nav-icon fas fa-cog"></i>
                         <p>Inventory</p>
                         <i class="fas fa-angle-left right"></i>
                     </a>

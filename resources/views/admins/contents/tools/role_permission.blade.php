@@ -18,7 +18,8 @@
                 <div class="card">
                     <div class="card-header p-2">
                         <ul class="nav nav-pills">
-                            <li class="nav-item"><a class="nav-link active" href="#inventory" data-toggle="tab">Inventory</a></li>
+                            <li class="nav-item"><a class="nav-link active" href="#ordering" data-toggle="tab">Ordering</a></li>
+                            <li class="nav-item"><a class="nav-link " href="#inventory" data-toggle="tab">Inventory</a></li>
                             <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Settings</a></li>
                             <li class="nav-item"><a class="nav-link" href="#tools" data-toggle="tab">Tools</a></li>
                             <li class="nav-item"><a class="nav-link" href="#website" data-toggle="tab">Website</a></li>
@@ -35,7 +36,10 @@
                                 </div>
                             </div>
                             <div class="tab-content">
-                                <div class="tab-pane active" id="inventory">
+                                <div class="tab-pane active" id="ordering">
+                                    @include('admins.contents.tools.permission.ordering', ['permissions' => $permissions ])
+                                </div>
+                                <div class="tab-pane" id="inventory">
                                     @include('admins.contents.tools.permission.inventory', ['permissions' => $permissions ])
                                 </div>
                                 <div class="tab-pane" id="settings">

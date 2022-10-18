@@ -174,6 +174,7 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\SettingsServiceProvider::class,
         App\Providers\InventoryServiceProvider::class,
+        App\Providers\OrderingServiceProvider::class,
         
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,

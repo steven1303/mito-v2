@@ -61,7 +61,7 @@ Route::group([
         Route::get('record/transfer_branch/{id}', 'record_detail')->name('transfer.branch.record.detail');
     });
 
-    // Transfer Branch
+    // Transfer Receipt
     Route::controller(Admins\Inventory\TransferReceiptController::class)->group(function (){
         Route::get('/transfer_receipt', 'index')->name('transfer.receipt.index');    
         Route::get('/transfer_receipt/form/{id}', 'transfer_receipt_form')->name('transfer.receipt.form');    

@@ -45,6 +45,10 @@ class RouteServiceProvider extends ServiceProvider
 
             Route::domain(env('APP_DOMAIN_ADMIN',"sim2.mitoindonesia.test"))->middleware('web')
                 ->namespace($this->namespace)
+                ->group(base_path('routes/web-ordering.php'));
+
+            Route::domain(env('APP_DOMAIN_ADMIN',"sim2.mitoindonesia.test"))->middleware('web')
+                ->namespace($this->namespace)
                 ->group(base_path('routes/web-inventory.php'));
 
             Route::domain(env('APP_DOMAIN_ADMIN',"sim2.mitoindonesia.test"))->middleware('web')
