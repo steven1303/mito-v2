@@ -21,7 +21,6 @@ return new class extends Migration
             $table->bigInteger('stock_master_id');
             $table->decimal('qty', 10, 2)->default(0);
             $table->string('keterangan')->nullable();
-            $table->string('status');
             $table->foreign('spbd_id')->references('id')->on('spbds')->onDelete('cascade');
         });
     }

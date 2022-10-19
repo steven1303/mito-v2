@@ -1,11 +1,15 @@
 <div class="row">
+    <div class="col-md-12">
+        <button type="button" class="btn btn-primary" onclick="selectAll('settings')">Select All</button>
+        <button type="button" class="btn btn-warning" onclick="deselectAll('settings')">Deselect All</button>
+    </div>
     <div class="col-md-2">
         <label for="permission"><b>Customer</b></label>
         @foreach ($permissions as $permission)
         @if ($permission->for == 'Customer')
         <div class="checkbox">
             <label>
-                <input type="checkbox" name="permission[]" value="{{ $permission->id }}"
+                <input type="checkbox" class="settings" name="permission[]" value="{{ $permission->id }}"
                 @foreach ($role->permissions as $permit)
                 @if ($permit->id == $permission->id)
                 checked
@@ -28,7 +32,7 @@
         @if ($permission->for == 'Vendor')
         <div class="checkbox">
             <label>
-                <input type="checkbox" name="permission[]" value="{{ $permission->id }}"
+                <input type="checkbox" class="settings" name="permission[]" value="{{ $permission->id }}"
                 @foreach ($role->permissions as $permit)
                 @if ($permit->id == $permission->id)
                 checked
@@ -51,7 +55,7 @@
         @if ($permission->for == 'Tax')
         <div class="checkbox">
             <label>
-                <input type="checkbox" name="permission[]" value="{{ $permission->id }}"
+                <input type="checkbox" class="settings" name="permission[]" value="{{ $permission->id }}"
                 @foreach ($role->permissions as $permit)
                 @if ($permit->id == $permission->id)
                 checked

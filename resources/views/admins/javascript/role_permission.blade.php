@@ -1,6 +1,4 @@
 <script type="text/javascript">
-    $(function(){
-
 	$('#formPermission_role').validator().on('submit', function (e) {
 		var id = $('#id').val();
 		if (!e.isDefaultPrevented()){
@@ -27,5 +25,19 @@
 			return false;
 		}
 	});
-});
+
+	function selectAll(accessMenu){
+		const check = document.querySelectorAll("."+accessMenu);
+		check.forEach(function(checkbox){
+			checkbox.checked = true;
+		})
+	}
+
+	function deselectAll(accessMenu){
+		const check = document.querySelectorAll("."+accessMenu);
+		check.forEach(function(checkbox){
+			checkbox.checked = false;
+		})
+	}
+	
 </script>

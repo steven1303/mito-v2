@@ -4,7 +4,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Trasfer Branch Form</h1>
+                <h1>SPBD Form</h1>
             </div>
         </div>
     </div><!-- /.container-fluid -->
@@ -13,44 +13,30 @@
 <section class="content">
     <div class="container-fluid">
         <div class="row">
-            @canany(['adjustment.store', 'adjustment.update'], Auth::user())
+            @canany(['spbd.store', 'spbd.update'], Auth::user())
             <div class="col-md-12">
                 <div class="card card-primary">
                     <div class="card-header">
-                        <h3 class="card-title" id="formTitle">Detail Transfer Branch ({{$transferBranch->status}})</h3>
+                        <h3 class="card-title" id="formTitle">Detail SPBD ({{$spbd->status}})</h3>
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form  role="form" id="TransferBranchForm">
+                    <form  role="form" id="spbdForm">
                         {{ csrf_field() }} {{ method_field('PATCH') }}
                         <input type="hidden" id="id" name="id">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-2">
                                     <div class="form-group">
-                                        <label for="nama">Transfer Number</label>
-                                        <input type="text" class="form-control" id="transfer_no" name="transfer_no" placeholder="Input Stock Number" value="{{$transferBranch->transfer_no}}" readonly> 
+                                        <label for="nama">SPBD Number</label>
+                                        <input type="text" class="form-control" id="spbd_no" name="spbd_no" placeholder="Input Stock Number" value="{{$spbd->spbd_no}}" readonly> 
                                         <span class="text-danger error-text stock_no_error"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-2">
                                     <div class="form-group">
-                                        <label>To Branch</label>
-                                        <select class="form-control"  id="branch" name="branch">
-                                            <option value="0"  {{ ($transferBranch->to_branch == 0) ? 'selected' : ''}}>None</option>
-                                            @foreach ($branchs as $branch)
-                                                @if($branch->id != Auth::user()->branch_id)
-                                                    <option value="{{ $branch->id }}"  {{ ($branch->id == $transferBranch->to_branch) ? 'selected' : ''}}>{{ $branch->name }}</option>
-                                                @endif
-                                            @endforeach
-                                        </select>
-                                        <span class="text-danger error-text branch_error"></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="form-group">
-                                        <label for="city">Transfer Date</label>
-                                        <input type="text" id="datemask" name="date" class="form-control" value="{{($transferBranch->transfer_date == NULL) ? '0000-00-00 00:00' : $transferBranch->transfer_date }}" readonly>
+                                        <label for="city">SPBD Date</label>
+                                        <input type="text" id="datemask" name="date" class="form-control" value="{{($spbd->approve == NULL) ? '0000-00-00 00:00' : $spbd->approve }}" readonly>
                                         <span class="text-danger error-text name_error"></span>
                                     </div>
                                 </div>
@@ -59,11 +45,10 @@
                       <!-- /.card-body -->
       
                         <div class="card-footer">
-                            @if($transferBranch->status == 'Draft' )
-                                <button id="btnSave" type="button" onclick="request_transfer_branch()" class="btn btn-primary">Request</button>
-                                <button type="submit" class="btn btn-primary">Update Detail</button>
+                            @if($spbd->status == 'Draft' )
+                                <button id="btnSave" type="button" onclick="request_spbd()" class="btn btn-primary">Request</button>
                             @endif                            
-                            <button type="button" class="btn btn-default" onclick="ajaxLoad('{{route('transfer.branch.index')}}')">Cancel</button>
+                            <button type="button" class="btn btn-default" onclick="ajaxLoad('{{route('spbd.index')}}')">Cancel</button>
                         </div>
                     </form>
                 </div>
@@ -72,7 +57,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Transfer Branch Item</h3>
+                        <h3 class="card-title">SPBD Item</h3>
                     </div>
                     <div class="card-body row">
                         <div class="col-md-2">                            
@@ -80,12 +65,13 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <table id="transferBranchTable" class="table table-bordered table-striped">
+                        <table id="spbdDetailTable" class="table table-bordered table-striped">
                             <thead>
                             <tr>
                                 <th>No</th>
                                 <th>Stock Master</th>
-                                <th>QTY</th>
+                                <th>Qty</th>
+                                <th>Ordering</th>
                                 <th>Satuan</th>
                                 <th>Action</th>
                             </tr>
@@ -101,10 +87,10 @@
 
 </section>
 
-@canany(['transfer.branch.store', 'transfer.branch.update'], Auth::user())
+@canany(['spbd.store', 'spbd.update'], Auth::user())
 <div class="modal fade" id="modal-input-item">
     <div class="modal-dialog modal-lg">
-        <form role="form" id="transferBranchDetailForm" method="POST">
+        <form role="form" id="spbdDetailForm" method="POST">
             {{ csrf_field() }} {{ method_field('POST') }}
             <input type="hidden" id="id" name="id">
             <div class="modal-content">
@@ -157,4 +143,4 @@
 </div>
 @endcanany
 <!-- /.content -->
-@include('admins.javascript.inventory.transferBranch.transferBranchForm',['transferBranch' => $transferBranch, 'branchs', $branchs])
+@include('admins.javascript.ordering.spbd.spbdForm',['spbd' => $spbd])

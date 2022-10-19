@@ -13,7 +13,7 @@
 <section class="content">
     <div class="container-fluid">
         <div class="row">
-            @canany(['adjustment.store', 'adjustment.update'], Auth::user())
+            @canany(['transfer.branch.store', 'transfer.branch.update'], Auth::user())
             <div class="col-md-12">
                 <div class="card card-primary">
                     <div class="card-header">

@@ -63,11 +63,36 @@
         window.open("{{ url('transfer_branch_print') }}" + '/' + id,"_blank");
     }
     @endcan
-    @can('transfer.branch.approve', Auth::user())
+
+    @can('spbd.verify', Auth::user())
+    function request_spbd() {
+        $.ajax({
+        url: "{{ url('spbd') }}" + '/' + id + "/verify",
+        type: "GET",
+        dataType: "JSON",
+        success: function(data) {
+            if(data.stat == 'Success')
+            {
+                toastr.success(data.stat, data.message);
+                print_spbd( "{{ $spbd->id }}" );
+            }
+            if(data.stat == 'Error')
+            {
+                toastr.error(data.stat, data.message);
+            }
+        },
+        error : function() {
+            toastr.error('Error', 'Nothing Data');
+        }
+        });
+    }
+    @endcan
+
+    @can('spbd.approve', Auth::user())
     function approve(id) {
         save_method = 'edit';
         $.ajax({
-        url: "{{ url('transfer_branch') }}" + '/' + id + "/approve",
+        url: "{{ url('spbd') }}" + '/' + id + "/approve",
         type: "GET",
         dataType: "JSON",
         success: function(data) {

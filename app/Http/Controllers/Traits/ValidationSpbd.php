@@ -16,13 +16,10 @@ trait ValidationSpbd {
         if($access['edit']){
             $action .= '<a href="'.$spbd_detail.'" class="btn btn-primary btn-xs"> Open</a> ';
         }
-        if($access['verify1'] && $data->status == 'Request'){
-            $action .= '<button id="'. $data->id .'" onclick="verify1('. $data->id .')" class="btn btn-success btn-xs"> Verify1</button> ';
+        if($access['verify'] && $data->status == 'Request'){
+            $action .= '<button id="'. $data->id .'" onclick="verify('. $data->id .')" class="btn btn-success btn-xs"> Verify</button> ';
         }
-        if($access['verify2'] && $data->status == 'Verify1'){
-            $action .= '<button id="'. $data->id .'" onclick="approve('. $data->id .')" class="btn btn-success btn-xs"> Verify2</button> ';
-        }
-        if($access['approve'] && $data->status == 'Verify2'){
+        if($access['approve'] && $data->status == 'verified'){
             $action .= '<button id="'. $data->id .'" onclick="approve('. $data->id .')" class="btn btn-success btn-xs"> Approve</button> ';
         }
         if($access['delete'] && $data->status == 'Draft'){
@@ -53,8 +50,7 @@ trait ValidationSpbd {
             'edit' => $auth->can($permission.'.update'),
             'delete' => $auth->can($permission.'.delete'),
             'request' => $auth->can($permission.'.request'),
-            'verify1' => $auth->can($permission.'.verify1'),
-            'verify2' => $auth->can($permission.'.verify2'),
+            'verify' => $auth->can($permission.'.verify'),
             'approve' => $auth->can($permission.'.approve'),
             'print' => $auth->can($permission.'.print'),
         ];

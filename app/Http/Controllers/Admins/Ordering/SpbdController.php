@@ -2,14 +2,19 @@
 
 namespace App\Http\Controllers\Admins\Ordering;
 
+use Carbon\Carbon;
 use App\Models\Spbd;
+use App\Models\SpbdDetail;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Traits\DocNumber;
 use App\Http\Controllers\Traits\ValidationSpbd;
 use App\Http\Controllers\Traits\StockMasterMovement;
+use App\Http\Requests\Ordering\SpbdStorePostRequest;
 use App\Http\Controllers\Admins\SettingAjaxController;
+use App\Http\Requests\Ordering\SpbdDetailStorePostRequest;
+use App\Http\Requests\Ordering\SpbdDetailUpdatePatchRequest;
 
 class SpbdController extends SettingAjaxController
 {
@@ -38,7 +43,7 @@ class SpbdController extends SettingAjaxController
         return view('admins.components.403');
     }
 
-    public function store(Request $request)
+    public function store(SpbdStorePostRequest $request)
     {
         if(Auth::user()->can('spbd.store')){
             $draf = Spbd::where([
@@ -70,6 +75,72 @@ class SpbdController extends SettingAjaxController
         return response()->json(['code'=>200,'message' => 'Error SPBD Access Denied', 'stat' => 'Error']);
     }
 
+    public function store_detail(SpbdDetailStorePostRequest $request, $id)
+    {
+        if(Auth::user()->can('spbd.store')){
+            $data = [
+                'branch_id' => Auth::user()->branch_id,
+                'spbd_id' => $id,
+                'stock_master_id' => $request['stock_master'],
+                'qty' => $request['qty'],
+                'keterangan' => $request['keterangan'],
+            ];
+
+            $activity = SpbdDetail::create($data);
+
+            if ($activity->exists) {
+                return response()
+                    ->json(['code'=>200,'message' => 'Add new item Spbd Success', 'stat' => 'Success', 'process' => 'update']);
+
+            } else {
+                return response()
+                    ->json(['code'=>200,'message' => 'Error item Spbd Store', 'stat' => 'Error']);
+            }
+        }
+        return response()->json(['code'=>200,'message' => 'Error Spbd Access Denied', 'stat' => 'Error']);
+    }
+
+    public function edit_detail($id)
+    {
+        if(Auth::user()->can('spbd.update')){
+            $data = SpbdDetail::with('stock_master')->findOrFail($id);
+            return $data;
+        }
+        return response()->json(['code'=>200,'message' => 'Error SPBD Access Denied', 'stat' => 'Error']);
+    }
+
+    public function update_detail(SpbdDetailUpdatePatchRequest $request, $id)
+    {
+        if(Auth::user()->can('spbd.update')){
+            $data = SpbdDetail::find($id);
+            $data->stock_master_id    = $request['stock_master'];
+            $data->qty    = $request['qty'];
+            $data->keterangan    = $request['keterangan'];
+            $data->update();
+            return response()
+                ->json(['code'=>200,'message' => 'Edit Item SPBD Success', 'stat' => 'Success']);
+        }
+        return response()->json(['code'=>200,'message' => 'Error SPBD Access Denied', 'stat' => 'Error']);
+    }
+
+    public function destroy($id)
+    {
+        if(Auth::user()->can('spbd.delete')){
+            Spbd::destroy($id);
+            return response()->json(['code'=>200,'message' => 'SPBD Item Success Deleted', 'stat' => 'Success']);
+        }
+        return response()->json(['code'=>200,'message' => 'Error SPBD Access Denied', 'stat' => 'Error']);
+    }
+
+    public function destroy_detail($id)
+    {
+        if(Auth::user()->can('spbd.delete')){
+            SpbdDetail::destroy($id);
+            return response()->json(['code'=>200,'message' => 'SPBD Item Success Deleted', 'stat' => 'Success']);
+        }
+        return response()->json(['code'=>200,'message' => 'Error SPBD Access Denied', 'stat' => 'Error']);
+    }
+
     public function record(){
         $auth =  Auth::user();
         if(Auth::user()->can('spbd.view')){
@@ -86,5 +157,85 @@ class SpbdController extends SettingAjaxController
         }
         return response()
             ->json(['code'=>200,'message' => 'Error Transfer Branch Access Denied', 'stat' => 'Error']);
+    }
+
+    public function record_detail($id){
+        $auth =  Auth::user();
+        if(Auth::user()->can('spbd.view')){
+            $data = Spbd::findOrFail($id);
+            $detail = $data->spbd_detail()->with('stock_master')->get();
+            $access =   $this->accessSpbd( $auth, 'spbd');
+            return DataTables::of($detail)
+                ->addIndexColumn()
+                ->addColumn('action', function($detail)  use($access, $data){
+                    $action = $this->buttonActionDetail($detail, $access, $data);       
+                    return $action;
+                })
+                ->rawColumns(['action'])->make(true);
+        }
+        return response()
+            ->json(['code'=>200,'message' => 'Error SPBD Access Denied', 'stat' => 'Error']);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function request($id)
+    {
+        if(Auth::user()->can('spbd.request')){
+            $data = Spbd::findOrFail($id);
+            if($data->spbd_detail->count() < 1)
+            {
+                return response()->json(['code'=>200,'message' => 'Error SPBD not have detail', 'stat' => 'Error']);
+            }
+            $data->status = "Request";
+            $data->request = Carbon::now();
+            $data->update();
+            return response()
+                ->json(['code'=>200,'message' => 'Request SPBD Success', 'stat' => 'Success']);
+        }
+        return response()->json(['code'=>200,'message' => 'Error SPBD Access Denied', 'stat' => 'Error']);
+    }
+
+     /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function verify($id)
+    {
+        if(Auth::user()->can('spbd.approve')){
+            $data = Spbd::findOrFail($id);
+            $data->status = "Verified";
+            $data->transfer_date = Carbon::now();
+            $data->update();
+            return response()
+                ->json(['code'=>200,'message' => 'Transfer Branch Approve Success', 'stat' => 'Success']);
+        }
+        return response()->json(['code'=>200,'message' => 'Error Transfer Branch Access Denied', 'stat' => 'Error']);
+    }
+
+     /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function approve($id)
+    {
+        if(Auth::user()->can('transfer.branch.approve')){
+            $data = TransferBranch::findOrFail($id);
+            $data->status = "Approved";
+            $data->transfer_date = Carbon::now();
+            $data->update();
+            $this->addMovement($data->transfer_branch_detail()->get(), $data->transfer_no, "TB","Transfer Branch Approved at", Carbon::createFromFormat('d/m/Y H:m A', $data->transfer_date)->format('Y-m-d H:i:s'));
+            return response()
+                ->json(['code'=>200,'message' => 'Transfer Branch Approve Success', 'stat' => 'Success']);
+        }
+        return response()->json(['code'=>200,'message' => 'Error Transfer Branch Access Denied', 'stat' => 'Error']);
     }
 }

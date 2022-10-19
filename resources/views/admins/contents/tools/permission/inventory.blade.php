@@ -1,11 +1,15 @@
 <div class="row">
+    <div class="col-md-12">
+        <button type="button" class="btn btn-primary" onclick="selectAll('inventory')">Select All</button>
+        <button type="button" class="btn btn-warning" onclick="deselectAll('inventory')">Deselect All</button>
+    </div>
     <div class="col-md-2">
         <label for="permission"><b>Stock Master</b></label>
         @foreach ($permissions as $permission)
         @if ($permission->for == 'StockMaster')
         <div class="checkbox">
             <label>
-                <input type="checkbox" name="permission[]" value="{{ $permission->id }}"
+                <input type="checkbox" class="inventory" name="permission[]" value="{{ $permission->id }}"
                 @foreach ($role->permissions as $permit)
                 @if ($permit->id == $permission->id)
                 checked
@@ -27,7 +31,7 @@
         @if ($permission->for == 'Adjustment')
         <div class="checkbox">
             <label>
-                <input type="checkbox" name="permission[]" value="{{ $permission->id }}"
+                <input type="checkbox" class="inventory" name="permission[]" value="{{ $permission->id }}"
                 @foreach ($role->permissions as $permit)
                 @if ($permit->id == $permission->id)
                 checked
@@ -49,7 +53,7 @@
         @if ($permission->for == 'Transfer')
         <div class="checkbox">
             <label>
-                <input type="checkbox" name="permission[]" value="{{ $permission->id }}"
+                <input type="checkbox" class="inventory" name="permission[]" value="{{ $permission->id }}"
                 @foreach ($role->permissions as $permit)
                 @if ($permit->id == $permission->id)
                 checked
@@ -71,7 +75,7 @@
         @if ($permission->for == 'Transfer Receipt')
         <div class="checkbox">
             <label>
-                <input type="checkbox" name="permission[]" value="{{ $permission->id }}"
+                <input type="checkbox" class="inventory" name="permission[]" value="{{ $permission->id }}"
                 @foreach ($role->permissions as $permit)
                 @if ($permit->id == $permission->id)
                 checked

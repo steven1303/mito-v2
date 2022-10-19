@@ -25,6 +25,6 @@ class TransferBranchDetail extends Model
 
     public function transferBranch()
     {
-        return $this->belongsTo('App\Models\transferBranch','transfer_branch_id');
+        return $this->belongsTo('App\Models\TransferBranch','transfer_branch_id');
     }
 }

@@ -63,14 +63,7 @@ return new class extends Migration
             ],
             [
                 'for' => 'SPBD',
-                'name' => 'spbd-verify1',
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s'),
-                'stat' => 1,
-            ],
-            [
-                'for' => 'SPBD',
-                'name' => 'spbd-verify2',
+                'name' => 'spbd-verify',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
                 'stat' => 1,

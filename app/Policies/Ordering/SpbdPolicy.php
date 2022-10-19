@@ -69,20 +69,10 @@ class SpbdPolicy
         return false;
     }
 
-    public function verify1(Admin $user)
+    public function verify(Admin $user)
     {
-        foreach ($user->roles->permissions_for_access('SPBD','spbd-verify1')->get() as $permission ) {
-            if($permission->name == 'spbd-verify1'){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public function verify2(Admin $user)
-    {
-        foreach ($user->roles->permissions_for_access('SPBD','spbd-verify2')->get() as $permission ) {
-            if($permission->name == 'spbd-verify2'){
+        foreach ($user->roles->permissions_for_access('SPBD','spbd-verify')->get() as $permission ) {
+            if($permission->name == 'spbd-verify'){
                 return true;
             }
         }

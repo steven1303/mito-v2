@@ -117,7 +117,7 @@
                         toastr.error(data.stat, data.message);
                     }
                 },
-                error : function(){
+                error : function(data){
                     if(data.status == 422){
                         Object.keys(data.responseJSON.errors).forEach(function(key) {
                             $('span.'+key+'_error').text(data.responseJSON.errors[key]);
