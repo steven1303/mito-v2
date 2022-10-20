@@ -4,7 +4,7 @@ namespace App\Http\Requests\Ordering;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SpbdDetailUpdatePatchRequest extends FormRequest
+class PoStockStorePostRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,9 +23,15 @@ class SpbdDetailUpdatePatchRequest extends FormRequest
      */
     public function rules()
     {
+        return [ 
+            'spbd' => ['required'],
+        ];
+    }
+
+    public function messages()
+    {
         return [
-            'stock_master' => ['required'],
-            'qty' => ['required'],
+            'spbd.required' => 'SPBD is required',
         ];
     }
 }

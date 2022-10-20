@@ -18,13 +18,14 @@ class SpbdDetail extends Model
         'keterangan', 
         'status', 
     ];
+    
 
     public function stock_master()
     {
         return $this->belongsTo('App\Models\StockMaster','stock_master_id')->soh();
     }
 
-    public function transferBranch()
+    public function Spbd()
     {
         return $this->belongsTo('App\Models\Spbd','spbd_id');
     }

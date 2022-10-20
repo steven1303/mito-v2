@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admins\Settings;
 
-use App\Models\Tax;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -19,9 +18,7 @@ class CustomerController extends SettingAjaxController
     public function index()
     {
         if(Auth::user()->can('customer.view')){
-            $tax = Tax::all();
             $data = [
-                'taxs' => $tax
             ];
             return view('admins.contents.settings.customer')->with($data);
         }
@@ -54,7 +51,7 @@ class CustomerController extends SettingAjaxController
                 'telp' => $request['telp'],
                 'phone' => $request['phone'],
                 'npwp' => $request['npwp'],
-                'tax_id' => $request['tax'],
+                'tax' => config('mito.tax.decimal'),
                 'ktp' => $request['ktp'],
                 'bod' => $request['bod'],
             ];
@@ -92,7 +89,7 @@ class CustomerController extends SettingAjaxController
             $data->telp = $request['telp'];
             $data->phone    = $request['phone'];
             $data->npwp    = $request['npwp'];
-            $data->tax_id = $request['tax'];
+            $data->tax = config('mito.tax.decimal');
             $data->ktp    = $request['ktp'];
             $data->bod    = $request['bod'];
             $data->update();

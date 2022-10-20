@@ -31,7 +31,6 @@ class CustomerStorePostRequest extends FormRequest
             'npwp' => ['required'],
             'ktp' => ['required'],
             'bod' => ['required','date_format:d/m/Y'],
-            'tax' => ['required'],
         ];
     }
 
@@ -45,8 +44,7 @@ class CustomerStorePostRequest extends FormRequest
             'npwp.required' => 'NPWP is required',        
             'ktp.required' => 'KTP is required',        
             'bod.required' => 'Birthday is required',        
-            'bod.date_format' => 'Date format is dd/mm/yyyy',        
-            'tax.required' => 'Tax is required',        
+            'bod.date_format' => 'Date format is dd/mm/yyyy',    
         ];
     }
 }

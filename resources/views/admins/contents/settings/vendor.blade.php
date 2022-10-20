@@ -76,17 +76,7 @@
                                         <input type="text" class="form-control" id="npwp" name="npwp" placeholder="NPWP Number">
                                         <span class="text-danger error-text npwp_error"></span>
                                     </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label>Tax</label>
-                                        <select name="tax" class="form-control" id="tax" >
-                                            @foreach ($taxs as $tax)
-                                            <option value="{{ $tax->id }}"  >{{ $tax->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>                   
+                                </div>             
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="address">Address 1</label>

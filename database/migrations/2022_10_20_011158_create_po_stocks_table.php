@@ -13,67 +13,81 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('transfer_receipts', function (Blueprint $table) {
+        Schema::create('po_stocks', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('branch_id');
-            $table->bigInteger('transfer_id')->default(0);
-            $table->string('transfer_receipt_no')->unique();
-            $table->bigInteger('from_branch');
-            $table->dateTime('transfer_receipt_date')->nullable();
+            $table->string('po_no')->unique();
+            $table->bigInteger('spbd_id')->default(0);
+            $table->bigInteger('vendor_id')->default(0);
+            $table->dateTime('approve')->nullable();
             $table->string('status');
+            $table->decimal('ppn', 20, 3)->default(0);
             $table->string('username');
-            $table->dateTime('transfer_receipt_request')->nullable();
-            $table->dateTime('transfer_receipt_print')->nullable();
-            $table->string('keterangan')->nullable();
+            $table->dateTime('request')->nullable();
+            $table->dateTime('print')->nullable();
             $table->timestamps();
         });
 
         DB::table('permissions')->insert([
             [
-                'for' => 'Transfer Receipt',
-                'name' => 'transfer-receipt-view',
+                'for' => 'PoStock',
+                'name' => 'po-stock-view',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
                 'stat' => 1,
             ],
             [
-                'for' => 'Transfer Receipt',
-                'name' => 'transfer-receipt-store',
+                'for' => 'PoStock',
+                'name' => 'po-stock-store',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
                 'stat' => 1,
             ],
             [
-                'for' => 'Transfer Receipt',
-                'name' => 'transfer-receipt-update',
+                'for' => 'PoStock',
+                'name' => 'po-stock-update',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
                 'stat' => 1,
             ],
             [
-                'for' => 'Transfer Receipt',
-                'name' => 'transfer-receipt-delete',
+                'for' => 'PoStock',
+                'name' => 'po-stock-delete',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
                 'stat' => 1,
             ],
             [
-                'for' => 'Transfer Receipt',
-                'name' => 'transfer-receipt-request',
+                'for' => 'PoStock',
+                'name' => 'po-stock-request',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
                 'stat' => 1,
             ],
             [
-                'for' => 'Transfer Receipt',
-                'name' => 'transfer-receipt-approve',
+                'for' => 'PoStock',
+                'name' => 'po-stock-verify1',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
                 'stat' => 1,
             ],
             [
-                'for' => 'Transfer Receipt',
-                'name' => 'transfer-receipt-print',
+                'for' => 'PoStock',
+                'name' => 'po-stock-verify2',
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+                'stat' => 1,
+            ],
+            [
+                'for' => 'PoStock',
+                'name' => 'po-stock-approve',
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+                'stat' => 1,
+            ],
+            [
+                'for' => 'SPBD',
+                'name' => 'po-stock-print',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
                 'stat' => 1,
@@ -88,6 +102,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('transfer_receipts');
+        Schema::dropIfExists('po_stocks');
     }
 };

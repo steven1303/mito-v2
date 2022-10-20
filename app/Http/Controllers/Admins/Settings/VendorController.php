@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admins\Settings;
 
-use App\Models\Tax;
 use App\Models\Vendor;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -19,9 +18,7 @@ class VendorController extends SettingAjaxController
     public function index()
     {
         if(Auth::user()->can('vendor.view')){
-            $tax = Tax::all();
             $data = [
-                'taxs' => $tax
             ];
             return view('admins.contents.settings.vendor')->with($data);
         }
@@ -54,7 +51,7 @@ class VendorController extends SettingAjaxController
                 'pic' => $request['pic'],
                 'telp' => $request['telp'],
                 'npwp' => $request['npwp'],
-                'tax_id' => $request['tax'],
+                'tax' => config('mito.tax.decimal'),
             ];
             $activity = Vendor::create($data);
             if ($activity->exists) {
@@ -89,7 +86,7 @@ class VendorController extends SettingAjaxController
             $data->pic = $request['pic'];
             $data->telp = $request['telp'];
             $data->npwp    = $request['npwp'];
-            $data->tax_id = $request['tax'];
+            $data->tax = config('mito.tax.decimal');
             $data->update();
             return response()
                 ->json(['code'=>200,'message' => 'Edit Vendor Success', 'stat' => 'Success']);

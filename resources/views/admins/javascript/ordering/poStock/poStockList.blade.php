@@ -1,7 +1,7 @@
 <script type="text/javascript">
     var save_method;
     save_method = 'add';
-    var table = $('#spbdTable')
+    var table = $('#poStockTable')
     .DataTable({
         'paging'      	: true,
         'lengthChange'	: true,
@@ -12,9 +12,10 @@
         "processing"	: true,
         "serverSide"	: true,
         responsive      : true,
-        "ajax": "{{route('spbd.record') }}",
+        "ajax": "{{route('po.stock.record') }}",
         "columns": [
             {data: 'DT_RowIndex', name: 'DT_RowIndex' },
+            {data: 'po_no', name: 'po_no'},
             {data: 'spbd_no', name: 'spbd_no'},
             {data: 'approve', name: 'approve'},
             {data: 'status', name: 'status'},
@@ -22,23 +23,47 @@
         ]
     });
 
-    @can('spbd.store', Auth::user())
+    @can('po.stock.store', Auth::user())
     $(function(){
-	    $('#spbdForm').validator().on('submit', function (e) {
+        $('#spbd').select2({
+            placeholder: "Select and Search",
+            ajax:{
+                url:"{{route('spbd.search') }}",
+                dataType: 'json',
+                data: function (params) {
+                    return {
+                        q: $.trim(params.term)
+                    }
+                },
+                processResults: function (data) {
+                    return {
+                        results: data
+                    };
+                },
+                cache: true
+            },
+        })
+
+        $('#spbd').on('select2:select', function (e) {
+            var data = e.params.data;
+        });
+
+	    $('#poStockForm').validator().on('submit', function (e) {
 		    var id = $('#id').val();
 		    if (!e.isDefaultPrevented()){
-                url = "{{route('spbd.store') }}";
+                url = "{{route('po.stock.store') }}";
 				$('input[name=_method]').val('POST');
 			    $.ajax({
 				    url : url,
 				    type : "POST",
-				    data : $('#spbdForm').serialize(),
+				    data : $('#poStockForm').serialize(),
 				    success : function(data) {
                         if(data.stat == 'Success'){
                             toastr.success(data.stat, data.message);
                             if (data.process == 'add')
                             {
-                                ajaxLoad("{{ url('spbd/form') }}" + '/' + data.id);
+                                $('#spbd').val(null).trigger('change');
+                                ajaxLoad("{{ url('po_stock/form') }}" + '/' + data.id);
                             }
                         }
                         if(data.stat == 'Error'){
@@ -48,8 +73,14 @@
                             toastr.error(data.stat, data.message);
                         }
 				    },
-				    error : function(){
-					    error('Error', 'Oops! Something Error! Try to reload your page first...');
+				    error : function(data){
+					    if(data.status == 422){
+                        Object.keys(data.responseJSON.errors).forEach(function(key) {
+                            $('span.'+key+'_error').text(data.responseJSON.errors[key]);
+                        })
+                        }else{
+                            toastr.error('Error', 'Oops! Something Error! Try to reload your page first...');                       
+                        }	
 				    }
 			    });
 			    return false;

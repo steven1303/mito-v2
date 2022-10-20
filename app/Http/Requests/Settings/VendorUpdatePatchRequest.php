@@ -29,7 +29,6 @@ class VendorUpdatePatchRequest extends FormRequest
             'city' => ['required'],
             'phone' => ['required'],
             'npwp' => ['required'],
-            'tax' => ['required'],
         ];
     }
 
@@ -41,7 +40,6 @@ class VendorUpdatePatchRequest extends FormRequest
             'city.required' => 'City is required',        
             'phone.required' => 'Phone is required',        
             'npwp.required' => 'NPWP is required',
-            'tax.required' => 'Tax is required',   
         ];
     }
 }

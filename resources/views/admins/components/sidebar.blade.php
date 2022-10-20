@@ -26,7 +26,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="javascript:ajaxLoad('{{route('vendor.index')}}')" class="nav-link">
+                            <a href="javascript:ajaxLoad('{{route('po.stock.index')}}')" class="nav-link">
                                 <i class="nav-icon fas fa-poll"></i><p>PO Stock</p>
                             </a>
                         </li>

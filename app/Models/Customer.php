@@ -23,7 +23,7 @@ class Customer extends Model
         'telp',
         'phone',
         'npwp',
-        'tax_id',
+        'tax',
         'ktp',
         'bod',
     ];
@@ -69,10 +69,5 @@ class Customer extends Model
     public function branch()
     {
     	return $this->belongsTo('App\Models\Branch','branch_id');
-    }
-
-    public function tax()
-    {
-    	return $this->belongsTo('App\Models\Tax','tax_id');
     }
 }

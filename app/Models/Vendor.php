@@ -21,7 +21,7 @@ class Vendor extends Model
         'pic',
         'telp',
         'npwp',
-        'tax_id',
+        'tax',
     ];
 
     protected static function booted()
@@ -32,10 +32,5 @@ class Vendor extends Model
     public function branch()
     {
     	return $this->belongsTo('App\Models\Branch','branch_id');
-    }
-
-    public function tax()
-    {
-    	return $this->belongsTo('App\Models\Tax','tax_id');
     }
 }

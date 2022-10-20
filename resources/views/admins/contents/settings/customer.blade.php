@@ -112,16 +112,6 @@
                                         <span class="text-danger error-text npwp_error"></span>
                                     </div>
                                 </div>
-                                <div class="col-md-2">
-                                    <div class="form-group">
-                                        <label>Tax</label>
-                                        <select name="tax" class="form-control" id="tax" >
-                                            @foreach ($taxs as $tax)
-                                            <option value="{{ $tax->id }}"  >{{ $tax->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    </div>
                             </div> 
                         </div>
                       <!-- /.card-body -->

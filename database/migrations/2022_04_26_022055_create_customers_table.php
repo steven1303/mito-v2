@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('telp')->nullable();
             $table->string('phone');
             $table->string('npwp');
-            $table->bigInteger('tax_id')->default(1);
+            $table->decimal('tax')->default(0);
             $table->string('ktp');
             $table->string('bod');
             $table->timestamps();

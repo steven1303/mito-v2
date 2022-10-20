@@ -10,7 +10,6 @@ use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Traits\DocNumber;
 use App\Http\Controllers\Traits\ValidationSpbd;
-use App\Http\Controllers\Traits\StockMasterMovement;
 use App\Http\Requests\Ordering\SpbdStorePostRequest;
 use App\Http\Controllers\Admins\SettingAjaxController;
 use App\Http\Requests\Ordering\SpbdDetailStorePostRequest;
@@ -20,7 +19,6 @@ class SpbdController extends SettingAjaxController
 {
     use DocNumber;    
     use ValidationSpbd;    
-    use StockMasterMovement;
 
     public function index()
     {
@@ -31,7 +29,7 @@ class SpbdController extends SettingAjaxController
         return view('admins.components.403');
     }
 
-    public function transfer_branch_form($id)
+    public function spbd_form($id)
     {
         if(Auth::user()->can('spbd.store')){
             $spbd = Spbd::findOrFail($id);
@@ -143,7 +141,7 @@ class SpbdController extends SettingAjaxController
 
     public function record(){
         $auth =  Auth::user();
-        if(Auth::user()->can('spbd.view')){
+        if($auth->can('spbd.view')){
             $data = Spbd::latest()->get();
             $access =   $this->accessSpbd( $auth, 'spbd');
             // dd($access);
@@ -156,19 +154,19 @@ class SpbdController extends SettingAjaxController
                 ->rawColumns(['action'])->make(true);
         }
         return response()
-            ->json(['code'=>200,'message' => 'Error Transfer Branch Access Denied', 'stat' => 'Error']);
+            ->json(['code'=>200,'message' => 'Error SPBD Access Denied', 'stat' => 'Error']);
     }
 
-    public function record_detail($id){
+    public function record_detail($id, $status = NULL){
         $auth =  Auth::user();
-        if(Auth::user()->can('spbd.view')){
+        if($auth->can('spbd.view')){
             $data = Spbd::findOrFail($id);
             $detail = $data->spbd_detail()->with('stock_master')->get();
             $access =   $this->accessSpbd( $auth, 'spbd');
             return DataTables::of($detail)
                 ->addIndexColumn()
-                ->addColumn('action', function($detail)  use($access, $data){
-                    $action = $this->buttonActionDetail($detail, $access, $data);       
+                ->addColumn('action', function($detail)  use($access, $data, $status){
+                    $action = $this->buttonActionDetail($detail, $access, $data, $status);       
                     return $action;
                 })
                 ->rawColumns(['action'])->make(true);
@@ -211,7 +209,6 @@ class SpbdController extends SettingAjaxController
         if(Auth::user()->can('spbd.approve')){
             $data = Spbd::findOrFail($id);
             $data->status = "Verified";
-            $data->transfer_date = Carbon::now();
             $data->update();
             return response()
                 ->json(['code'=>200,'message' => 'Transfer Branch Approve Success', 'stat' => 'Success']);
@@ -228,14 +225,47 @@ class SpbdController extends SettingAjaxController
     public function approve($id)
     {
         if(Auth::user()->can('transfer.branch.approve')){
-            $data = TransferBranch::findOrFail($id);
+            $data = Spbd::findOrFail($id);
             $data->status = "Approved";
-            $data->transfer_date = Carbon::now();
+            $data->approve = Carbon::now();
             $data->update();
-            $this->addMovement($data->transfer_branch_detail()->get(), $data->transfer_no, "TB","Transfer Branch Approved at", Carbon::createFromFormat('d/m/Y H:m A', $data->transfer_date)->format('Y-m-d H:i:s'));
             return response()
                 ->json(['code'=>200,'message' => 'Transfer Branch Approve Success', 'stat' => 'Success']);
         }
         return response()->json(['code'=>200,'message' => 'Error Transfer Branch Access Denied', 'stat' => 'Error']);
+    }
+
+    /**
+     * Search a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        $term = trim($request->q);
+
+        if (empty($term)) {
+            return response()->json([]);
+        }
+
+        $tags = Spbd::where([
+            ['spbd_no','like','%'.$term.'%'],
+            ['status','=', "Partial"],
+        ])->orWhere([
+            ['spbd_no','like','%'.$term.'%'],
+            ['status','=', "Approved"],
+        ])->get();
+
+        $formatted_tags = [];
+
+        foreach ($tags as $tag) {
+            $formatted_tags[] = [
+                'id'    => $tag->id,
+                'text'  => $tag->spbd_no,
+            ];
+        }
+
+        return response()->json($formatted_tags);
     }
 }

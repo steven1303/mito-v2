@@ -33,5 +33,16 @@ class OrderingServiceProvider extends ServiceProvider
         Gate::define('spbd.verify', 'App\Policies\Ordering\SpbdPolicy@verify');
         Gate::define('spbd.approve', 'App\Policies\Ordering\SpbdPolicy@approve');
         Gate::define('spbd.print', 'App\Policies\Ordering\SpbdPolicy@print');
+
+        // PoStock
+        Gate::define('po.stock.view', 'App\Policies\Ordering\PoStockPolicy@view');
+        Gate::define('po.stock.store', 'App\Policies\Ordering\PoStockPolicy@store');
+        Gate::define('po.stock.update', 'App\Policies\Ordering\PoStockPolicy@update');
+        Gate::define('po.stock.delete', 'App\Policies\Ordering\PoStockPolicy@delete');
+        Gate::define('po.stock.request', 'App\Policies\Ordering\PoStockPolicy@request');
+        Gate::define('po.stock.verify1', 'App\Policies\Ordering\PoStockPolicy@verify1');
+        Gate::define('po.stock.verify2', 'App\Policies\Ordering\PoStockPolicy@verify2');
+        Gate::define('po.stock.approve', 'App\Policies\Ordering\PoStockPolicy@approve');
+        Gate::define('po.stock.print', 'App\Policies\Ordering\PoStockPolicy@print');
     }
 }
