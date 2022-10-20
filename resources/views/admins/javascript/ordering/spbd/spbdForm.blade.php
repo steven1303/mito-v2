@@ -21,6 +21,7 @@
             {data: 'DT_RowIndex', name: 'DT_RowIndex' },
             {data: 'stock_master.stock_no', name: 'stock_master.stock_no'},
             {data: 'qty', name: 'qty'},
+            {data: 'po_qty', name: 'po_qty'},
             {data: 'stock_master.satuan', name: 'stock_master.satuan'},
             {data: 'action', name:'action', orderable: false, searchable: false}
         ]

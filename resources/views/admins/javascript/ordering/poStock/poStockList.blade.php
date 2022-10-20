@@ -48,6 +48,10 @@
             var data = e.params.data;
         });
 
+        $("input").focus(function(){
+            $("#spbd").trigger('select2:open');
+        });
+
 	    $('#poStockForm').validator().on('submit', function (e) {
 		    var id = $('#id').val();
 		    if (!e.isDefaultPrevented()){

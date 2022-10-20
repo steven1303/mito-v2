@@ -161,7 +161,7 @@ class SpbdController extends SettingAjaxController
         $auth =  Auth::user();
         if($auth->can('spbd.view')){
             $data = Spbd::findOrFail($id);
-            $detail = $data->spbd_detail()->with('stock_master')->get();
+            $detail = $data->spbd_detail()->poStockDetail()->with('stock_master')->get();
             $access =   $this->accessSpbd( $auth, 'spbd');
             return DataTables::of($detail)
                 ->addIndexColumn()
@@ -206,14 +206,14 @@ class SpbdController extends SettingAjaxController
      */
     public function verify($id)
     {
-        if(Auth::user()->can('spbd.approve')){
+        if(Auth::user()->can('spbd.verify')){
             $data = Spbd::findOrFail($id);
             $data->status = "Verified";
             $data->update();
             return response()
-                ->json(['code'=>200,'message' => 'Transfer Branch Approve Success', 'stat' => 'Success']);
+                ->json(['code'=>200,'message' => 'SPBD Verified Success', 'stat' => 'Success']);
         }
-        return response()->json(['code'=>200,'message' => 'Error Transfer Branch Access Denied', 'stat' => 'Error']);
+        return response()->json(['code'=>200,'message' => 'Error SPBD Access Denied', 'stat' => 'Error']);
     }
 
      /**
@@ -224,15 +224,15 @@ class SpbdController extends SettingAjaxController
      */
     public function approve($id)
     {
-        if(Auth::user()->can('transfer.branch.approve')){
+        if(Auth::user()->can('spbd.approve')){
             $data = Spbd::findOrFail($id);
             $data->status = "Approved";
             $data->approve = Carbon::now();
             $data->update();
             return response()
-                ->json(['code'=>200,'message' => 'Transfer Branch Approve Success', 'stat' => 'Success']);
+                ->json(['code'=>200,'message' => 'SPBD Approve Success', 'stat' => 'Success']);
         }
-        return response()->json(['code'=>200,'message' => 'Error Transfer Branch Access Denied', 'stat' => 'Error']);
+        return response()->json(['code'=>200,'message' => 'Error SPBD Access Denied', 'stat' => 'Error']);
     }
 
     /**
