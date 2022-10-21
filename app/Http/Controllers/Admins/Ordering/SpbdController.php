@@ -159,7 +159,7 @@ class SpbdController extends SettingAjaxController
 
     public function record_detail($id, $status = NULL){
         $auth =  Auth::user();
-        if($auth->can('spbd.view')){
+        if($auth->canany(['spbd.view','po.stock.view'])){
             $data = Spbd::findOrFail($id);
             $detail = $data->spbd_detail()->poStockDetail()->with('stock_master')->get();
             $access =   $this->accessSpbd( $auth, 'spbd');
@@ -172,7 +172,7 @@ class SpbdController extends SettingAjaxController
                 ->rawColumns(['action'])->make(true);
         }
         return response()
-            ->json(['code'=>200,'message' => 'Error SPBD Access Denied', 'stat' => 'Error']);
+            ->json(['code'=>200,'message' => 'Error Access Denied', 'stat' => 'Error']);
     }
 
     /**

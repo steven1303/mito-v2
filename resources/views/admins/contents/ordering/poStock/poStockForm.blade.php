@@ -29,21 +29,19 @@
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label for="nama">Document Number</label>
-                                        <input type="text" class="form-control" id="po_no" name="po_no" placeholder="Input Stock Number" value="{{$po_stock->po_no}}" readonly> 
-                                        <span class="text-danger error-text stock_no_error"></span>
+                                        <input type="text" class="form-control" id="po_no" name="po_no" value="{{$po_stock->po_no}}" readonly> 
                                     </div>
                                 </div>
                                 <div class="col-md-2">
                                     <div class="form-group">
-                                        <label for="nama">Transfer Number</label>
-                                        <input type="text" class="form-control" id="spbd_no" name="spbd_no" placeholder="Input Stock Number" value="{{$po_stock->spbd_no}}" readonly> 
-                                        <span class="text-danger error-text stock_no_error"></span>
+                                        <label for="nama">SPBD Number</label>
+                                        <input type="text" class="form-control" id="spbd_no" name="spbd_no" value="{{$po_stock->spbd_no}}" readonly> 
                                     </div>
                                 </div>
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label>Vendor</label>
-                                        <input type="text" class="form-control" id="vendor" name="vendor" placeholder="Input Stock Number"  readonly> 
+                                        <input type="text" class="form-control" id="vendor" name="vendor" placeholder="Input Vendor Name"  readonly> 
                                         <span class="text-danger error-text vendor_error"></span>
                                     </div>
                                 </div>
@@ -66,7 +64,8 @@
       
                         <div class="card-footer">
                             @if($po_stock->status == 'Draft' )
-                                <button id="btnSave" type="button" onclick="request_transfer_receipt()" class="btn btn-primary">Request</button>
+                                <button id="btnSave" type="button" onclick="request_po_stock()" class="btn btn-primary">Request</button>
+                                <button id="btnSave" type="button" onclick="update_po_stock()" class="btn btn-primary">Update Detail</button>
                             @endif                            
                             <button type="button" class="btn btn-default" onclick="ajaxLoad('{{route('po.stock.index')}}')">Cancel</button>
                         </div>
@@ -140,36 +139,53 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Stock No</label>
-                            <select class="form-control select2" id="stock_master" name="stock_master" style="width: 100%;">
-                                <option></option>
-                            </select>                            
-                            <span class="text-danger error-text stock_master_error"></span>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Stock No</label>
+                                <input type="text" class="form-control" id="stock_master" name="stock_master" readonly>
+                                <input type="hidden" id="stock_master_id" name="stock_master_id">
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label>QTY</label>
-                            <input type="text" class="form-control" id="qty" name="qty" placeholder="Input QTY">
-                            <span class="text-danger error-text qty_error"></span>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>SPBD Qty</label>
+                                <input type="text" class="form-control" id="spbd_qty" name="spbd_qty" readonly>
+                                <input type="hidden" id="spbd_detail_id" name="spbd_detail_id">
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label>Satuan</label>
-                            <input type="text" class="form-control" id="satuan" name="satuan" placeholder="Satuan" readonly>
-                            <span class="text-danger error-text satuan_error"></span>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Satuan</label>
+                                <input type="text" class="form-control" id="satuan" name="satuan" placeholder="Satuan" readonly>
+                            </div>
+                        </div>                    
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Keterangan</label>
+                                <input type="text" class="form-control" id="spbd_ket" name="spbd_ket" readonly>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label>Keterangan</label>
-                            <input type="text" class="form-control" id="keterangan" name="keterangan" placeholder="Input keterangan">
-                            <span class="text-danger error-text keterangan_error"></span>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Price</label>
+                                <input type="text" class="form-control" id="price" name="price" placeholder="Input Price">
+                                <span class="text-danger error-text price_error"></span>
+                            </div>
                         </div>
-                    </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Discount</label>
+                                <input type="text" class="form-control" id="disc" name="disc" placeholder="Input Discount">
+                                <span class="text-danger error-text disc_error"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Keterangan</label>
+                                <input type="text" class="form-control" id="keterangan" name="keterangan" placeholder="Input keterangan">
+                                <span class="text-danger error-text keterangan_error"></span>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">

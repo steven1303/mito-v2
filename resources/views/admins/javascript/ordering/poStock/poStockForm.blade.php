@@ -1,10 +1,34 @@
 
 <script type="text/javascript">
     
-    $("#qty").inputmask('currency', {rightAlign: true});
+    $("#qty").inputmask('currency', {rightAlign: true});    
+    $("#price").inputmask('currency', {rightAlign: true, prefix: "Rp "});
+    $("#disc").inputmask('currency', {rightAlign: true, prefix: "Rp "});
 
     var save_method;
     save_method = 'add';
+    var table = $('#poStockDetailTable')
+    .DataTable({
+        'paging'      	: true,
+        'lengthChange'	: true,
+        'searching'   	: true,
+        'ordering'    	: true,
+        'info'        	: true,
+        'autoWidth'   	: false,
+        "processing"	: true,
+        "serverSide"	: true,
+        responsive      : true,
+        "ajax": "{{route('po.stock.record.detail', ['id' => $po_stock->id]) }}",
+        "columns": [
+            {data: 'DT_RowIndex', name: 'DT_RowIndex' },
+            {data: 'stock_master.stock_no', name: 'stock_master.stock_no'},
+            {data: 'qty', name: 'qty'},
+            {data: 'po_qty', name: 'po_qty'},
+            {data: 'stock_master.satuan', name: 'stock_master.satuan'},
+            {data: 'action', name:'action', orderable: false, searchable: false}
+        ]
+    });
+
     var table = $('#spbdDetailTable')
     .DataTable({
         'paging'      	: true,
@@ -16,62 +40,62 @@
         "processing"	: true,
         "serverSide"	: true,
         responsive      : true,
-        "ajax": "{{route('spbd.record.detail', ['id' => $po_stock->id, 'status' => 'PoStock']) }}",
+        "ajax": "{{route('spbd.record.detail', ['id' => $po_stock->spbd_id, 'status' => 'PoStock']) }}",
         "columns": [
             {data: 'DT_RowIndex', name: 'DT_RowIndex' },
             {data: 'stock_master.stock_no', name: 'stock_master.stock_no'},
             {data: 'qty', name: 'qty'},
+            {data: 'po_qty', name: 'po_qty'},
             {data: 'stock_master.satuan', name: 'stock_master.satuan'},
             {data: 'action', name:'action', orderable: false, searchable: false}
         ]
     });
 
-    @canany(['spbd.store', 'spbd.update'], Auth::user())
-    $('#stock_master').select2({
-        placeholder: "Select and Search",
-        ajax:{
-            url:"{{route('stock_master.search') }}",
-            dataType: 'json',
-            data: function (params) {
-                return {
-                    q: $.trim(params.term)
-                }
-            },
-            processResults: function (data) {
-                return {
-                    results: data
-                };
-            },
-            cache: true
-        },
-    })
+    @canany(['po.stock.store', 'po.stock.update'], Auth::user())
 
-    $('#stock_master').on('select2:select', function (e) {
-        var data = e.params.data;
-        $('#satuan').val(data.satuan);
-        $('#harga_jual').val(data.harga_jual);
-        $('#harga_modal').val(data.harga_modal);
-    });
+    function addItem(id) {
+        save_method = 'add';
+        $.ajax({
+        url: "{{ url('spbd/detail') }}" + '/' + id,
+        type: "GET",
+        dataType: "JSON",
+        success: function(data) {
+            $('#modal-input-item').modal('show');
+            $('#btnSave').text('Update');
+            $('#formTitle').text('Add Item');
+            $('#btnSave').attr('disabled',false);
+            $('#stock_master').val(data.stock_master.stock_no);
+            $('#stock_master_id').val(data.stock_master_id);
+            $('#spbd_detail_id').val(data.id);
+            $('#spbd_qty').val(data.qty);
+            $('#satuan').val(data.stock_master.satuan);
+            $('#spbd_ket').val(data.keterangan);
+        },
+        error : function() {
+            toastr.error('Error', 'Nothing Data');
+        }
+        });
+    }
 
     $('#modal-input-item').on('hidden.bs.modal', function (e) {
         cancel();
     })
 
-    $('#spbdDetailForm').validator().on('submit', function (e) {
+    $('#poStockDetailForm').validator().on('submit', function (e) {
         var id = $('#id').val();
         if (!e.isDefaultPrevented()){
             if (save_method == 'add')
             {
-                url = "{{route('spbd.store.detail', $spbd->id) }}";
+                url = "{{route('po.stock.store.detail', $po_stock->id) }}";
                 $('input[name=_method]').val('POST');
             } else {
-                url = "{{ url('spbd/detail') . '/' }}" + id;
+                url = "{{ url('po_stock/detail') . '/' }}" + id;
                 $('input[name=_method]').val('PATCH');
             }
             $.ajax({
                 url : url,
                 type : "POST",
-                data : $('#spbdDetailForm').serialize(),
+                data : $('#poStockDetailForm').serialize(),
                 beforeSend:function(){
                     $(document).find('span.error-text').text('');
                     $('#btnSave').attr('disabled',true);
@@ -107,7 +131,7 @@
     function cancel(){
         save_method = 'add';
         $('#id').val('');
-        $('#spbdDetailForm')[0].reset();
+        $('#poStockDetailForm')[0].reset();
         $('#btnSave').attr('disabled',false);
         $('#stock_master').val(null).trigger('change');
         $('input[name=_method]').val('POST');
@@ -118,15 +142,15 @@
     @can('spbd.request', Auth::user())
     function request_spbd() {
         $.ajax({
-        url: "{{route('spbd.request', $spbd->id) }}",
+        url: "{{route('spbd.request', $po_stock->id) }}",
         type: "GET",
         dataType: "JSON",
         success: function(data) {
             if(data.stat == 'Success')
             {
                 toastr.success(data.stat, data.message);
-                print_spbd( "{{ $spbd->id }}" );
-                ajaxLoad("{{ route('spbd.index') }}");
+                print_spbd( "{{ $po_stock->id }}" );
+                ajaxLoad("{{ route('po.stock.index') }}");
             }
             if(data.stat == 'Error')
             {
