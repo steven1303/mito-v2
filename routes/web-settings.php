@@ -32,7 +32,7 @@ Route::group([
         Route::delete('/vendor/{id}', 'destroy')->name('vendor.delete');
         Route::get('record/vendor', 'record')->name('vendor.record');
         Route::get('/vendor/{id}/info', 'info')->name('vendor.info');
-        // Route::get('record/search_vendor', 'searchVendor')->name('vendor.search');
+        Route::get('/serch/vendor', 'searchVendor')->name('vendor.search');
         // Route::get('/vendor/{id}/po_stock', 'po_stock')->name('vendor.po_stock');
     });
 

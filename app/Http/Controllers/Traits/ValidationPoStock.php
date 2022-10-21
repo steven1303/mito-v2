@@ -43,9 +43,6 @@ trait ValidationPoStock {
         if($access['delete'] && $data->status == "Draft"){
             $action .= '<button id="'. $detail->id .'" onclick="deleteData('. $detail->id .','.$name.')" class="btn btn-danger btn-xs"> Delete</button> ';
         }
-        if($status == "PoStock"){
-            $action .= '<button id="'. $detail->id .'" onclick="deleteData('. $detail->id .','.$name.')" class="btn btn-danger btn-xs"> Add Item</button> ';
-        }
         return $action;
     }
 

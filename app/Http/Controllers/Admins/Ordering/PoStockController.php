@@ -105,6 +105,24 @@ class PoStockController extends SettingAjaxController
             ->json(['code'=>200,'message' => 'Error PO Stock Access Denied', 'stat' => 'Error']);
     }
 
+    public function destroy($id)
+    {
+        if(Auth::user()->can('po.stock.delete')){
+            PoStock::destroy($id);
+            return response()->json(['code'=>200,'message' => 'Po Stock Success Deleted', 'stat' => 'Success']);
+        }
+        return response()->json(['code'=>200,'message' => 'Error Po Stock Access Denied', 'stat' => 'Error']);
+    }
+
+    public function destroy_detail($id)
+    {
+        if(Auth::user()->can('po.stock.delete')){
+            PoStockDetail::destroy($id);
+            return response()->json(['code'=>200,'message' => 'Po Stock Item Success Deleted', 'stat' => 'Success']);
+        }
+        return response()->json(['code'=>200,'message' => 'Error Po Stock Access Denied', 'stat' => 'Error']);
+    }
+
     public function record(){
         $auth =  Auth::user();
         if(Auth::user()->can('po.stock.view')){

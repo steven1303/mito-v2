@@ -32,6 +32,7 @@ class PoStockDetail extends Model
     {        
         return new Attribute(
             set: fn($value) => (float)Str::of($value)->replaceMatches('/[^\d\.]/', '')->value,
+            get: fn($value) => "Rp ". number_format($value ,2,'.',',') ,
         );
     }
 
@@ -45,6 +46,7 @@ class PoStockDetail extends Model
     {        
         return new Attribute(
             set: fn($value) => (float)Str::of($value)->replaceMatches('/[^\d\.]/', '')->value,
+            get: fn($value) => "Rp ". number_format($value ,2,'.',',') ,
         );
     }
     public function stock_master()

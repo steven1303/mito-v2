@@ -41,9 +41,9 @@ Route::group([
 
         // Detail PoStock
         Route::post('po_stock/detail/{id}', 'store_detail')->name('po.stock.store.detail');
-        // Route::get('po_stock/detail/{id}', 'edit_detail')->name('po.stock.edit.detail');
+        Route::get('po_stock/detail/{id}', 'edit_detail')->name('po.stock.edit.detail');
         // Route::patch('po_stock/detail/{id}', 'update_detail')->name('po.stock.update.detail');
-        // Route::delete('/po_stock/detail/{id}', 'destroy_detail')->name('po.stock.delete.detail');
+        Route::delete('/po_stock/detail/{id}', 'destroy_detail')->name('po.stock.delete.detail');
         Route::get('record/po_stock/{id}/{status?}', 'record_detail')->name('po.stock.record.detail');
     });
     

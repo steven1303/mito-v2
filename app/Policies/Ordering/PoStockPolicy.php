@@ -52,7 +52,7 @@ class PoStockPolicy
 
     public function delete(Admin $user)
     {
-        foreach ($user->roles->permissions_for_access('SPBD','po-stock-delete')->get() as $permission ) {
+        foreach ($user->roles->permissions_for_access('PoStock','po-stock-delete')->get() as $permission ) {
             if($permission->name == 'po-stock-delete'){
                 return true;
             }

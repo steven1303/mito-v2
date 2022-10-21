@@ -13,7 +13,7 @@
 <section class="content">
     <div class="container-fluid">
         <div class="row">
-            @canany(['adjustment.store', 'adjustment.update'], Auth::user())
+            @canany(['po.stock.store', 'po.stock.update'], Auth::user())
             <div class="col-md-12">
                 <div class="card card-primary">
                     <div class="card-header">
@@ -38,11 +38,13 @@
                                         <input type="text" class="form-control" id="spbd_no" name="spbd_no" value="{{$po_stock->spbd_no}}" readonly> 
                                     </div>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>Vendor</label>
-                                        <input type="text" class="form-control" id="vendor" name="vendor" placeholder="Input Vendor Name"  readonly> 
-                                        <span class="text-danger error-text vendor_error"></span>
+                                        <label>Vendor</label>                    
+                                        <select class="form-control select2" id="vendor" name="vendor" style="width: 100%;">
+                                            <option></option>
+                                        </select>                            
+                                        <span class="text-danger error-text spbd_error"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-2">

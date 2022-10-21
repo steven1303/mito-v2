@@ -205,7 +205,6 @@ class VendorController extends SettingAjaxController
 
         $tags = Vendor::where([
             ['name','like','%'.$term.'%'],
-            ['id_branch','=', Auth::user()->id_branch]
         ])->get();
 
         $formatted_tags = [];

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Spbd;
 use App\Models\PoStockDetail;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -24,6 +25,13 @@ class SpbdDetail extends Model
     {
         $query->addSelect(['po_qty' => PoStockDetail::whereColumn('spbd_detail_id', 'spbd_details.id')
             ->selectRaw('TRIM(IFNULL(sum(qty),0))+0 as po_qty')
+        ]);
+    }
+
+    public function scopeSpbd($query)
+    {
+        $query->addSelect(['spbd_status' => Spbd::whereColumn('id', 'spbd_details.spbd_id')
+            ->selectRaw('status as spbd_status')
         ]);
     }
 

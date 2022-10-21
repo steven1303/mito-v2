@@ -7,7 +7,7 @@
 
     var save_method;
     save_method = 'add';
-    var table = $('#poStockDetailTable')
+    var table1 = $('#poStockDetailTable')
     .DataTable({
         'paging'      	: true,
         'lengthChange'	: true,
@@ -23,13 +23,14 @@
             {data: 'DT_RowIndex', name: 'DT_RowIndex' },
             {data: 'stock_master.stock_no', name: 'stock_master.stock_no'},
             {data: 'qty', name: 'qty'},
-            {data: 'po_qty', name: 'po_qty'},
+            {data: 'price', name: 'price'},
+            {data: 'disc', name: 'disc'},
             {data: 'stock_master.satuan', name: 'stock_master.satuan'},
             {data: 'action', name:'action', orderable: false, searchable: false}
         ]
     });
 
-    var table = $('#spbdDetailTable')
+    var table2 = $('#spbdDetailTable')
     .DataTable({
         'paging'      	: true,
         'lengthChange'	: true,
@@ -52,6 +53,25 @@
     });
 
     @canany(['po.stock.store', 'po.stock.update'], Auth::user())
+
+    $('#vendor').select2({
+        placeholder: "Select and Search",
+        ajax:{
+            url:"{{route('vendor.search') }}",
+            dataType: 'json',
+            data: function (params) {
+                return {
+                    q: $.trim(params.term)
+                }
+            },
+            processResults: function (data) {
+                return {
+                    results: data
+                };
+            },
+            cache: true
+        },
+    })
 
     function addItem(id) {
         save_method = 'add';
@@ -101,7 +121,8 @@
                     $('#btnSave').attr('disabled',true);
                 },
                 success : function(data) {
-                    table.ajax.reload();                    
+                    table1.ajax.reload();
+                    table2.ajax.reload();                 
                     if(data.stat == 'Success'){
                         cancel();
                         toastr.success(data.stat, data.message);
@@ -139,8 +160,8 @@
     }
     @endcanany
 
-    @can('spbd.request', Auth::user())
-    function request_spbd() {
+    @can('po.stock.request', Auth::user())
+    function request_po_stock() {
         $.ajax({
         url: "{{route('spbd.request', $po_stock->id) }}",
         type: "GET",
@@ -175,7 +196,7 @@
         save_method = 'edit';
         $('input[name=_method]').val('PATCH');
         $.ajax({
-        url: "{{ url('spbd/detail') }}" + '/' + id,
+        url: "{{ url('po_stock/detail') }}" + '/' + id,
         type: "GET",
         dataType: "JSON",
         success: function(data) {
@@ -212,18 +233,19 @@
             if (willDelete.value) {
                 var csrf_token = $('meta[name="csrf-token"]').attr('content');
                 $.ajax({
-                    url : "{{ url('spbd/detail') }}" + '/' + id,
+                    url : "{{ url('po_stock/detail') }}" + '/' + id,
                     type : "POST",
                     data : {'_method' : 'DELETE', '_token' : csrf_token},
                     success : function(data) {
-                        table.ajax.reload();
+                        table1.ajax.reload();
+                        table2.ajax.reload();
                         swal({
                             type: 'success',
                             title: 'Deleted',
                             text: 'Poof! Your record has been deleted!',
                         });
                     },
-                    error : function () {
+                    error : function (data) {
                         swal( {
                             type: 'error',
                             title: 'Oops...',

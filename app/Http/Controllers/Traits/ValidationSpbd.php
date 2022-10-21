@@ -40,8 +40,8 @@ trait ValidationSpbd {
         if($access['delete'] && $data->status == "Draft"){
             $action .= '<button id="'. $detail->id .'" onclick="deleteData('. $detail->id .','.$name.')" class="btn btn-danger btn-xs"> Delete</button> ';
         }
-        if($status == "PoStock" && $detail->po_qty !== $detail->qty){
-            $action .= '<button id="'. $detail->id .'" onclick="addItem('. $detail->id .')" class="btn btn-info btn-xs"> Add Item</button> ';
+        if($status == "PoStock" && $detail->po_qty < $detail->qty){
+            $action .= '<button id="'. $detail->id .'" onclick="addItem('. $detail->id .')" class="btn btn-info btn-xs">Add Item</button> ';
         }
         return $action;
     }
