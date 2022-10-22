@@ -73,7 +73,7 @@ class PoStockPolicy
     public function verify1(Admin $user)
     {
         foreach ($user->roles->permissions_for_access('PoStock','po-stock-verify1')->get() as $permission ) {
-            if($permission->name == 'po-stock-verify'){
+            if($permission->name == 'po-stock-verify1'){
                 return true;
             }
         }
@@ -83,7 +83,7 @@ class PoStockPolicy
     public function verify2(Admin $user)
     {
         foreach ($user->roles->permissions_for_access('PoStock','po-stock-verify2')->get() as $permission ) {
-            if($permission->name == 'po-stock-verify'){
+            if($permission->name == 'po-stock-verify2'){
                 return true;
             }
         }

@@ -13,7 +13,7 @@ class PoStockUpdatePatchRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,8 +23,16 @@ class PoStockUpdatePatchRequest extends FormRequest
      */
     public function rules()
     {
+        return [ 
+        'vendor' => ['required','not_in:0'],
+        ];
+    }
+
+    public function messages()
+    {
         return [
-            //
+            'vendor.required' => 'Vendor is required',
+            'vendor.not_in' => 'Vendor is required',
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admins\Ordering;
 
+use Carbon\Carbon;
 use App\Models\PoStock;
 use Illuminate\Http\Request;
 use App\Models\PoStockDetail;
@@ -12,7 +13,9 @@ use App\Http\Controllers\Traits\ValidationPoStock;
 use App\Http\Controllers\Traits\StockMasterMovement;
 use App\Http\Controllers\Admins\SettingAjaxController;
 use App\Http\Requests\Ordering\PoStockStorePostRequest;
+use App\Http\Requests\Ordering\PoStockUpdatePatchRequest;
 use App\Http\Requests\Ordering\PoStockDetailStorePostRequest;
+use App\Http\Requests\Ordering\PoStockDetailUpdatePatchRequest;
 
 class PoStockController extends SettingAjaxController
 {
@@ -105,6 +108,42 @@ class PoStockController extends SettingAjaxController
             ->json(['code'=>200,'message' => 'Error PO Stock Access Denied', 'stat' => 'Error']);
     }
 
+    public function edit_detail($id)
+    {
+        if(Auth::user()->can('po.stock.update')){
+            $data = PoStockDetail::with('stock_master','spbd_detail')->findOrFail($id);
+            return $data;
+        }
+        return response()->json(['code'=>200,'message' => 'Error SPBD Access Denied', 'stat' => 'Error']);
+    }
+
+    public function update(PoStockUpdatePatchRequest $request, $id)
+    {
+        if(Auth::user()->can('po.stock.update')){
+            $data = PoStock::find($id);
+            $data->vendor_id    = $request['vendor'];
+            $data->update();
+            return response()
+                ->json(['code'=>200,'message' => 'Update PoStock Detail Success', 'stat' => 'Success']);
+        }
+        return response()
+            ->json(['code'=>200,'message' => 'Error Transfer Branch Access Denied', 'stat' => 'Error']);
+    }
+
+    public function update_detail(PoStockDetailUpdatePatchRequest $request, $id)
+    {
+        if(Auth::user()->can('po.stock.update')){
+            $data = PoStockDetail::find($id);
+            $data->price    = $request['price'];
+            $data->disc    = $request['disc'];
+            $data->keterangan    = $request['keterangan'];
+            $data->update();
+            return response()
+                ->json(['code'=>200,'message' => 'Edit Item PO Stock Success', 'stat' => 'Success']);
+        }
+        return response()->json(['code'=>200,'message' => 'Error PO Stock Access Denied', 'stat' => 'Error']);
+    }
+
     public function destroy($id)
     {
         if(Auth::user()->can('po.stock.delete')){
@@ -157,5 +196,60 @@ class PoStockController extends SettingAjaxController
         }
         return response()
             ->json(['code'=>200,'message' => 'Error Access Denied', 'stat' => 'Error']);
+    }
+
+    public function request($id)
+    {
+        if(Auth::user()->can('po.stock.request')){
+            $data = PoStock::findOrFail($id);
+            if($data->po_stock_detail->count() < 1)
+            {
+                return response()->json(['code'=>200,'message' => 'Error PO Stock not have detail', 'stat' => 'Error']);
+            }
+            $data->status = "Request";
+            $data->request = Carbon::now();
+            $data->update();
+            return response()
+                ->json(['code'=>200,'message' => 'Request PO Stock Success', 'stat' => 'Success']);
+        }
+        return response()->json(['code'=>200,'message' => 'Error PO Stock Access Denied', 'stat' => 'Error']);
+    }
+
+    public function verify1($id)
+    {
+        if(Auth::user()->can('po.stock.verify1')){
+            $data = PoStock::findOrFail($id);
+            $data->status = "Verified1";
+            $data->update();
+            return response()
+                ->json(['code'=>200,'message' => 'PO Stock Verified 1 Success', 'stat' => 'Success']);
+        }
+        return response()->json(['code'=>200,'message' => 'Error PO Stock Access Denied', 'stat' => 'Error']);
+    }
+
+    public function verify2($id)
+    {
+        if(Auth::user()->can('po.stock.verify2')){
+            $data = PoStock::findOrFail($id);
+            $data->status = "Verified2";
+            $data->update();
+            return response()
+                ->json(['code'=>200,'message' => 'PO Stock Verified 2 Success', 'stat' => 'Success']);
+        }
+        return response()->json(['code'=>200,'message' => 'Error PO Stock Access Denied', 'stat' => 'Error']);
+    }
+
+    public function approve($id)
+    {
+        if(Auth::user()->can('po.stock.approve')){
+            $data = PoStock::findOrFail($id);
+            $data->status = "Approved";
+            $data->approve = Carbon::now();
+            $this->addMovement($data->po_stock_detail()->get(), $data->po_no, "POS","PO Stock Approved at", Carbon::now());
+            $data->update();
+            return response()
+                ->json(['code'=>200,'message' => 'PO Stock Approve Success', 'stat' => 'Success']);
+        }
+        return response()->json(['code'=>200,'message' => 'Error PO Stock Access Denied', 'stat' => 'Error']);
     }
 }

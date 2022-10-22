@@ -4,7 +4,7 @@ namespace App\Http\Requests\Ordering;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PoStockDetailUpdatePatchRequest extends FormRequest
+class ReceiptUpdatePatchRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,7 @@ class PoStockDetailUpdatePatchRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return false;
     }
 
     /**

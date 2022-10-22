@@ -26,25 +26,48 @@ Route::group([
         Route::get('record/spbd/{id}/{status?}', 'record_detail')->name('spbd.record.detail');
     });
 
-    // SPBD
+    // PO Stock
     Route::controller(Admins\Ordering\PoStockController::class)->group(function (){
         Route::get('/po_stock', 'index')->name('po.stock.index');    
         Route::get('/po_stock/form/{id}', 'po_stock_form')->name('po.stock.form');    
         Route::post('/po_stock', 'store')->name('po.stock.store');     
-        // Route::patch('po_stock/{id}', 'update')->name('po.stock.update');
-        // Route::delete('/po_stock/{id}', 'destroy')->name('po.stock.delete');
+        Route::patch('po_stock/{id}', 'update')->name('po.stock.update');
+        Route::delete('/po_stock/{id}', 'destroy')->name('po.stock.delete');
         Route::get('record/po_stock', 'record')->name('po.stock.record');
-        // Route::get('/po_stock/{id}/request', 'request')->name('po.stock.request');
-        // Route::get('/po_stock/{id}/verify', 'verify')->name('po.stock.verify');
-        // Route::get('/po_stock/{id}/approve', 'approve')->name('po.stock.approve');
+        Route::get('/po_stock/{id}/request', 'request')->name('po.stock.request');
+        Route::get('/po_stock/{id}/verify1', 'verify1')->name('po.stock.verify1');
+        Route::get('/po_stock/{id}/verify2', 'verify2')->name('po.stock.verify2');
+        Route::get('/po_stock/{id}/approve', 'approve')->name('po.stock.approve');
         // Route::get('search/po_stock', 'searchTransferBranch')->name('po.stock.search');
 
         // Detail PoStock
         Route::post('po_stock/detail/{id}', 'store_detail')->name('po.stock.store.detail');
         Route::get('po_stock/detail/{id}', 'edit_detail')->name('po.stock.edit.detail');
-        // Route::patch('po_stock/detail/{id}', 'update_detail')->name('po.stock.update.detail');
+        Route::patch('po_stock/detail/{id}', 'update_detail')->name('po.stock.update.detail');
         Route::delete('/po_stock/detail/{id}', 'destroy_detail')->name('po.stock.delete.detail');
         Route::get('record/po_stock/{id}/{status?}', 'record_detail')->name('po.stock.record.detail');
+    });
+
+    // Receipt
+    Route::controller(Admins\Ordering\ReceiptController::class)->group(function (){
+        // Route::get('/po_stock', 'index')->name('po.stock.index');    
+        // Route::get('/po_stock/form/{id}', 'po_stock_form')->name('po.stock.form');    
+        // Route::post('/po_stock', 'store')->name('po.stock.store');     
+        // Route::patch('po_stock/{id}', 'update')->name('po.stock.update');
+        // Route::delete('/po_stock/{id}', 'destroy')->name('po.stock.delete');
+        // Route::get('record/po_stock', 'record')->name('po.stock.record');
+        // Route::get('/po_stock/{id}/request', 'request')->name('po.stock.request');
+        // Route::get('/po_stock/{id}/verify1', 'verify1')->name('po.stock.verify1');
+        // Route::get('/po_stock/{id}/verify2', 'verify2')->name('po.stock.verify2');
+        // Route::get('/po_stock/{id}/approve', 'approve')->name('po.stock.approve');
+        // Route::get('search/po_stock', 'searchTransferBranch')->name('po.stock.search');
+
+        // Detail Receipt
+        // Route::post('po_stock/detail/{id}', 'store_detail')->name('po.stock.store.detail');
+        // Route::get('po_stock/detail/{id}', 'edit_detail')->name('po.stock.edit.detail');
+        // Route::patch('po_stock/detail/{id}', 'update_detail')->name('po.stock.update.detail');
+        // Route::delete('/po_stock/detail/{id}', 'destroy_detail')->name('po.stock.delete.detail');
+        // Route::get('record/po_stock/{id}/{status?}', 'record_detail')->name('po.stock.record.detail');
     });
     
 });

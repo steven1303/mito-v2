@@ -86,7 +86,7 @@ return new class extends Migration
                 'stat' => 1,
             ],
             [
-                'for' => 'SPBD',
+                'for' => 'PoStock',
                 'name' => 'po-stock-print',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),

@@ -49,8 +49,15 @@ class PoStockDetail extends Model
             get: fn($value) => "Rp ". number_format($value ,2,'.',',') ,
         );
     }
+
     public function stock_master()
     {
         return $this->belongsTo('App\Models\StockMaster','stock_master_id')->soh();
     }
+
+    public function spbd_detail()
+    {
+        return $this->belongsTo('App\Models\SpbdDetail','spbd_detail_id');
+    }
+    
 }

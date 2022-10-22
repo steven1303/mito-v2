@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use App\Scopes\BranchScope;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -57,7 +58,6 @@ class StockMovement extends Model
     protected function orderQty(): Attribute
     {        
         return new Attribute(
-            set: fn($value) => str_replace(",", "", $value),
             get: fn($value) => $value - 0
         );
     }
@@ -65,7 +65,6 @@ class StockMovement extends Model
     protected function sellQty(): Attribute
     {        
         return new Attribute(
-            set: fn($value) => str_replace(",", "", $value),
             get: fn($value) => $value - 0
         );
     }
@@ -73,7 +72,6 @@ class StockMovement extends Model
     protected function inQty(): Attribute
     {        
         return new Attribute(
-            set: fn($value) => str_replace(",", "", $value),
             get: fn($value) => $value - 0
         );
     }
@@ -81,7 +79,6 @@ class StockMovement extends Model
     protected function outQty(): Attribute
     {        
         return new Attribute(
-            set: fn($value) => str_replace(",", "", $value),
             get: fn($value) => $value - 0
         );
     }
@@ -89,7 +86,6 @@ class StockMovement extends Model
     protected function hargaModal(): Attribute
     {        
         return new Attribute(
-            set: fn($value) => str_replace(",", "", $value),
             get: fn($value) => $value - 0
         );
     }
@@ -97,7 +93,6 @@ class StockMovement extends Model
     protected function hargaJual(): Attribute
     {        
         return new Attribute(
-            set: fn($value) => str_replace(",", "", $value),
             get: fn($value) => $value - 0
         );
     }
