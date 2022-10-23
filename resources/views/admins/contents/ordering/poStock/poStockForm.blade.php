@@ -42,7 +42,6 @@
                                     <div class="form-group">
                                         <label>Vendor</label>                    
                                         <select class="form-control select2" id="vendor" name="vendor" style="width: 100%;">
-                                            <option></option>
                                             @if ($po_stock->vendor_id !== 0)
                                                 <option value="{{$po_stock->vendor_id}}" selected>{{$po_stock->vendor->name}}</option>
                                             @endif
@@ -53,7 +52,7 @@
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label>PPN</label>
-                                        <input type="text" class="form-control" id="ppn" name="ppn" value="{{config('mito.tax.name')}}" readonly> 
+                                        <input type="text" class="form-control" id="ppn" name="ppn" value="@if ($po_stock->vendor_id !== 0) {{($po_stock->vendor->ppn) ? config('mito.tax.name') : '0 %'}} @else 0 % @endif" readonly> 
                                     </div>
                                 </div>
                                 <div class="col-md-2">

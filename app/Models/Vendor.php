@@ -22,6 +22,7 @@ class Vendor extends Model
         'telp',
         'npwp',
         'tax',
+        'ppn'
     ];
 
     protected static function booted()

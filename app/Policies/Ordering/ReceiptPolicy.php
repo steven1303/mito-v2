@@ -62,38 +62,8 @@ class ReceiptPolicy
 
     public function request(Admin $user)
     {
-        foreach ($user->roles->permissions_for_access('Receipt','receipt-request')->get() as $permission ) {
-            if($permission->name == 'receipt-request'){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public function verify1(Admin $user)
-    {
-        foreach ($user->roles->permissions_for_access('Receipt','receipt-verify1')->get() as $permission ) {
-            if($permission->name == 'receipt-verify1'){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public function verify2(Admin $user)
-    {
-        foreach ($user->roles->permissions_for_access('Receipt','receipt-verify2')->get() as $permission ) {
-            if($permission->name == 'receipt-verify2'){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public function approve(Admin $user)
-    {
-        foreach ($user->roles->permissions_for_access('Receipt','receipt-approve')->get() as $permission ) {
-            if($permission->name == 'receipt-approve'){
+        foreach ($user->roles->permissions_for_access('Receipt','receipt-open')->get() as $permission ) {
+            if($permission->name == 'receipt-open'){
                 return true;
             }
         }

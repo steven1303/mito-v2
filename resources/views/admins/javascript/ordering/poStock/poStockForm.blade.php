@@ -5,6 +5,10 @@
     $("#price").inputmask('currency', {rightAlign: true, prefix: "Rp "});
     $("#disc").inputmask('currency', {rightAlign: true, prefix: "Rp "});
 
+    @if ($po_stock->status !== "Draft") 
+    $("#vendor").select2("readonly", true);   
+    @endif
+
     var save_method;
     save_method = 'add';
     var table1 = $('#poStockDetailTable')
@@ -72,6 +76,15 @@
             cache: true
         },
     })
+
+    $('#vendor').on('select2:select', function (e) {
+        var data = e.params.data;        
+        if(data.ppn == 1){
+            $('#ppn').val("{{config('mito.tax.name')}}");
+        }else{
+            $('#ppn').val("0 %");
+        }
+    });
 
     function addItem(id) {
         save_method = 'add';

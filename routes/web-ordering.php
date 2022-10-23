@@ -50,24 +50,24 @@ Route::group([
 
     // Receipt
     Route::controller(Admins\Ordering\ReceiptController::class)->group(function (){
-        // Route::get('/po_stock', 'index')->name('po.stock.index');    
-        // Route::get('/po_stock/form/{id}', 'po_stock_form')->name('po.stock.form');    
-        // Route::post('/po_stock', 'store')->name('po.stock.store');     
-        // Route::patch('po_stock/{id}', 'update')->name('po.stock.update');
-        // Route::delete('/po_stock/{id}', 'destroy')->name('po.stock.delete');
-        // Route::get('record/po_stock', 'record')->name('po.stock.record');
-        // Route::get('/po_stock/{id}/request', 'request')->name('po.stock.request');
-        // Route::get('/po_stock/{id}/verify1', 'verify1')->name('po.stock.verify1');
-        // Route::get('/po_stock/{id}/verify2', 'verify2')->name('po.stock.verify2');
-        // Route::get('/po_stock/{id}/approve', 'approve')->name('po.stock.approve');
-        // Route::get('search/po_stock', 'searchTransferBranch')->name('po.stock.search');
+        Route::get('/rec_stock', 'index')->name('rec.stock.index');    
+        Route::get('/rec_stock/form/{id}', 'rec_stock_form')->name('rec.stock.form');    
+        // Route::post('/rec_stock', 'store')->name('rec.stock.store');     
+        // Route::patch('rec_stock/{id}', 'update')->name('rec.stock.update');
+        // Route::delete('/rec_stock/{id}', 'destroy')->name('rec.stock.delete');
+        // Route::get('record/rec_stock', 'record')->name('rec.stock.record');
+        // Route::get('/rec_stock/{id}/request', 'request')->name('rec.stock.request');
+        // Route::get('/rec_stock/{id}/verify1', 'verify1')->name('rec.stock.verify1');
+        // Route::get('/rec_stock/{id}/verify2', 'verify2')->name('rec.stock.verify2');
+        // Route::get('/rec_stock/{id}/approve', 'approve')->name('rec.stock.approve');
+        // Route::get('search/rec_stock', 'searchTransferBranch')->name('rec.stock.search');
 
         // Detail Receipt
-        // Route::post('po_stock/detail/{id}', 'store_detail')->name('po.stock.store.detail');
-        // Route::get('po_stock/detail/{id}', 'edit_detail')->name('po.stock.edit.detail');
-        // Route::patch('po_stock/detail/{id}', 'update_detail')->name('po.stock.update.detail');
-        // Route::delete('/po_stock/detail/{id}', 'destroy_detail')->name('po.stock.delete.detail');
-        // Route::get('record/po_stock/{id}/{status?}', 'record_detail')->name('po.stock.record.detail');
+        // Route::post('rec_stock/detail/{id}', 'store_detail')->name('rec.stock.store.detail');
+        // Route::get('rec_stock/detail/{id}', 'edit_detail')->name('rec.stock.edit.detail');
+        // Route::patch('rec_stock/detail/{id}', 'update_detail')->name('rec.stock.update.detail');
+        // Route::delete('/rec_stock/detail/{id}', 'destroy_detail')->name('rec.stock.delete.detail');
+        // Route::get('record/rec_stock/{id}/{status?}', 'record_detail')->name('rec.stock.record.detail');
     });
     
 });

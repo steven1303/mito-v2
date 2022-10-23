@@ -91,6 +91,13 @@
                                         <span class="text-danger error-text address_error"></span>
                                     </div>
                                 </div>
+                                <div class="col-md-12">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" id="status_ppn" name="status_ppn"> PPN {{config('mito.tax.name')}}
+                                        </label>
+                                    </div>
+                                </div>
                             </div> 
                         </div>
                       <!-- /.card-body -->

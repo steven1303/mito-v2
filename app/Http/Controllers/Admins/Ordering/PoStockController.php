@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admins\Ordering;
 
 use Carbon\Carbon;
+use App\Models\Spbd;
 use App\Models\PoStock;
 use Illuminate\Http\Request;
 use App\Models\PoStockDetail;
@@ -122,6 +123,7 @@ class PoStockController extends SettingAjaxController
         if(Auth::user()->can('po.stock.update')){
             $data = PoStock::find($id);
             $data->vendor_id    = $request['vendor'];
+            $data->ppn    = config('mito.tax.decimal');
             $data->update();
             return response()
                 ->json(['code'=>200,'message' => 'Update PoStock Detail Success', 'stat' => 'Success']);
@@ -247,6 +249,9 @@ class PoStockController extends SettingAjaxController
             $data->approve = Carbon::now();
             $this->addMovement($data->po_stock_detail()->get(), $data->po_no, "POS","PO Stock Approved at", Carbon::now());
             $data->update();
+            $spbd =  Spbd::findOrFail($data->spbd_id);
+            $spbd->status = 'Closed';
+            $spbd->update();
             return response()
                 ->json(['code'=>200,'message' => 'PO Stock Approve Success', 'stat' => 'Success']);
         }

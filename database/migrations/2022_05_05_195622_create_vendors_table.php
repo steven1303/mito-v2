@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('telp')->nullable();
             $table->string('npwp');
             $table->decimal('tax')->default(0);
+            $table->Integer('ppn')->default(0);
             $table->timestamps();
         });
 

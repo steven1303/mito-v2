@@ -40,6 +40,10 @@ class VendorController extends SettingAjaxController
     public function store(VendorStorePostRequest $request)
     {
         if(Auth::user()->can('vendor.store')){
+            $ppn_status = 0;
+            if($request->has('status_ppn')){
+                $ppn_status = 1;
+            }
             $data = [
                 'branch_id' => Auth::user()->branch_id,
                 'name' => $request['name'],
@@ -51,7 +55,8 @@ class VendorController extends SettingAjaxController
                 'pic' => $request['pic'],
                 'telp' => $request['telp'],
                 'npwp' => $request['npwp'],
-                'tax' => config('mito.tax.decimal'),
+                'tax' => ($request['status_ppn']) ? config('mito.tax.decimal') : 0,
+                'ppn' => $ppn_status
             ];
             $activity = Vendor::create($data);
             if ($activity->exists) {
@@ -76,6 +81,10 @@ class VendorController extends SettingAjaxController
     public function update(VendorUpdatePatchRequest $request, $id)
     {
         if(Auth::user()->can('vendor.update')){
+            $ppn_status = 0;
+            if($request->has('status_ppn')){
+                $ppn_status = 1;
+            }
             $data = Vendor::find($id);
             $data->name    = $request['name'];
             $data->email = $request['email'];
@@ -86,7 +95,8 @@ class VendorController extends SettingAjaxController
             $data->pic = $request['pic'];
             $data->telp = $request['telp'];
             $data->npwp    = $request['npwp'];
-            $data->tax = config('mito.tax.decimal');
+            $data->tax = ($request['status_ppn']) ? config('mito.tax.decimal') : 0;
+            $data->ppn = $ppn_status;
             $data->update();
             return response()
                 ->json(['code'=>200,'message' => 'Edit Vendor Success', 'stat' => 'Success']);
@@ -213,6 +223,7 @@ class VendorController extends SettingAjaxController
             $formatted_tags[] = [
                 'id'    => $tag->id,
                 'text'  => $tag->name,
+                'ppn'   => $tag->ppn,
             ];
         }
 

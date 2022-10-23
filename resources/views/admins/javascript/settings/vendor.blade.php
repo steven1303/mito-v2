@@ -109,7 +109,11 @@
             $('#telp').val(data.telp);
             $('#phone').val(data.phone);
             $('#npwp').val(data.npwp);
-            $('#tax').val(data.tax_id);
+            if(data.ppn == 1){
+                document.getElementById('status_ppn').checked  = true;
+            }else{
+                document.getElementById('status_ppn').checked  = false;
+            }
             if(data.stat == 'Error'){
                 toastr.error(data.stat, data.message);
             }
