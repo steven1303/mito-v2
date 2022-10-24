@@ -31,7 +31,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="javascript:ajaxLoad('{{route('vendor.index')}}')" class="nav-link">
+                            <a href="javascript:ajaxLoad('{{route('rec.stock.index')}}')" class="nav-link">
                                 <i class="nav-icon fas fa-poll"></i><p>Receipt</p>
                             </a>
                         </li>

@@ -44,5 +44,13 @@ class OrderingServiceProvider extends ServiceProvider
         Gate::define('po.stock.verify2', 'App\Policies\Ordering\PoStockPolicy@verify2');
         Gate::define('po.stock.approve', 'App\Policies\Ordering\PoStockPolicy@approve');
         Gate::define('po.stock.print', 'App\Policies\Ordering\PoStockPolicy@print');
+
+        // Receipt Stock
+        Gate::define('receipt.view', 'App\Policies\Ordering\ReceiptPolicy@view');
+        Gate::define('receipt.store', 'App\Policies\Ordering\ReceiptPolicy@store');
+        Gate::define('receipt.update', 'App\Policies\Ordering\ReceiptPolicy@update');
+        Gate::define('receipt.delete', 'App\Policies\Ordering\ReceiptPolicy@delete');
+        Gate::define('receipt.request', 'App\Policies\Ordering\ReceiptPolicy@open');
+        Gate::define('receipt.print', 'App\Policies\Ordering\ReceiptPolicy@print');
     }
 }
