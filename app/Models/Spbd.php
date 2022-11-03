@@ -27,6 +27,20 @@ class Spbd extends Model
         static::addGlobalScope(new BranchScope);
     }
 
+    public function scopePoStock($query)
+    {
+        $query->addSelect(['po_stock' => PoStock::whereColumn('spbd_id', 'spbds.id')
+            ->selectRaw('count(id) as po_stock')
+        ]);
+    }
+
+    public function scopeCountDetail($query)
+    {
+        $query->addSelect(['count_detail' => SpbdDetail::whereColumn('spbd_id', 'spbds.id')
+            ->selectRaw('count(id) as count_detail')
+        ]);
+    }
+
     public function approve(): Attribute
     {
         return new Attribute(

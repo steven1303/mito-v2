@@ -30,7 +30,9 @@ class OrderingServiceProvider extends ServiceProvider
         Gate::define('spbd.update', 'App\Policies\Ordering\SpbdPolicy@update');
         Gate::define('spbd.delete', 'App\Policies\Ordering\SpbdPolicy@delete');
         Gate::define('spbd.request', 'App\Policies\Ordering\SpbdPolicy@request');
-        Gate::define('spbd.verify', 'App\Policies\Ordering\SpbdPolicy@verify');
+        Gate::define('spbd.verify1', 'App\Policies\Ordering\SpbdPolicy@verify1');
+        Gate::define('spbd.verify2', 'App\Policies\Ordering\SpbdPolicy@verify2');
+        Gate::define('spbd.reject', 'App\Policies\Ordering\SpbdPolicy@reject');
         Gate::define('spbd.approve', 'App\Policies\Ordering\SpbdPolicy@approve');
         Gate::define('spbd.print', 'App\Policies\Ordering\SpbdPolicy@print');
 

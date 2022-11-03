@@ -204,14 +204,36 @@ class SpbdController extends SettingAjaxController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function verify($id)
+    public function verify1($id)
     {
-        if(Auth::user()->can('spbd.verify')){
-            $data = Spbd::findOrFail($id);
-            $data->status = "Verified";
+        if(Auth::user()->can('spbd.verify1')){
+            $data = Spbd::countDetail()->findOrFail($id);
+            if($data->count_detail < 1){
+                return response()
+                ->json(['code'=>200,'message' => 'SPBD Not have Item', 'stat' => 'Error']);
+            }
+            $data->status = "Verified 1";
             $data->update();
             return response()
-                ->json(['code'=>200,'message' => 'SPBD Verified Success', 'stat' => 'Success']);
+                ->json(['code'=>200,'message' => 'SPBD Verified 1 Success', 'stat' => 'Success']);
+        }
+        return response()->json(['code'=>200,'message' => 'Error SPBD Access Denied', 'stat' => 'Error']);
+    }
+
+     /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function verify2($id)
+    {
+        if(Auth::user()->can('spbd.verify2')){
+            $data = Spbd::findOrFail($id);
+            $data->status = "Verified 2";
+            $data->update();
+            return response()
+                ->json(['code'=>200,'message' => 'SPBD Verified 2 Success', 'stat' => 'Success']);
         }
         return response()->json(['code'=>200,'message' => 'Error SPBD Access Denied', 'stat' => 'Error']);
     }
@@ -233,6 +255,21 @@ class SpbdController extends SettingAjaxController
                 ->json(['code'=>200,'message' => 'SPBD Approve Success', 'stat' => 'Success']);
         }
         return response()->json(['code'=>200,'message' => 'Error SPBD Access Denied', 'stat' => 'Error']);
+    }
+
+    public function reject($id)
+    {
+        if(Auth::user()->can('spbd.reject')){
+            $data = Spbd::poStock()->findOrFail($id);
+            if($data->po_stock < 1 || $data->status == 'Verified 1' || $data->status == 'Verified 2' || $data->status == 'Approved' ){
+                $data->status = "Request";
+                $data->update();
+                return response()
+                    ->json(['code'=>200,'message' => 'SPBD Reject Success', 'stat' => 'Success']);
+            }
+            return response()->json(['code'=>200,'message' => 'Error SPBD Rejected', 'stat' => 'Error']);
+        }
+        return response()->json(['code'=>200,'message' => 'Error SPBD Not Have Access', 'stat' => 'Error']);
     }
 
     /**

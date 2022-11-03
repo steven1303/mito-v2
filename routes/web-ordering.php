@@ -14,8 +14,10 @@ Route::group([
         Route::delete('/spbd/{id}', 'destroy')->name('spbd.delete');
         Route::get('record/spbd', 'record')->name('spbd.record');
         Route::get('/spbd/{id}/request', 'request')->name('spbd.request');
-        Route::get('/spbd/{id}/verify', 'verify')->name('spbd.verify');
+        Route::get('/spbd/{id}/verify1', 'verify1')->name('spbd.verify1');
+        Route::get('/spbd/{id}/verify2', 'verify2')->name('spbd.verify2');
         Route::get('/spbd/{id}/approve', 'approve')->name('spbd.approve');
+        Route::get('/spbd/{id}/reject', 'reject')->name('spbd.reject');
         Route::get('search/spbd', 'search')->name('spbd.search');
 
         // Detail SPBD

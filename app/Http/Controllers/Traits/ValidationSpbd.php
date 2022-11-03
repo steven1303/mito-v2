@@ -16,10 +16,13 @@ trait ValidationSpbd {
         if($access['edit']){
             $action .= '<a href="'.$spbd_detail.'" class="btn btn-primary btn-xs"> Open</a> ';
         }
-        if($access['verify'] && $data->status == 'Request'){
-            $action .= '<button id="'. $data->id .'" onclick="verify('. $data->id .')" class="btn btn-success btn-xs"> Verify</button> ';
+        if($access['verify1'] && $data->status == 'Request'){
+            $action .= '<button id="'. $data->id .'" onclick="verify1('. $data->id .')" class="btn btn-success btn-xs"> Verify 1</button> ';
         }
-        if($access['approve'] && $data->status == 'Verified'){
+        if($access['verify2'] && $data->status == 'Verified 1'){
+            $action .= '<button id="'. $data->id .'" onclick="verify2('. $data->id .')" class="btn btn-success btn-xs"> Verify 2</button> ';
+        }
+        if($access['approve'] && $data->status == 'Verified 2'){
             $action .= '<button id="'. $data->id .'" onclick="approve('. $data->id .')" class="btn btn-success btn-xs"> Approve</button> ';
         }
         if($access['delete'] && $data->status == 'Draft'){
@@ -34,10 +37,10 @@ trait ValidationSpbd {
     function buttonActionDetail($detail, $access, $data, $status = NULL){
         $action = "";
         $name = "'".$detail->stock_master->stock_no."'";
-        if($access['edit'] && $data->status == "Draft"){
+        if($access['edit'] && ($data->status == "Draft"  || $data->status == "Request")){
             $action .= '<button id="'. $detail->id .'" onclick="editForm('. $detail->id .')" class="btn btn-info btn-xs"> Edit</button> ';
         }
-        if($access['delete'] && $data->status == "Draft"){
+        if($access['delete'] && ($data->status == "Draft" || $data->status == "Request" )){
             $action .= '<button id="'. $detail->id .'" onclick="deleteData('. $detail->id .','.$name.')" class="btn btn-danger btn-xs"> Delete</button> ';
         }
         if($status == "PoStock" && $detail->po_qty < $detail->qty){
@@ -53,7 +56,8 @@ trait ValidationSpbd {
             'edit' => $auth->can($permission.'.update'),
             'delete' => $auth->can($permission.'.delete'),
             'request' => $auth->can($permission.'.request'),
-            'verify' => $auth->can($permission.'.verify'),
+            'verify1' => $auth->can($permission.'.verify1'),
+            'verify2' => $auth->can($permission.'.verify2'),
             'approve' => $auth->can($permission.'.approve'),
             'print' => $auth->can($permission.'.print'),
         ];

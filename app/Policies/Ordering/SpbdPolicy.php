@@ -3,6 +3,7 @@
 namespace App\Policies\Ordering;
 
 use App\Models\Admin;
+use Illuminate\Auth\Access\Response;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class SpbdPolicy
@@ -69,10 +70,30 @@ class SpbdPolicy
         return false;
     }
 
-    public function verify(Admin $user)
+    public function verify1(Admin $user)
     {
-        foreach ($user->roles->permissions_for_access('SPBD','spbd-verify')->get() as $permission ) {
-            if($permission->name == 'spbd-verify'){
+        foreach ($user->roles->permissions_for_access('SPBD','spbd-verify1')->get() as $permission ) {
+            if($permission->name == 'spbd-verify1'){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function verify2(Admin $user)
+    {
+        foreach ($user->roles->permissions_for_access('SPBD','spbd-verify2')->get() as $permission ) {
+            if($permission->name == 'spbd-verify2'){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function reject(Admin $user)
+    {
+        foreach ($user->roles->permissions_for_access('SPBD','spbd-reject')->get() as $permission ) {
+            if($permission->name == 'spbd-reject'){
                 return true;
             }
         }

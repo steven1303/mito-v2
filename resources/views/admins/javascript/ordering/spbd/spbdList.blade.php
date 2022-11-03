@@ -64,10 +64,35 @@
     }
     @endcan
 
-    @can('spbd.verify', Auth::user())
-    function verify(id) {
+    @can('spbd.verify1', Auth::user())
+    function verify1(id) {
         $.ajax({
-        url: "{{ url('spbd') }}" + '/' + id + "/verify",
+        url: "{{ url('spbd') }}" + '/' + id + "/verify1",
+        type: "GET",
+        dataType: "JSON",
+        success: function(data) {
+            if(data.stat == 'Success')
+            {                
+                table.ajax.reload();
+                toastr.success(data.stat, data.message);
+                print_spbd(id);
+            }
+            if(data.stat == 'Error')
+            {
+                toastr.error(data.stat, data.message);
+            }
+        },
+        error : function() {
+            toastr.error('Error', 'Nothing Data');
+        }
+        });
+    }
+    @endcan
+
+    @can('spbd.verify2', Auth::user())
+    function verify2(id) {
+        $.ajax({
+        url: "{{ url('spbd') }}" + '/' + id + "/verify2",
         type: "GET",
         dataType: "JSON",
         success: function(data) {

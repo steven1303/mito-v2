@@ -141,6 +141,28 @@
     }
     @endcan
 
+    function reject_spbd(id) {
+        $.ajax({
+        url: "{{ route('spbd.reject', $spbd->id) }}",
+        type: "GET",
+        dataType: "JSON",
+        success: function(data) {
+            if(data.stat == 'Success')
+            {                
+                toastr.success(data.stat, data.message);
+                ajaxLoad("{{ route('spbd.index') }}");
+            }
+            if(data.stat == 'Error')
+            {
+                toastr.error(data.stat, data.message);
+            }
+        },
+        error : function() {
+            toastr.error('Error', 'Nothing Data');
+        }
+        });
+    }
+
     @can('spbd.print', Auth::user())
     function print_spbd(id){
         window.open("{{ url('spbd/print') }}" + '/' + id,"_blank");

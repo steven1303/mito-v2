@@ -47,8 +47,11 @@
                         <div class="card-footer">
                             @if($spbd->status == 'Draft' )
                                 <button id="btnSave" type="button" onclick="request_spbd()" class="btn btn-primary">Request</button>
-                            @endif                            
+                            @endif                                                       
                             <button type="button" class="btn btn-default" onclick="ajaxLoad('{{route('spbd.index')}}')">Cancel</button>
+                            @if($spbd->status == 'Verified 1' || $spbd->status == 'Verified 2' || $spbd->status == 'Approved' )
+                                <button id="btnSave" type="button" onclick="reject_spbd()" class="btn btn-danger">Reject</button>
+                            @endif 
                         </div>
                     </form>
                 </div>

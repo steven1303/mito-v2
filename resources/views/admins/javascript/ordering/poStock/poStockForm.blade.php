@@ -5,9 +5,7 @@
     $("#price").inputmask('currency', {rightAlign: true, prefix: "Rp "});
     $("#disc").inputmask('currency', {rightAlign: true, prefix: "Rp "});
 
-    @if ($po_stock->status !== "Draft") 
-    $("#vendor").select2("readonly", true);   
-    @endif
+    
 
     var save_method;
     save_method = 'add';
@@ -57,7 +55,6 @@
     });
 
     @canany(['po.stock.store', 'po.stock.update'], Auth::user())
-
     $('#vendor').select2({
         placeholder: "Select and Search",
         ajax:{
@@ -85,6 +82,9 @@
             $('#ppn').val("0 %");
         }
     });
+    @if ($po_stock->status !== "Draft") 
+    $("#vendor").select2("destroy"); 
+    @endif
 
     function addItem(id) {
         save_method = 'add';

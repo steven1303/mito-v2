@@ -208,6 +208,9 @@ class PoStockController extends SettingAjaxController
             {
                 return response()->json(['code'=>200,'message' => 'Error PO Stock not have detail', 'stat' => 'Error']);
             }
+            if($data->vendor_id == 0){
+                return response()->json(['code'=>200,'message' => 'Error PO Stock not have Vendor', 'stat' => 'Error']);
+            }
             $data->status = "Request";
             $data->request = Carbon::now();
             $data->update();
