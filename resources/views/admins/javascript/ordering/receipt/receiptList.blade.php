@@ -12,11 +12,11 @@
         "processing"	: true,
         "serverSide"	: true,
         responsive      : true,
-        "ajax": "{{route('po.stock.record') }}",
+        "ajax": "{{route('rec.stock.record') }}",
         "columns": [
             {data: 'DT_RowIndex', name: 'DT_RowIndex' },
+            {data: 'rec_no', name: 'rec_no'},
             {data: 'po_no', name: 'po_no'},
-            {data: 'spbd_no', name: 'spbd_no'},
             {data: 'approve', name: 'approve'},
             {data: 'status', name: 'status'},
             {data: 'action', name:'action', orderable: false, searchable: false}
@@ -25,10 +25,10 @@
 
     @can('po.stock.store', Auth::user())
     $(function(){
-        $('#spbd').select2({
+        $('#poStock').select2({
             placeholder: "Select and Search",
             ajax:{
-                url:"{{route('spbd.search') }}",
+                url:"{{route('po.stock.search') }}",
                 dataType: 'json',
                 data: function (params) {
                     return {

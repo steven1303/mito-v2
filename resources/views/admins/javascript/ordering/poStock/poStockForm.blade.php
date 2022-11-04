@@ -119,7 +119,7 @@
             url = "{{route('po.stock.update', $po_stock->id) }}";
             $.ajax({
                 url : url,
-                type : "PATCH",
+                type : "POST",
                 data : $('#PoStockForm').serialize(),
                 beforeSend:function(){
                     $(document).find('span.error-text').text('');
@@ -161,10 +161,10 @@
             if (save_method == 'add')
             {
                 url = "{{route('po.stock.store.detail', $po_stock->id) }}";
-                $('input[name=_method]').val('POST');
+                $('#PoStockDetailMethod').val('POST');
             } else {
                 url = "{{ url('po_stock/detail') . '/' }}" + id;
-                $('input[name=_method]').val('PATCH');
+                $('#PoStockDetailMethod').val('PATCH');
             }
             $.ajax({
                 url : url,
@@ -209,7 +209,7 @@
         $('#poStockDetailForm')[0].reset();
         $('#btnSave').attr('disabled',false);
         $('#stock_master').val(null).trigger('change');
-        $('input[name=_method]').val('POST');
+        $('#PoStockDetailMethod').val('POST');
         $('#button_modal').text('Save changes');
     }
     @endcanany
@@ -223,7 +223,7 @@
     @can('po.stock.update', Auth::user())
     function editForm(id) {
         save_method = 'edit';
-        $('input[name=_method]').val('PATCH');
+        $('#PoStockDetailMethod').val('PATCH');
         $.ajax({
         url: "{{ url('po_stock/detail') }}" + '/' + id,
         type: "GET",

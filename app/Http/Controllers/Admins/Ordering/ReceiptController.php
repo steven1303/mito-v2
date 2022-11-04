@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Admins\Ordering;
 
+use App\Models\RecStock;
 use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Traits\DocNumber;
 use App\Http\Controllers\Traits\StockMasterMovement;
 use App\Http\Controllers\Admins\SettingAjaxController;
 use App\Http\Controllers\Traits\ValidationReceiptStock;
-use App\Models\RecStock;
 
 class ReceiptController extends SettingAjaxController
 {
@@ -35,5 +36,22 @@ class ReceiptController extends SettingAjaxController
             return view('admins.contents.ordering.receipt.receiptForm')->with($data);
         }
         return view('admins.components.403');
+    }
+
+    public function record(){
+        $auth =  Auth::user();
+        $access =   $this->accessReceiptStock( $auth, 'receipt');
+        if($access['view']){
+            $data = RecStock::latest()->get();
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($data)  use($access){
+                    $action = $this->buttonAction($data, $access);      
+                    return $action;
+                })
+                ->rawColumns(['action'])->make(true);
+        }
+        return response()
+            ->json(['code'=>200,'message' => 'Error Receipt Access Denied', 'stat' => 'Error']);
     }
 }

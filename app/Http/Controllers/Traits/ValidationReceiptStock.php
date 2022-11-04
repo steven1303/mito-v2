@@ -46,7 +46,7 @@ trait ValidationReceiptStock {
         return $action;
     }
 
-    function accessPoStock($auth, $permission){
+    function accessReceiptStock($auth, $permission){
 
         $access = [
             'view' => $auth->can($permission.'.view'),

@@ -40,7 +40,7 @@ Route::group([
         Route::get('/po_stock/{id}/verify1', 'verify1')->name('po.stock.verify1');
         Route::get('/po_stock/{id}/verify2', 'verify2')->name('po.stock.verify2');
         Route::get('/po_stock/{id}/approve', 'approve')->name('po.stock.approve');
-        // Route::get('search/po_stock', 'searchTransferBranch')->name('po.stock.search');
+        Route::get('search/po_stock', 'search')->name('po.stock.search');
 
         // Detail PoStock
         Route::post('po_stock/detail/{id}', 'store_detail')->name('po.stock.store.detail');
@@ -57,7 +57,7 @@ Route::group([
         // Route::post('/rec_stock', 'store')->name('rec.stock.store');     
         // Route::patch('rec_stock/{id}', 'update')->name('rec.stock.update');
         // Route::delete('/rec_stock/{id}', 'destroy')->name('rec.stock.delete');
-        // Route::get('record/rec_stock', 'record')->name('rec.stock.record');
+        Route::get('record/rec_stock', 'record')->name('rec.stock.record');
         // Route::get('/rec_stock/{id}/request', 'request')->name('rec.stock.request');
         // Route::get('/rec_stock/{id}/verify1', 'verify1')->name('rec.stock.verify1');
         // Route::get('/rec_stock/{id}/verify2', 'verify2')->name('rec.stock.verify2');

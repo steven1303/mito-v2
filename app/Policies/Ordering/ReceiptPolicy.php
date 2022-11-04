@@ -62,8 +62,8 @@ class ReceiptPolicy
 
     public function request(Admin $user)
     {
-        foreach ($user->roles->permissions_for_access('Receipt','receipt-open')->get() as $permission ) {
-            if($permission->name == 'receipt-open'){
+        foreach ($user->roles->permissions_for_access('Receipt','receipt-request')->get() as $permission ) {
+            if($permission->name == 'receipt-request'){
                 return true;
             }
         }

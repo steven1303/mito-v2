@@ -47,35 +47,37 @@ class PoStockController extends SettingAjaxController
 
     public function store(PoStockStorePostRequest $request)
     {
-        if(Auth::user()->can('po.stock.store')){
-            $draf = PoStock::where([
-                ['status','=', 'Draft'],
-            ])->count();
-
-            if($draf > 0){
-                return response()->json(['code'=>200,'message' => 'Use the previous Draf PoStock First', 'stat' => 'Warning']);
-            }
-
-            $document = PoStock::where([
-                ['po_no','like', $this->documentFormat('POS').'%'],
-            ])->count();
-
-            $data = [
-                'branch_id' => Auth::user()->branch_id,
-                'po_no' => $this->documentFormat('POS').'/'.sprintf("%03d", $document + 1),
-                'spbd_id' => $request['spbd'],
-                'status' => 'Draft',
-                'username' => Auth::user()->name,
-            ];
-            $activity = PoStock::create($data);
-            if ($activity->exists) {
-                return response()->json(['code'=>200,'message' => 'Add new SPBD Success' , 'stat' => 'Success', 'id' => $activity->id, 'process' => 'add']);
-
-            } else {
-                return response()->json(['code'=>200,'message' => 'Error SPBD Store', 'stat' => 'Error']);
-            }
+        if(!Auth::user()->can('po.stock.store')){
+            return response()->json(['code'=>200,'message' => 'Error SPBD Access Denied', 'stat' => 'Error']);
         }
-        return response()->json(['code'=>200,'message' => 'Error SPBD Access Denied', 'stat' => 'Error']);
+        
+        $draf = PoStock::where([
+            ['status','=', 'Draft'],
+        ])->count();
+
+        if($draf > 0){
+            return response()->json(['code'=>200,'message' => 'Use the previous Draf PoStock First', 'stat' => 'Warning']);
+        }
+
+        $document = PoStock::where([
+            ['po_no','like', $this->documentFormat('POS').'%'],
+        ])->count();
+
+        $data = [
+            'branch_id' => Auth::user()->branch_id,
+            'po_no' => $this->documentFormat('POS').'/'.sprintf("%03d", $document + 1),
+            'spbd_id' => $request['spbd'],
+            'status' => 'Draft',
+            'username' => Auth::user()->name,
+        ];
+        $activity = PoStock::create($data);
+        if ($activity->exists) {
+            return response()->json(['code'=>200,'message' => 'Add new SPBD Success' , 'stat' => 'Success', 'id' => $activity->id, 'process' => 'add']);
+
+        } else {
+            return response()->json(['code'=>200,'message' => 'Error SPBD Store', 'stat' => 'Error']);
+        }
+        
     }
 
     public function store_detail(PoStockDetailStorePostRequest $request, $id)
@@ -259,5 +261,39 @@ class PoStockController extends SettingAjaxController
                 ->json(['code'=>200,'message' => 'PO Stock Approve Success', 'stat' => 'Success']);
         }
         return response()->json(['code'=>200,'message' => 'Error PO Stock Access Denied', 'stat' => 'Error']);
+    }
+
+    /**
+     * Search a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        $term = trim($request->q);
+
+        if (empty($term)) {
+            return response()->json([]);
+        }
+
+        $tags = PoStock::where([
+            ['po_no','like','%'.$term.'%'],
+            ['status','=', "Partial"],
+        ])->orWhere([
+            ['po_no','like','%'.$term.'%'],
+            ['status','=', "Approved"],
+        ])->get();
+
+        $formatted_tags = [];
+
+        foreach ($tags as $tag) {
+            $formatted_tags[] = [
+                'id'    => $tag->id,
+                'text'  => $tag->po_no,
+            ];
+        }
+
+        return response()->json($formatted_tags);
     }
 }

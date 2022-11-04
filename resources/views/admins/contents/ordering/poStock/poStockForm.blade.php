@@ -22,7 +22,8 @@
                     <!-- /.card-header -->
                     <!-- form start -->
                     <form  role="form" id="PoStockForm">
-                        {{ csrf_field() }} {{ method_field('PATCH') }}
+                        {{ csrf_field() }}
+                        <input type="hidden" id="PoStockMethod" name="_method" value="PATCH">
                         <input type="hidden" id="id" name="id">
                         <div class="card-body">
                             <div class="row">
@@ -133,7 +134,8 @@
 <div class="modal fade" id="modal-input-item">
     <div class="modal-dialog modal-lg">
         <form role="form" id="poStockDetailForm" method="POST">
-            {{ csrf_field() }} {{ method_field('POST') }}
+            {{ csrf_field() }} 
+            <input type="hidden" id="PoStockDetailMethod" name="_method" value="POST">
             <input type="hidden" id="id" name="id">
             <div class="modal-content">
                 <div class="modal-header">

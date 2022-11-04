@@ -41,8 +41,8 @@
                             <thead>
                             <tr>
                                 <th>No</th>
+                                <th>Receipt No</th>
                                 <th>PoStock No</th>
-                                <th>SPBD No</th>
                                 <th>Date</th>
                                 <th>Status</th>
                                 <th>Action</th>
@@ -59,4 +59,4 @@
 
 </section>
 <!-- /.content -->
-@include('admins.javascript.ordering.poStock.poStockList')
+@include('admins.javascript.ordering.receipt.receiptList')
