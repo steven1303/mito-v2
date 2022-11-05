@@ -17,15 +17,15 @@
             {data: 'DT_RowIndex', name: 'DT_RowIndex' },
             {data: 'rec_no', name: 'rec_no'},
             {data: 'po_no', name: 'po_no'},
-            {data: 'approve', name: 'approve'},
+            {data: 'approved', name: 'approved'},
             {data: 'status', name: 'status'},
             {data: 'action', name:'action', orderable: false, searchable: false}
         ]
     });
 
-    @can('po.stock.store', Auth::user())
+    @if($access['store'])
     $(function(){
-        $('#poStock').select2({
+        $('#po_stock').select2({
             placeholder: "Select and Search",
             ajax:{
                 url:"{{route('po.stock.search') }}",
@@ -44,30 +44,30 @@
             },
         })
 
-        $('#spbd').on('select2:select', function (e) {
+        $('#po_stock').on('select2:select', function (e) {
             var data = e.params.data;
         });
 
         $("input").focus(function(){
-            $("#spbd").trigger('select2:open');
+            $("#po_stock").trigger('select2:open');
         });
 
-	    $('#poStockForm').validator().on('submit', function (e) {
+	    $('#receiptForm').validator().on('submit', function (e) {
 		    var id = $('#id').val();
 		    if (!e.isDefaultPrevented()){
-                url = "{{route('po.stock.store') }}";
-				$('input[name=_method]').val('POST');
+                url = "{{route('rec.stock.store') }}";
+				$("#ReceiptkMethod").val('POST');
 			    $.ajax({
 				    url : url,
 				    type : "POST",
-				    data : $('#poStockForm').serialize(),
+				    data : $('#receiptForm').serialize(),
 				    success : function(data) {
                         if(data.stat == 'Success'){
                             toastr.success(data.stat, data.message);
                             if (data.process == 'add')
                             {
-                                $('#spbd').val(null).trigger('change');
-                                ajaxLoad("{{ url('po_stock/form') }}" + '/' + data.id);
+                                $('#po_stock').val(null).trigger('change');
+                                ajaxLoad("{{ url('rec_stock/form') }}" + '/' + data.id);
                             }
                         }
                         if(data.stat == 'Error'){
@@ -91,68 +91,18 @@
 		    }
 	    });
     });
-    @endcan
+    @endif
 
-    @can('po.stock.print', Auth::user())
+    @if($access['print'])
     function print_transfer_branch(id){
-        window.open("{{ url('po_stock_print') }}" + '/' + id,"_blank");
+        window.open("{{ url('rec_stock_print') }}" + '/' + id,"_blank");
     }
-    @endcan
+    @endif
 
-    @can('po.stock.verify1', Auth::user())
-    function verify1(id) {
-        $.ajax({
-        url: "{{ url('po_stock') }}" + '/' + id + "/verify1",
-        type: "GET",
-        dataType: "JSON",
-        success: function(data) {
-            if(data.stat == 'Success')
-            {                
-                table.ajax.reload();
-                toastr.success(data.stat, data.message);
-                print_spbd(id);
-            }
-            if(data.stat == 'Error')
-            {
-                toastr.error(data.stat, data.message);
-            }
-        },
-        error : function() {
-            toastr.error('Error', 'Nothing Data');
-        }
-        });
-    }
-    @endcan
-
-    @can('po.stock.verify2', Auth::user())
-    function verify2(id) {
-        $.ajax({
-        url: "{{ url('po_stock') }}" + '/' + id + "/verify2",
-        type: "GET",
-        dataType: "JSON",
-        success: function(data) {
-            if(data.stat == 'Success')
-            {                
-                table.ajax.reload();
-                toastr.success(data.stat, data.message);
-                print_spbd(id);
-            }
-            if(data.stat == 'Error')
-            {
-                toastr.error(data.stat, data.message);
-            }
-        },
-        error : function() {
-            toastr.error('Error', 'Nothing Data');
-        }
-        });
-    }
-    @endcan
-
-    @can('po.stock.approve', Auth::user())
+    @if($access['approve'])
     function approve(id) {
         $.ajax({
-        url: "{{ url('po_stock') }}" + '/' + id + "/approve",
+        url: "{{ url('rec_stock') }}" + '/' + id + "/approve",
         type: "GET",
         dataType: "JSON",
         success: function(data) {
@@ -160,12 +110,12 @@
             toastr.success(data.stat, data.message);
         },
         error : function() {
-            error('Error', 'Nothing Data');
+            toastr.error('Error', 'Nothing Data');
         }
         });
     }
-    @endcan
-    @can('po.stock.delete', Auth::user())
+    @endif
+    @if($access['delete'])
     function deleteData(id, title){
         swal.fire({
             title: 'Are you sure want to delete ' + title + ' ?',
@@ -180,19 +130,27 @@
             if (willDelete.value) {
                 var csrf_token = $('meta[name="csrf-token"]').attr('content');
                 $.ajax({
-                    url : "{{ url('po_stock') }}" + '/' + id,
+                    url : "{{ url('rec_stock') }}" + '/' + id,
                     type : "POST",
                     data : {'_method' : 'DELETE', '_token' : csrf_token},
                     success : function(data) {
                         table.ajax.reload();
-                        swal({
-                            type: 'success',
-                            title: 'Deleted',
-                            text: 'Poof! Your record has been deleted!',
-                        });
+                        if(data.stat == "Success"){
+                            swal.fire({
+                                type: 'success',
+                                title: 'Deleted',
+                                text: data.message,
+                            });
+                        }else{
+                            swal.fire({
+                                type: 'error',
+                                title: data.stat,
+                                text: data.message,
+                            });
+                        }                      
                     },
                     error : function () {
-                        swal( {
+                        swal.fire( {
                             type: 'error',
                             title: 'Oops...',
                             text: 'Something went wrong!'
@@ -200,7 +158,7 @@
                     }
                 });
             } else {
-                swal({
+                swal.fire({
                     type: 'success',
                     title: 'Canceled',
                     text: 'Your record is still safe!',
@@ -208,5 +166,5 @@
             }
         });
     }
-    @endcan
+    @endif
 </script>

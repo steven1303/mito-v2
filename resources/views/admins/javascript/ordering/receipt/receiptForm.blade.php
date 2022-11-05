@@ -41,7 +41,7 @@
         "processing"	: true,
         "serverSide"	: true,
         responsive      : true,
-        "ajax": "{{route('spbd.record.detail', ['id' => $po_stock->spbd_id, 'status' => 'PoStock']) }}",
+        "ajax": "{{route('spbd.record.detail', ['id' => $rec->po_stock_id, 'status' => 'RecStock']) }}",
         "columns": [
             {data: 'DT_RowIndex', name: 'DT_RowIndex' },
             {data: 'stock_master.stock_no', name: 'stock_master.stock_no'},

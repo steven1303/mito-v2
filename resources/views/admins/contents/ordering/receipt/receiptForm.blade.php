@@ -17,7 +17,7 @@
             <div class="col-md-12">
                 <div class="card card-primary">
                     <div class="card-header">
-                        <h3 class="card-title" id="formTitle">Detail PO Stock ({{$po_stock->status}})</h3>
+                        <h3 class="card-title" id="formTitle">Detail PO Stock ({{$rec->status}})</h3>
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
@@ -29,13 +29,13 @@
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label for="nama">Document Number</label>
-                                        <input type="text" class="form-control" id="po_no" name="po_no" value="{{$po_stock->po_no}}" readonly> 
+                                        <input type="text" class="form-control" id="po_no" name="po_no" value="{{$rec->po_no}}" readonly> 
                                     </div>
                                 </div>
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label for="nama">SPBD Number</label>
-                                        <input type="text" class="form-control" id="spbd_no" name="spbd_no" value="{{$po_stock->spbd_no}}" readonly> 
+                                        <input type="text" class="form-control" id="spbd_no" name="spbd_no" value="{{$rec->spbd_no}}" readonly> 
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -43,8 +43,8 @@
                                         <label>Vendor</label>                    
                                         <select class="form-control select2" id="vendor" name="vendor" style="width: 100%;">
                                             <option></option>
-                                            @if ($po_stock->vendor_id !== 0)
-                                                <option value="{{$po_stock->vendor_id}}" selected>{{$po_stock->vendor->name}}</option>
+                                            @if ($rec->vendor_id !== 0)
+                                                <option value="{{$rec->vendor_id}}" selected>{{$rec->vendor->name}}</option>
                                             @endif
                                         </select>                            
                                         <span class="text-danger error-text vendor_error"></span>
@@ -59,7 +59,7 @@
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label for="city">PO Stock Date</label>
-                                        <input type="text" id="datemask" name="date" class="form-control" value="{{ $po_stock->approve }}" readonly>
+                                        <input type="text" id="datemask" name="date" class="form-control" value="{{ $rec->approve }}" readonly>
                                         <span class="text-danger error-text name_error"></span>
                                     </div>
                                 </div>
@@ -68,8 +68,8 @@
                       <!-- /.card-body -->
       
                         <div class="card-footer">
-                            @if($po_stock->status == 'Draft' )
-                                <button id="btnSave" type="button" onclick="request_po_stock()" class="btn btn-primary">Request</button>
+                            @if($rec->status == 'Draft' )
+                                <button id="btnSave" type="button" onclick="request_rec_stock()" class="btn btn-primary">Request</button>
                                 <button id="btnSaveUpdate" type="submit" class="btn btn-primary">Update Detail</button>
                             @endif                            
                             <button type="button" class="btn btn-default" onclick="ajaxLoad('{{route('po.stock.index')}}')">Cancel</button>
@@ -203,4 +203,4 @@
 </div>
 @endcanany
 <!-- /.content -->
-@include('admins.javascript.ordering.poStock.poStockForm',['po_stock' => $po_stock])
+@include('admins.javascript.ordering.poStock.poStockForm',['rec' => $rec])

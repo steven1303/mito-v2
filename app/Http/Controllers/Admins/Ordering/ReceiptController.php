@@ -10,6 +10,8 @@ use App\Http\Controllers\Traits\DocNumber;
 use App\Http\Controllers\Traits\StockMasterMovement;
 use App\Http\Controllers\Admins\SettingAjaxController;
 use App\Http\Controllers\Traits\ValidationReceiptStock;
+use App\Http\Requests\Ordering\ReceiptDetailStorePostRequest;
+use App\Models\RecStockDetail;
 
 class ReceiptController extends SettingAjaxController
 {
@@ -38,11 +40,64 @@ class ReceiptController extends SettingAjaxController
         return view('admins.components.403');
     }
 
+    public function store(ReceiptDetailStorePostRequest $request)
+    {
+        if(!Auth::user()->can('receipt.store')){
+            return response()->json(['code'=>200,'message' => 'Error Receipt Access Denied', 'stat' => 'Error']);
+        }
+        
+        $draf = RecStock::where([
+            ['status','=', 'Draft'],
+        ])->count();
+
+        if($draf > 0){
+            return response()->json(['code'=>200,'message' => 'Use the previous Draf Receipt First', 'stat' => 'Warning']);
+        }
+
+        $document = RecStock::where([
+            ['rec_no','like', $this->documentFormat('REC').'%'],
+        ])->count();
+
+        $data = [
+            'branch_id' => Auth::user()->branch_id,
+            'rec_no' => $this->documentFormat('REC').'/'.sprintf("%03d", $document + 1),
+            'po_stock_id' => $request['po_stock'],
+            'status' => 'Draft',
+            'username' => Auth::user()->name,
+        ];
+        $activity = RecStock::create($data);
+        if ($activity->exists) {
+            return response()->json(['code'=>200,'message' => 'Add new Receipt Success' , 'stat' => 'Success', 'id' => $activity->id, 'process' => 'add']);
+
+        } else {
+            return response()->json(['code'=>200,'message' => 'Error Receipt Store', 'stat' => 'Error']);
+        }
+        
+    }
+
+    public function destroy($id)
+    {
+        if(Auth::user()->can('receipt.delete')){
+            RecStock::destroy($id);
+            return response()->json(['code'=>200,'message' => 'Receipt Success Deleted', 'stat' => 'Success']);
+        }
+        return response()->json(['code'=>200,'message' => 'Error Receipt Access Denied', 'stat' => 'Error']);
+    }
+
+    public function destroy_detail($id)
+    {
+        if(Auth::user()->can('receipt.update')){
+            RecStockDetail::destroy($id);
+            return response()->json(['code'=>200,'message' => 'Receipt Item Success Deleted', 'stat' => 'Success']);
+        }
+        return response()->json(['code'=>200,'message' => 'Error Receipt Access Denied', 'stat' => 'Error']);
+    }
+
     public function record(){
         $auth =  Auth::user();
         $access =   $this->accessReceiptStock( $auth, 'receipt');
         if($access['view']){
-            $data = RecStock::latest()->get();
+            $data = RecStock::poStockDetail()->latest()->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data)  use($access){

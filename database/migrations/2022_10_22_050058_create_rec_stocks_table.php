@@ -17,9 +17,9 @@ return new class extends Migration
             $table->id();            
             $table->bigInteger('branch_id');
             $table->string('rec_no')->unique();
-            $table->bigInteger('vendor_id');
+            $table->bigInteger('vendor_id')->default(0);
             $table->bigInteger('po_stock_id')->default(0);
-            $table->string('rec_inv_ven');
+            $table->string('rec_inv_ven')->nullable();
             $table->dateTime('approved')->nullable();
             $table->decimal('ppn', 10, 3)->default(0);
             $table->string('status');

@@ -22,7 +22,7 @@
         ]
     });
 
-    @can('spbd.store', Auth::user())
+    @if($access['store'])
     $(function(){
 	    $('#spbdForm').validator().on('submit', function (e) {
 		    var id = $('#id').val();
@@ -56,15 +56,15 @@
 		    }
 	    });
     });
-    @endcan
+    @endif
 
-    @can('transfer.branch.print', Auth::user())
+    @if($access['print'])
     function print_transfer_branch(id){
         window.open("{{ url('transfer_branch_print') }}" + '/' + id,"_blank");
     }
-    @endcan
+    @endif
 
-    @can('spbd.verify1', Auth::user())
+    @if($access['verify1'])
     function verify1(id) {
         $.ajax({
         url: "{{ url('spbd') }}" + '/' + id + "/verify1",
@@ -87,9 +87,9 @@
         }
         });
     }
-    @endcan
+    @endif
 
-    @can('spbd.verify2', Auth::user())
+    @if($access['verify2'])
     function verify2(id) {
         $.ajax({
         url: "{{ url('spbd') }}" + '/' + id + "/verify2",
@@ -112,9 +112,9 @@
         }
         });
     }
-    @endcan
+    @endif
 
-    @can('spbd.approve', Auth::user())
+    @if($access['approve'])
     function approve(id) {
         save_method = 'edit';
         $.ajax({
@@ -130,8 +130,8 @@
         }
         });
     }
-    @endcan
-    @can('transfer.branch.delete', Auth::user())
+    @endif
+    @if($access['delete'])
     function deleteData(id, title){
         swal.fire({
             title: 'Are you sure want to delete ' + title + ' ?',
@@ -174,5 +174,5 @@
             }
         });
     }
-    @endcan
+    @endif
 </script>

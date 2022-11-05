@@ -54,13 +54,10 @@ Route::group([
     Route::controller(Admins\Ordering\ReceiptController::class)->group(function (){
         Route::get('/rec_stock', 'index')->name('rec.stock.index');    
         Route::get('/rec_stock/form/{id}', 'rec_stock_form')->name('rec.stock.form');    
-        // Route::post('/rec_stock', 'store')->name('rec.stock.store');     
+        Route::post('/rec_stock', 'store')->name('rec.stock.store');     
         // Route::patch('rec_stock/{id}', 'update')->name('rec.stock.update');
-        // Route::delete('/rec_stock/{id}', 'destroy')->name('rec.stock.delete');
+        Route::delete('/rec_stock/{id}', 'destroy')->name('rec.stock.delete');
         Route::get('record/rec_stock', 'record')->name('rec.stock.record');
-        // Route::get('/rec_stock/{id}/request', 'request')->name('rec.stock.request');
-        // Route::get('/rec_stock/{id}/verify1', 'verify1')->name('rec.stock.verify1');
-        // Route::get('/rec_stock/{id}/verify2', 'verify2')->name('rec.stock.verify2');
         // Route::get('/rec_stock/{id}/approve', 'approve')->name('rec.stock.approve');
         // Route::get('search/rec_stock', 'searchTransferBranch')->name('rec.stock.search');
 

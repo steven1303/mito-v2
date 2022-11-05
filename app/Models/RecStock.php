@@ -30,6 +30,13 @@ class RecStock extends Model
         static::addGlobalScope(new BranchScope);
     }
 
+    public function scopePoStockDetail($query)
+    {
+        $query->addSelect(['po_no' => PoStock::whereColumn('rec_stocks.po_stock_id','id' )
+            ->selectRaw('po_no as po_no')
+        ]);
+    }
+
     public function approved(): Attribute
     {
         return new Attribute(

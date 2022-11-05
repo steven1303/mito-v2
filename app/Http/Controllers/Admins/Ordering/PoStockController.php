@@ -48,7 +48,7 @@ class PoStockController extends SettingAjaxController
     public function store(PoStockStorePostRequest $request)
     {
         if(!Auth::user()->can('po.stock.store')){
-            return response()->json(['code'=>200,'message' => 'Error SPBD Access Denied', 'stat' => 'Error']);
+            return response()->json(['code'=>200,'message' => 'Error Po Stock Access Denied', 'stat' => 'Error']);
         }
         
         $draf = PoStock::where([

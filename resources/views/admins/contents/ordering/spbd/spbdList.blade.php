@@ -19,6 +19,7 @@
                     <div class="card-header">
                         <h3 class="card-title">List SPBD</h3>
                     </div>
+                    @if($access['store'])
                     <div class="card-body row">
                         <div class="col-md-3">
                             <form role="form" id="spbdForm" method="POST">
@@ -27,6 +28,7 @@
                             </form>
                         </div>
                     </div>
+                    @endif
                     <div class="card-body">
                         <table id="spbdTable" class="table table-bordered table-striped">
                             <thead>
