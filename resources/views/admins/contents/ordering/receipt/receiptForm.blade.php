@@ -4,7 +4,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>PO Stock Form</h1>
+                <h1>Receipt Stock Form</h1>
             </div>
         </div>
     </div><!-- /.container-fluid -->
@@ -17,49 +17,58 @@
             <div class="col-md-12">
                 <div class="card card-primary">
                     <div class="card-header">
-                        <h3 class="card-title" id="formTitle">Detail PO Stock ({{$rec->status}})</h3>
+                        <h3 class="card-title" id="formTitle">Detail Receipt Stock ({{$rec->status}})</h3>
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form  role="form" id="PoStockForm">
-                        {{ csrf_field() }} {{ method_field('PATCH') }}
+                    <form  role="form" id="ReceiptStockForm">
+                        {{ csrf_field() }} 
+                        <input type="hidden" id="ReceiptStockMethod" name="_method" value="PATCH">
                         <input type="hidden" id="id" name="id">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label for="nama">Document Number</label>
-                                        <input type="text" class="form-control" id="po_no" name="po_no" value="{{$rec->po_no}}" readonly> 
+                                        <input type="text" class="form-control" id="po_no" name="po_no" value="{{$rec->rec_no}}" readonly> 
                                     </div>
                                 </div>
                                 <div class="col-md-2">
                                     <div class="form-group">
-                                        <label for="nama">SPBD Number</label>
-                                        <input type="text" class="form-control" id="spbd_no" name="spbd_no" value="{{$rec->spbd_no}}" readonly> 
+                                        <label for="nama">PoStock Number</label>
+                                        <input type="text" class="form-control" id="spbd_no" name="spbd_no" value="{{$po_stock_detail->po_no}}" readonly> 
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-2">
                                     <div class="form-group">
-                                        <label>Vendor</label>                    
-                                        <select class="form-control select2" id="vendor" name="vendor" style="width: 100%;">
-                                            <option></option>
-                                            @if ($rec->vendor_id !== 0)
-                                                <option value="{{$rec->vendor_id}}" selected>{{$rec->vendor->name}}</option>
-                                            @endif
-                                        </select>                            
-                                        <span class="text-danger error-text vendor_error"></span>
+                                        <label for="nama">Vendor</label>
+                                        <input type="text" class="form-control" value="{{$po_stock_detail->vendor->name}}" readonly>
+                                        <input type="hidden" id="vendor_id" name="vendor_id" value="{{$po_stock_detail->vendor_id}}">
                                     </div>
                                 </div>
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label>PPN</label>
-                                        <input type="text" class="form-control" id="ppn" name="ppn" value="{{config('mito.tax.name')}}" readonly> 
+                                        <input type="text" class="form-control" value="@if ($po_stock_detail->vendor_id !== 0) {{($po_stock_detail->vendor->ppn) ? config('mito.tax.name') : '0 %'}} @else 0 % @endif" readonly> 
+                                        <input type="hidden" id="ppn" name="ppn" value="@if ($po_stock_detail->vendor_id !== 0) {{($po_stock_detail->vendor->ppn) ? '1' : '0'}} @else 0 @endif" readonly> 
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label for="nama">Invoice Vendor</label>
+                                        <input type="text" class="form-control" id="rec_inv_ven" name="rec_inv_ven" value="{{$rec->rec_inv_ven}}" >
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label for="nama">PPN PoStock</label>
+                                        <input type="text" class="form-control" value="" readonly>
                                     </div>
                                 </div>
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label for="city">PO Stock Date</label>
-                                        <input type="text" id="datemask" name="date" class="form-control" value="{{ $rec->approve }}" readonly>
+                                        <input type="text" id="datemask" name="date" class="form-control" value="{{ $rec->approved }}" readonly>
                                         <span class="text-danger error-text name_error"></span>
                                     </div>
                                 </div>
@@ -69,10 +78,10 @@
       
                         <div class="card-footer">
                             @if($rec->status == 'Draft' )
-                                <button id="btnSave" type="button" onclick="request_rec_stock()" class="btn btn-primary">Request</button>
+                                <button id="btnSave" type="button" onclick="request_rec_stock()" class="btn btn-primary">Submit</button>
                                 <button id="btnSaveUpdate" type="submit" class="btn btn-primary">Update Detail</button>
                             @endif                            
-                            <button type="button" class="btn btn-default" onclick="ajaxLoad('{{route('po.stock.index')}}')">Cancel</button>
+                            <button type="button" class="btn btn-default" onclick="ajaxLoad('{{route('rec.stock.index')}}')">Cancel</button>
                         </div>
                     </form>
                 </div>
@@ -203,4 +212,4 @@
 </div>
 @endcanany
 <!-- /.content -->
-@include('admins.javascript.ordering.poStock.poStockForm',['rec' => $rec])
+@include('admins.javascript.ordering.receipt.receiptForm',['rec' => $rec])

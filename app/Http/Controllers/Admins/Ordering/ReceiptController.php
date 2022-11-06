@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admins\Ordering;
 
 use App\Models\RecStock;
 use Illuminate\Http\Request;
+use App\Models\RecStockDetail;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Traits\DocNumber;
@@ -11,7 +12,7 @@ use App\Http\Controllers\Traits\StockMasterMovement;
 use App\Http\Controllers\Admins\SettingAjaxController;
 use App\Http\Controllers\Traits\ValidationReceiptStock;
 use App\Http\Requests\Ordering\ReceiptDetailStorePostRequest;
-use App\Models\RecStockDetail;
+use App\Http\Requests\Ordering\ReceiptDetailUpdatePatchRequest;
 
 class ReceiptController extends SettingAjaxController
 {
@@ -34,6 +35,7 @@ class ReceiptController extends SettingAjaxController
             $rec = RecStock::findOrFail($id);
             $data = [
                 'rec' => $rec,
+                'po_stock_detail' => $rec->po_stock
             ];
             return view('admins.contents.ordering.receipt.receiptForm')->with($data);
         }
@@ -73,6 +75,21 @@ class ReceiptController extends SettingAjaxController
             return response()->json(['code'=>200,'message' => 'Error Receipt Store', 'stat' => 'Error']);
         }
         
+    }
+
+    public function update(ReceiptDetailUpdatePatchRequest $request, $id)
+    {
+        if(Auth::user()->can('receipt.update')){
+            $data = RecStock::find($id);
+            $data->vendor_id    = $request['vendor'];
+            $data->ppn    = ($request['ppn']) ? config('mito.tax.decimal') : 0;
+            $data->rec_inv_ven    = $request['rec_inv_ven'];
+            $data->update();
+            return response()
+                ->json(['code'=>200,'message' => 'Update PoStock Detail Success', 'stat' => 'Success']);
+        }
+        return response()
+            ->json(['code'=>200,'message' => 'Error Transfer Branch Access Denied', 'stat' => 'Error']);
     }
 
     public function destroy($id)

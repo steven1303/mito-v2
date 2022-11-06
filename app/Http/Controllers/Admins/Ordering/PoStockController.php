@@ -125,7 +125,7 @@ class PoStockController extends SettingAjaxController
         if(Auth::user()->can('po.stock.update')){
             $data = PoStock::find($id);
             $data->vendor_id    = $request['vendor'];
-            $data->ppn    = config('mito.tax.decimal');
+            $data->ppn    = ($request['ppn']) ? config('mito.tax.decimal') : 0;
             $data->update();
             return response()
                 ->json(['code'=>200,'message' => 'Update PoStock Detail Success', 'stat' => 'Success']);

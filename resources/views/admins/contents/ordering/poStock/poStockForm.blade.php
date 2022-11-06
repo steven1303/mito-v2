@@ -53,7 +53,8 @@
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label>PPN</label>
-                                        <input type="text" class="form-control" id="ppn" name="ppn" value="@if ($po_stock->vendor_id !== 0) {{($po_stock->vendor->ppn) ? config('mito.tax.name') : '0 %'}} @else 0 % @endif" readonly> 
+                                        <input type="text" class="form-control" value="@if ($po_stock->vendor_id !== 0) {{($po_stock->vendor->ppn) ? config('mito.tax.name') : '0 %'}} @else 0 % @endif" readonly> 
+                                        <input type="hidden" id="ppn" name="ppn" value="@if ($po_stock->vendor_id !== 0) {{($po_stock->vendor->ppn) ? '1' : '0'}} @else 0 @endif" readonly> 
                                     </div>
                                 </div>
                                 <div class="col-md-2">

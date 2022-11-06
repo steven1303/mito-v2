@@ -44,6 +44,13 @@ class PoStock extends Model
         ]);
     }
 
+    public function scopeItemDetail($query)
+    {
+        $query->addSelect(['total_ppn' => PoStockDetail::whereColumn('po_stocks.id','po_id' )
+            ->selectRaw('TRIM(IFNULL(sum((qty * price) - disc),0))+0 as total_ppn')
+        ]);
+    }
+
     public function spbd()
     {
     	return $this->belongsTo('App\Models\Spbd','spbd_id');

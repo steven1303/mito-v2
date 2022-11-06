@@ -1,4 +1,3 @@
-
 <script type="text/javascript">
     
     $("#qty").inputmask('currency', {rightAlign: true});    
@@ -18,7 +17,7 @@
         "processing"	: true,
         "serverSide"	: true,
         responsive      : true,
-        "ajax": "{{route('po.stock.record.detail', ['id' => $po_stock->id]) }}",
+        "ajax": "{{route('rec.stock.record.detail', ['id' => $rec->id]) }}",
         "columns": [
             {data: 'DT_RowIndex', name: 'DT_RowIndex' },
             {data: 'stock_master.stock_no', name: 'stock_master.stock_no'},
@@ -54,25 +53,6 @@
 
     @canany(['po.stock.store', 'po.stock.update'], Auth::user())
 
-    $('#vendor').select2({
-        placeholder: "Select and Search",
-        ajax:{
-            url:"{{route('vendor.search') }}",
-            dataType: 'json',
-            data: function (params) {
-                return {
-                    q: $.trim(params.term)
-                }
-            },
-            processResults: function (data) {
-                return {
-                    results: data
-                };
-            },
-            cache: true
-        },
-    })
-
     function addItem(id) {
         save_method = 'add';
         $.ajax({
@@ -103,7 +83,7 @@
 
     $('#PoStockForm').validator().on('submit', function (e) {
         if (!e.isDefaultPrevented()){
-            url = "{{route('po.stock.update', $po_stock->id) }}";
+            url = "{{route('po.stock.update', $rec->id) }}";
             $.ajax({
                 url : url,
                 type : "PATCH",
@@ -147,7 +127,7 @@
         if (!e.isDefaultPrevented()){
             if (save_method == 'add')
             {
-                url = "{{route('po.stock.store.detail', $po_stock->id) }}";
+                url = "{{route('po.stock.store.detail', $rec->id) }}";
                 $('input[name=_method]').val('POST');
             } else {
                 url = "{{ url('po_stock/detail') . '/' }}" + id;
@@ -287,14 +267,14 @@
     @can('po.stock.request', Auth::user())
     function request_po_stock() {
         $.ajax({
-        url: "{{route('po.stock.request', $po_stock->id) }}",
+        url: "{{route('po.stock.request', $rec->id) }}",
         type: "GET",
         dataType: "JSON",
         success: function(data) {
             if(data.stat == 'Success')
             {
                 toastr.success(data.stat, data.message);
-                print_spbd( "{{ $po_stock->id }}" );
+                print_spbd( "{{ $rec->id }}" );
                 ajaxLoad("{{ route('po.stock.index') }}");
             }
             if(data.stat == 'Error')

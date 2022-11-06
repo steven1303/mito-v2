@@ -66,7 +66,7 @@ Route::group([
         // Route::get('rec_stock/detail/{id}', 'edit_detail')->name('rec.stock.edit.detail');
         // Route::patch('rec_stock/detail/{id}', 'update_detail')->name('rec.stock.update.detail');
         // Route::delete('/rec_stock/detail/{id}', 'destroy_detail')->name('rec.stock.delete.detail');
-        // Route::get('record/rec_stock/{id}/{status?}', 'record_detail')->name('rec.stock.record.detail');
+        Route::get('record/rec_stock/{id}/{status?}', 'record_detail')->name('rec.stock.record.detail');
     });
     
 });
