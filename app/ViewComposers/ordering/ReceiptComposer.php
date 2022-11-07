@@ -18,7 +18,7 @@ class ReceiptComposer {
         $access = [
             'view' => $auth->can('receipt.view'),
             'store' => $auth->can('receipt.store'),
-            'edit' => $auth->can('receipt.update'),
+            'update' => $auth->can('receipt.update'),
             'delete' => $auth->can('receipt.delete'),
             'approve' => $auth->can('receipt.approve'),
             'print' => $auth->can('receipt.print'),

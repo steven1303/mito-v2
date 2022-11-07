@@ -60,10 +60,10 @@ class ReceiptPolicy
         return false;
     }
 
-    public function request(Admin $user)
+    public function approve(Admin $user)
     {
-        foreach ($user->roles->permissions_for_access('Receipt','receipt-request')->get() as $permission ) {
-            if($permission->name == 'receipt-request'){
+        foreach ($user->roles->permissions_for_access('Receipt','receipt-approve')->get() as $permission ) {
+            if($permission->name == 'receipt-approve'){
                 return true;
             }
         }

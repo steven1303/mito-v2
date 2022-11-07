@@ -13,7 +13,7 @@ class ReceiptUpdatePatchRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,8 +23,15 @@ class ReceiptUpdatePatchRequest extends FormRequest
      */
     public function rules()
     {
+        return [ 
+            'rec_inv_ven' => ['required'],
+        ];
+    }
+
+    public function messages()
+    {
         return [
-            //
+            'rec_inv_ven.required' => 'Invoice Vendor is required',
         ];
     }
 }

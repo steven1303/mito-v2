@@ -55,15 +55,14 @@ Route::group([
         Route::get('/rec_stock', 'index')->name('rec.stock.index');    
         Route::get('/rec_stock/form/{id}', 'rec_stock_form')->name('rec.stock.form');    
         Route::post('/rec_stock', 'store')->name('rec.stock.store');     
-        // Route::patch('rec_stock/{id}', 'update')->name('rec.stock.update');
+        Route::patch('rec_stock/{id}', 'update')->name('rec.stock.update');
         Route::delete('/rec_stock/{id}', 'destroy')->name('rec.stock.delete');
         Route::get('record/rec_stock', 'record')->name('rec.stock.record');
         // Route::get('/rec_stock/{id}/approve', 'approve')->name('rec.stock.approve');
-        // Route::get('search/rec_stock', 'searchTransferBranch')->name('rec.stock.search');
 
         // Detail Receipt
         // Route::post('rec_stock/detail/{id}', 'store_detail')->name('rec.stock.store.detail');
-        // Route::get('rec_stock/detail/{id}', 'edit_detail')->name('rec.stock.edit.detail');
+        Route::get('rec_stock/detail/{id}', 'edit_detail')->name('rec.stock.edit.detail');
         // Route::patch('rec_stock/detail/{id}', 'update_detail')->name('rec.stock.update.detail');
         // Route::delete('/rec_stock/detail/{id}', 'destroy_detail')->name('rec.stock.delete.detail');
         Route::get('record/rec_stock/{id}/{status?}', 'record_detail')->name('rec.stock.record.detail');

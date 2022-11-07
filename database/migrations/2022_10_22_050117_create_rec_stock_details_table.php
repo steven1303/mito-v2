@@ -23,7 +23,7 @@ return new class extends Migration
             $table->decimal('price', 10, 3)->default(0);
             $table->decimal('disc', 10, 3)->default(0);
             $table->string('keterangan')->nullable();
-            $table->string('detail_status')->nullable();
+            $table->string('status')->nullable();
             $table->timestamps();
 
             $table->foreign('rec_id')->references('id')->on('rec_stocks')->onDelete('cascade');

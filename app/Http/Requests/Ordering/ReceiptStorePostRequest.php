@@ -13,7 +13,7 @@ class ReceiptStorePostRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,8 +23,15 @@ class ReceiptStorePostRequest extends FormRequest
      */
     public function rules()
     {
+        return [ 
+            'po_stock' => ['required'],
+        ];
+    }
+
+    public function messages()
+    {
         return [
-            //
+            'po_stock.required' => 'PoStock is required',
         ];
     }
 }

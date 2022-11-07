@@ -59,7 +59,7 @@ return new class extends Migration
             ],
             [
                 'for' => 'Receipt',
-                'name' => 'receipt-open',
+                'name' => 'receipt-approve',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
                 'stat' => 1,

@@ -188,7 +188,7 @@ class PoStockController extends SettingAjaxController
         $auth =  Auth::user();
         if($auth->canany(['po.stock.view','receipt.view'])){
             $data = PoStock::findOrFail($id);
-            $detail = $data->po_stock_detail()->with('stock_master')->get();
+            $detail = $data->po_stock_detail()->recStockDetail()->with('stock_master')->get();
             $access =   $this->accessPoStock( $auth, 'po.stock');
             return DataTables::of($detail)
                 ->addIndexColumn()

@@ -34,7 +34,7 @@ trait ValidationPoStock {
         return $action;
     }
 
-    function buttonActionDetail($detail, $access, $data, $status){
+    function buttonActionDetail($detail, $access, $data, $status  = NULL){
         $action = "";
         $name = "'".$detail->stock_master->stock_no."'";
         if($access['edit'] && $data->status == "Draft"){
@@ -42,6 +42,9 @@ trait ValidationPoStock {
         }
         if($access['delete'] && $data->status == "Draft"){
             $action .= '<button id="'. $detail->id .'" onclick="deleteData('. $detail->id .','.$name.')" class="btn btn-danger btn-xs"> Delete</button> ';
+        }
+        if($status == "RecStock" && $detail->rec_qty < $detail->qty){
+            $action .= '<button id="'. $detail->id .'" onclick="addItem('. $detail->id .')" class="btn btn-info btn-xs">Add Item</button> ';
         }
         return $action;
     }

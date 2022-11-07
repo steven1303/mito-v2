@@ -11,6 +11,7 @@ use App\Http\Controllers\Traits\DocNumber;
 use App\Http\Controllers\Traits\StockMasterMovement;
 use App\Http\Controllers\Admins\SettingAjaxController;
 use App\Http\Controllers\Traits\ValidationReceiptStock;
+use App\Http\Requests\Ordering\ReceiptUpdatePatchRequest;
 use App\Http\Requests\Ordering\ReceiptDetailStorePostRequest;
 use App\Http\Requests\Ordering\ReceiptDetailUpdatePatchRequest;
 
@@ -35,7 +36,7 @@ class ReceiptController extends SettingAjaxController
             $rec = RecStock::findOrFail($id);
             $data = [
                 'rec' => $rec,
-                'po_stock_detail' => $rec->po_stock
+                'po_stock_detail' => $rec->po_stock_detail
             ];
             return view('admins.contents.ordering.receipt.receiptForm')->with($data);
         }
@@ -77,11 +78,20 @@ class ReceiptController extends SettingAjaxController
         
     }
 
-    public function update(ReceiptDetailUpdatePatchRequest $request, $id)
+    public function edit_detail($id)
+    {
+        if(Auth::user()->can('receipt.update')){
+            $data = RecStockDetail::with('stock_master','po_stock_detail')->findOrFail($id);
+            return $data;
+        }
+        return response()->json(['code'=>200,'message' => 'Error PoStock Access Denied', 'stat' => 'Error']);
+    }
+
+    public function update(ReceiptUpdatePatchRequest $request, $id)
     {
         if(Auth::user()->can('receipt.update')){
             $data = RecStock::find($id);
-            $data->vendor_id    = $request['vendor'];
+            $data->vendor_id    = $request['vendor_id'];
             $data->ppn    = ($request['ppn']) ? config('mito.tax.decimal') : 0;
             $data->rec_inv_ven    = $request['rec_inv_ven'];
             $data->update();
@@ -125,5 +135,23 @@ class ReceiptController extends SettingAjaxController
         }
         return response()
             ->json(['code'=>200,'message' => 'Error Receipt Access Denied', 'stat' => 'Error']);
+    }
+
+    public function record_detail($id, $status = NULL){
+        $auth =  Auth::user();
+        if($auth->canany(['po.stock.view','receipt.view'])){
+            $data = RecStock::findOrFail($id);
+            $detail = $data->rec_stock_detail()->with('stock_master')->get();
+            $access =   $this->accessReceiptStock( $auth, 'receipt');
+            return DataTables::of($detail)
+                ->addIndexColumn()
+                ->addColumn('action', function($detail)  use($access, $data, $status){
+                    $action = $this->buttonActionDetail($detail, $access, $data, $status);       
+                    return $action;
+                })
+                ->rawColumns(['action'])->make(true);
+        }
+        return response()
+            ->json(['code'=>200,'message' => 'Error Access Denied', 'stat' => 'Error']);
     }
 }

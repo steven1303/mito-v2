@@ -58,4 +58,9 @@ class RecStock extends Model
     {
     	return $this->hasMany('App\Models\RecStockDetail','rec_id');
     }
+
+    public function po_stock_detail()
+    {
+    	return $this->belongsTo('App\Models\PoStock','po_stock_id')->itemDetail();
+    }
 }

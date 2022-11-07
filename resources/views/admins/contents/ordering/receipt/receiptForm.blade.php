@@ -13,7 +13,6 @@
 <section class="content">
     <div class="container-fluid">
         <div class="row">
-            @canany(['po.stock.store', 'po.stock.update'], Auth::user())
             <div class="col-md-12">
                 <div class="card card-primary">
                     <div class="card-header">
@@ -56,13 +55,14 @@
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label for="nama">Invoice Vendor</label>
-                                        <input type="text" class="form-control" id="rec_inv_ven" name="rec_inv_ven" value="{{$rec->rec_inv_ven}}" >
+                                        <input type="text" class="form-control" id="rec_inv_ven" name="rec_inv_ven" value="{{$rec->rec_inv_ven}}" @if(!$access['update']) readonly @endif >
+                                        <span class="text-danger error-text rec_inv_ven_error"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label for="nama">PPN PoStock</label>
-                                        <input type="text" class="form-control" value="" readonly>
+                                        <input type="text" id="po_stock_ppn" class="form-control" value="{{$po_stock_detail->total_ppn}}" readonly>
                                     </div>
                                 </div>
                                 <div class="col-md-2">
@@ -78,22 +78,25 @@
       
                         <div class="card-footer">
                             @if($rec->status == 'Draft' )
-                                <button id="btnSave" type="button" onclick="request_rec_stock()" class="btn btn-primary">Submit</button>
+                                @if($access['approve'])
+                                <button id="btnSave" type="button" onclick="approve_rec_stock()" class="btn btn-primary">Submit</button>
+                                @endif
+                                @if($access['update'])
                                 <button id="btnSaveUpdate" type="submit" class="btn btn-primary">Update Detail</button>
+                                @endif
                             @endif                            
                             <button type="button" class="btn btn-default" onclick="ajaxLoad('{{route('rec.stock.index')}}')">Cancel</button>
                         </div>
                     </form>
                 </div>
             </div>
-            @endcanany
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">PO Stock Item</h3>
+                        <h3 class="card-title">Receipt Stock Item</h3>
                     </div>
                     <div class="card-body">
-                        <table id="poStockDetailTable" class="table table-bordered table-striped">
+                        <table id="recStockDetailTable" class="table table-bordered table-striped">
                             <thead>
                             <tr>
                                 <th>No</th>
@@ -114,10 +117,10 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">SPBD Item</h3>
+                        <h3 class="card-title">PoStock Item</h3>
                     </div>
                     <div class="card-body">
-                        <table id="spbdDetailTable" class="table table-bordered table-striped">
+                        <table id="poStockDetailTable" class="table table-bordered table-striped">
                             <thead>
                             <tr>
                                 <th>No</th>
@@ -142,7 +145,7 @@
 @canany(['po.stock.store', 'po.stock.update'], Auth::user())
 <div class="modal fade" id="modal-input-item">
     <div class="modal-dialog modal-lg">
-        <form role="form" id="poStockDetailForm" method="POST">
+        <form role="form" id="recStockDetailForm" method="POST">
             {{ csrf_field() }} {{ method_field('POST') }}
             <input type="hidden" id="id" name="id">
             <div class="modal-content">
@@ -153,18 +156,25 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-5">
                             <div class="form-group">
                                 <label>Stock No</label>
                                 <input type="text" class="form-control" id="stock_master" name="stock_master" readonly>
                                 <input type="hidden" id="stock_master_id" name="stock_master_id">
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <div class="form-group">
-                                <label>SPBD Qty</label>
-                                <input type="text" class="form-control" id="spbd_qty" name="spbd_qty" readonly>
-                                <input type="hidden" id="spbd_detail_id" name="spbd_detail_id">
+                                <label>Order</label>
+                                <input type="text" class="form-control" id="po_qty" name="po_qty" readonly>
+                                <input type="hidden" id="po_detail_id" name="po_detail_id">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>Receive</label>
+                                <input type="text" class="form-control" id="receive" name="receive"  placeholder="Qty">
+                                <span class="text-danger error-text receive_error"></span>
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -175,29 +185,26 @@
                         </div>                    
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Keterangan</label>
-                                <input type="text" class="form-control" id="spbd_ket" name="spbd_ket" readonly>
+                                <label>Keterangan PoStock</label>
+                                <input type="text" class="form-control" id="po_stock_ket" name="po_stock_ket" readonly>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label>Price</label>
-                                <input type="text" class="form-control" id="price" name="price" placeholder="Input Price">
-                                <span class="text-danger error-text price_error"></span>
+                                <input type="text" class="form-control" id="price" name="price" readonly>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label>Discount</label>
-                                <input type="text" class="form-control" id="disc" name="disc" placeholder="Input Discount">
-                                <span class="text-danger error-text disc_error"></span>
+                                <input type="text" class="form-control" id="disc" name="disc" readonly>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Keterangan</label>
                                 <input type="text" class="form-control" id="keterangan" name="keterangan" placeholder="Input keterangan">
-                                <span class="text-danger error-text keterangan_error"></span>
                             </div>
                         </div>
                     </div>

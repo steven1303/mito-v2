@@ -1,102 +1,23 @@
 <script type="text/javascript">
     
     $("#qty").inputmask('currency', {rightAlign: true});    
+    $("#po_stock_ppn").inputmask('currency', {rightAlign: true, prefix: "Rp "});
     $("#price").inputmask('currency', {rightAlign: true, prefix: "Rp "});
     $("#disc").inputmask('currency', {rightAlign: true, prefix: "Rp "});
 
-    var save_method;
-    save_method = 'add';
-    var table1 = $('#poStockDetailTable')
-    .DataTable({
-        'paging'      	: true,
-        'lengthChange'	: true,
-        'searching'   	: true,
-        'ordering'    	: true,
-        'info'        	: true,
-        'autoWidth'   	: false,
-        "processing"	: true,
-        "serverSide"	: true,
-        responsive      : true,
-        "ajax": "{{route('rec.stock.record.detail', ['id' => $rec->id]) }}",
-        "columns": [
-            {data: 'DT_RowIndex', name: 'DT_RowIndex' },
-            {data: 'stock_master.stock_no', name: 'stock_master.stock_no'},
-            {data: 'qty', name: 'qty'},
-            {data: 'price', name: 'price'},
-            {data: 'disc', name: 'disc'},
-            {data: 'stock_master.satuan', name: 'stock_master.satuan'},
-            {data: 'action', name:'action', orderable: false, searchable: false}
-        ]
-    });
-
-    var table2 = $('#spbdDetailTable')
-    .DataTable({
-        'paging'      	: true,
-        'lengthChange'	: true,
-        'searching'   	: true,
-        'ordering'    	: true,
-        'info'        	: true,
-        'autoWidth'   	: false,
-        "processing"	: true,
-        "serverSide"	: true,
-        responsive      : true,
-        "ajax": "{{route('spbd.record.detail', ['id' => $rec->po_stock_id, 'status' => 'RecStock']) }}",
-        "columns": [
-            {data: 'DT_RowIndex', name: 'DT_RowIndex' },
-            {data: 'stock_master.stock_no', name: 'stock_master.stock_no'},
-            {data: 'qty', name: 'qty'},
-            {data: 'po_qty', name: 'po_qty'},
-            {data: 'stock_master.satuan', name: 'stock_master.satuan'},
-            {data: 'action', name:'action', orderable: false, searchable: false}
-        ]
-    });
-
-    @canany(['po.stock.store', 'po.stock.update'], Auth::user())
-
-    function addItem(id) {
-        save_method = 'add';
-        $.ajax({
-        url: "{{ url('spbd/detail') }}" + '/' + id,
-        type: "GET",
-        dataType: "JSON",
-        success: function(data) {
-            $('#modal-input-item').modal('show');
-            $('#button_modal').text('Save');
-            $('#formTitle').text('Add Item');
-            $('#button_modal').attr('disabled',false);
-            $('#stock_master').val(data.stock_master.stock_no);
-            $('#stock_master_id').val(data.stock_master_id);
-            $('#spbd_detail_id').val(data.id);
-            $('#spbd_qty').val(data.qty);
-            $('#satuan').val(data.stock_master.satuan);
-            $('#spbd_ket').val(data.keterangan);
-        },
-        error : function() {
-            toastr.error('Error', 'Nothing Data');
-        }
-        });
-    }
-
-    $('#modal-input-item').on('hidden.bs.modal', function (e) {
-        cancel();
-    })
-
-    $('#PoStockForm').validator().on('submit', function (e) {
+    $('#ReceiptStockForm').validator().on('submit', function (e) {
         if (!e.isDefaultPrevented()){
-            url = "{{route('po.stock.update', $rec->id) }}";
+            url = "{{route('rec.stock.update', $rec->id) }}";
             $.ajax({
                 url : url,
                 type : "PATCH",
-                data : $('#PoStockForm').serialize(),
+                data : $('#ReceiptStockForm').serialize(),
                 beforeSend:function(){
                     $(document).find('span.error-text').text('');
                     $('#btnSaveUpdate').attr('disabled',true);
                 },
-                success : function(data) {
-                    table1.ajax.reload();
-                    table2.ajax.reload();                 
+                success : function(data) {              
                     if(data.stat == 'Success'){
-                        cancel();
                         $('#btnSaveUpdate').attr('disabled',false);
                         toastr.success(data.stat, data.message);
                     }
@@ -122,7 +43,84 @@
         }
     });
 
-    $('#poStockDetailForm').validator().on('submit', function (e) {
+    var save_method;
+    save_method = 'add';
+    var table1 = $('#recStockDetailTable')
+    .DataTable({
+        'paging'      	: true,
+        'lengthChange'	: true,
+        'searching'   	: true,
+        'ordering'    	: true,
+        'info'        	: true,
+        'autoWidth'   	: false,
+        "processing"	: true,
+        "serverSide"	: true,
+        responsive      : true,
+        "ajax": "{{route('rec.stock.record.detail', ['id' => $rec->id]) }}",
+        "columns": [
+            {data: 'DT_RowIndex', name: 'DT_RowIndex' },
+            {data: 'stock_master.stock_no', name: 'stock_master.stock_no'},
+            {data: 'receive', name: 'receive'},
+            {data: 'price', name: 'price'},
+            {data: 'disc', name: 'disc'},
+            {data: 'stock_master.satuan', name: 'stock_master.satuan'},
+            {data: 'action', name:'action', orderable: false, searchable: false}
+        ]
+    });
+
+    var table2 = $('#poStockDetailTable')
+    .DataTable({
+        'paging'      	: true,
+        'lengthChange'	: true,
+        'searching'   	: true,
+        'ordering'    	: true,
+        'info'        	: true,
+        'autoWidth'   	: false,
+        "processing"	: true,
+        "serverSide"	: true,
+        responsive      : true,
+        "ajax": "{{route('po.stock.record.detail', ['id' => $rec->po_stock_id, 'status' => 'RecStock']) }}",
+        "columns": [
+            {data: 'DT_RowIndex', name: 'DT_RowIndex' },
+            {data: 'stock_master.stock_no', name: 'stock_master.stock_no'},
+            {data: 'qty', name: 'qty'},
+            {data: 'rec_qty', name: 'rec_qty'},
+            {data: 'stock_master.satuan', name: 'stock_master.satuan'},
+            {data: 'action', name:'action', orderable: false, searchable: false}
+        ]
+    });
+
+    @canany(['po.stock.store', 'po.stock.update'], Auth::user())
+
+    function addItem(id) {
+        save_method = 'add';
+        $.ajax({
+        url: "{{ url('po_stock/detail') }}" + '/' + id,
+        type: "GET",
+        dataType: "JSON",
+        success: function(data) {
+            $('#modal-input-item').modal('show');
+            $('#button_modal').text('Save');
+            $('#formTitle').text('Add Item');
+            $('#button_modal').attr('disabled',false);
+            $('#stock_master').val(data.stock_master.stock_no);
+            $('#stock_master_id').val(data.stock_master_id);
+            $('#spbd_detail_id').val(data.id);
+            $('#spbd_qty').val(data.qty);
+            $('#satuan').val(data.stock_master.satuan);
+            $('#spbd_ket').val(data.keterangan);
+        },
+        error : function() {
+            toastr.error('Error', 'Nothing Data');
+        }
+        });
+    }
+
+    $('#modal-input-item').on('hidden.bs.modal', function (e) {
+        cancel();
+    })
+
+    $('#recStockDetailForm').validator().on('submit', function (e) {
         var id = $('#id').val();
         if (!e.isDefaultPrevented()){
             if (save_method == 'add')
@@ -136,7 +134,7 @@
             $.ajax({
                 url : url,
                 type : "POST",
-                data : $('#poStockDetailForm').serialize(),
+                data : $('#recStockDetailForm').serialize(),
                 beforeSend:function(){
                     $(document).find('span.error-text').text('');
                     $('#btnSave').attr('disabled',true);

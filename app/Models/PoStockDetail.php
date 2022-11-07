@@ -28,6 +28,13 @@ class PoStockDetail extends Model
         static::addGlobalScope(new BranchScope);
     }
 
+    public function scopeRecStockDetail($query)
+    {
+        $query->addSelect(['rec_qty' => RecStockDetail::whereColumn('po_detail_id', 'po_stock_details.id')
+            ->selectRaw('TRIM(IFNULL(sum(receive),0))+0 as rec_qty')
+        ]);
+    }
+
     protected function price(): Attribute
     {        
         return new Attribute(
